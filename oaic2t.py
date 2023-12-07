@@ -1,27 +1,31 @@
 import os
 import time
 import random
+import string
 import datetime
 import json
 import curses
 import colorama
 import pygments
-from pathlib import Path
-from openai import OpenAI
-from pygments.lexers import PhpLexer
+from playsound           import playsound
+from pathlib             import Path
+from openai              import OpenAI
+from pygments.lexers     import PhpLexer
 from pygments.formatters import TerminalFormatter
 
 #Initiatizing OpenAI
 # Defining the New Code with New OpenAI changes 
-client = OpenAI(api_key="")
+client = OpenAI(api_key="  ")
 
 # Initializing Colorama
 colorama.init()
 promptcx = "a"
-tokens = 2000
+systemcontext = "You are a helpful assistance that know everything"
+tokens = 3000
 
 def gpt3(ask):
     global promptcx
+    global systemcontext
     promptcx += ask
     response = client.chat.completions.create(
 
@@ -30,7 +34,7 @@ def gpt3(ask):
     #model ="text-davinci-003",
     model = "gpt-3.5-turbo-1106",
     messages= [ 
-               {"role": "system", "content": "You know everything about php and linux and webdevelopment"},
+               {"role": "system", "content": systemcontext},
                {"role": "user","content": promptcx }
 
                ],
@@ -44,15 +48,31 @@ def gpt3(ask):
     return content
 
 
-def text_to_speech(text):
-    speech_file_path = Path("G:/").parent / "speech.mp3"
+def text_to_speech(text,filename):
+    
+    filestring = "speech_" + filename + ".mp3"
+    speech_file_path = Path("G:\\KBrain_Audio").parent/filestring
+    
     response = client.audio.speech.create(
+        
         model="tts-1",
         voice="alloy",
         input=text 
+        
         )
+
+
     response.stream_to_file(speech_file_path)
+    playsound(speech_file_path)
     pass
+
+def gen_random_string(length):
+
+    characters = string.ascii_letters + string.digits 
+    genstring = ''.join(random.choice(characters) for i in range(length))
+
+
+    return genstring
 
 
 def displaybanner():
@@ -98,16 +118,21 @@ while True:
     
     now = datetime.datetime.now()
     file_name = f'{now.year}-{now.month}-{now.day}_{now.hour}{now.minute}{now.second}.okpt'
-    storedir = 'G:/'
+    audiofilename = gen_random_string(10)
+    storedir = "G:/"
     store_path = os.path.join(storedir,file_name)
     charCount = str(len(promptcx))
     wordCount = str(len(promptcx.split()))
 
 
-    reply = input(colorama.Fore.RED + "\n Menu - (q) quite | (cx) Clear Context \n Status:("+charCount+"/"+str(tokens)+"CR - "+wordCount+" Word )\n\n "+colorama.Fore.YELLOW+"Ask K-Brain : $ ")
+    reply = input(colorama.Fore.RED + "\n Menu - (q) quite | (cx) Clear Context \n Set System Prompt - (sc) \n Status:("+charCount+"/"+str(tokens)+"CR - "+wordCount+" Word )\n\n "+colorama.Fore.YELLOW+"Ask K-Brain : $ ")
      
     if len(promptcx) > 3500:
        promptcx = " "   
+
+    if reply.lower() == 'sc':
+        print("Set System Prompt Context:")
+        systemcontext = input("Type Here:")
    
     if reply.lower() == 'q':
        print("Exiting Thanks for Using K-Brain")
@@ -116,6 +141,7 @@ while True:
     if reply.lower() == 'cx':
       promptcx = " "
       print("Context Area Cleared << ")
+
     else: 
       answer = gpt3(promptcx+reply)
 
@@ -134,7 +160,9 @@ while True:
       # choice = choices[0]
       # answertext = choice["text"]
       promptcx += answer
+      
       phpcode = pygments.highlight(answer, PhpLexer(), TerminalFormatter())
+      
       print(colorama.Fore.MAGENTA + "____________________________________________________: [ (Reply) K-Brain ]" )
       print(colorama.Fore.WHITE + "")
    
@@ -142,12 +170,17 @@ while True:
    # it will type the output from GPT3
       for char in  phpcode:
         print(char, end="", flush=True)
-        time.sleep(0.04876)
+        time.sleep(0.07276)
         #time.sleep(random.uniform(0.05,0.2))
 
       print(colorama.Fore.WHITE + "")
       with open(store_path,'w') as f:
         f.write(str(phpcode))
+
+
+   #Converting the Output to Speech 
+      text_to_speech(answer,audiofilename)
+
 
 
 #curses.wrapper(main)
