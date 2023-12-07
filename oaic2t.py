@@ -16,7 +16,7 @@ promptcx = "a"
 tokens = 2000
 
 def gpt3(ask):
-    openai.api_key = "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"
+    openai.api_key = ""
     global promptcx
     promptcx += ask
     response = openai.Completion.create(
