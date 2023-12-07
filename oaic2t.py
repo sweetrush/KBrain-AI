@@ -4,11 +4,16 @@ import random
 import datetime
 import json
 import curses
-import openai
 import colorama
 import pygments
+from pathlib import Path
+from openai import OpenAI
 from pygments.lexers import PhpLexer
 from pygments.formatters import TerminalFormatter
+
+#Initiatizing OpenAI
+# Defining the New Code with New OpenAI changes 
+client = OpenAI(api_key="")
 
 # Initializing Colorama
 colorama.init()
@@ -16,28 +21,39 @@ promptcx = "a"
 tokens = 2000
 
 def gpt3(ask):
-    openai.api_key = ""
     global promptcx
     promptcx += ask
-    response = openai.Completion.create(
+    response = client.chat.completions.create(
 
     # Uncomment the Mode to Use.
     #######################################
-    model ="text-davinci-003",
-    #model = "gpt-3.5-turbo",
-    prompt= promptcx,
-    temperature=0.4,
-    max_tokens=tokens,
-    top_p=1,
-    best_of=2,
-    frequency_penalty=0,
-    presence_penalty=0
+    #model ="text-davinci-003",
+    model = "gpt-3.5-turbo-1106",
+    messages= [ 
+               {"role": "system", "content": "You know everything about php and linux and webdevelopment"},
+               {"role": "user","content": promptcx }
+
+               ],
     )
 
-    content = response.choices[0].text.split('.')
+
+    # content = response.choices[0].text.split('.')   #OLD CODE
+    content = response.choices[0].message.content             #New Code 
     #print(content)
 
-    return response
+    return content
+
+
+def text_to_speech(text):
+    speech_file_path = Path("G:/").parent / "speech.mp3"
+    response = client.audio.speech.create(
+        model="tts-1",
+        voice="alloy",
+        input=text 
+        )
+    response.stream_to_file(speech_file_path)
+    pass
+
 
 def displaybanner():
     print(colorama.Fore.CYAN + "///////////////////////////////////////////////////")
@@ -46,6 +62,8 @@ def displaybanner():
     print(colorama.Fore.CYAN + "//         Developed by: Sw33tRu5h_C0d3r         //")
     print(colorama.Fore.CYAN + "//                                               //")
     print(colorama.Fore.CYAN + "///////////////////////////////////////////////////")
+
+
 
 
 def main(stdscr):
@@ -68,16 +86,19 @@ def main(stdscr):
            pass
 
 
+
+####################################################################################
+#                 AREA OF CODE START : 
+####################################################################################
+
+
 displaybanner()
 while True:
-    #key = input(colorama.Fore.RED + 'Continue(C) / Quit(Q) $ ')
-    #curses.wrapper(main)
-    #if key.lower() == 'q':
-    #   break
+    
     
     now = datetime.datetime.now()
     file_name = f'{now.year}-{now.month}-{now.day}_{now.hour}{now.minute}{now.second}.okpt'
-    storedir = '/home/esu/myscripts/okpt_outputs/'
+    storedir = 'G:/'
     store_path = os.path.join(storedir,file_name)
     charCount = str(len(promptcx))
     wordCount = str(len(promptcx.split()))
@@ -97,6 +118,7 @@ while True:
       print("Context Area Cleared << ")
     else: 
       answer = gpt3(promptcx+reply)
+
       print(colorama.Fore.BLUE + "[Human(Question)] :____________________________________________ " )
       print(colorama.Fore.GREEN + "")
       print(reply)
@@ -104,13 +126,15 @@ while True:
 
 
    # UNCOMMENT TO SEE THE FULL Responses
-   # print(answer)
-      dataanswer = answer
-      choices = dataanswer["choices"]
-      choice = choices[0]
-      answertext = choice["text"]
-      promptcx += answertext
-      phpcode = pygments.highlight(answertext, PhpLexer(), TerminalFormatter())
+   #  - Debugging Perposes. 
+      # print(answer)  
+   
+      # dataanswer = answer
+      # choices = dataanswer["choices"]
+      # choice = choices[0]
+      # answertext = choice["text"]
+      promptcx += answer
+      phpcode = pygments.highlight(answer, PhpLexer(), TerminalFormatter())
       print(colorama.Fore.MAGENTA + "____________________________________________________: [ (Reply) K-Brain ]" )
       print(colorama.Fore.WHITE + "")
    
