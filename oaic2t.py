@@ -4,6 +4,7 @@ import random
 import string
 import datetime
 import json
+import subprocess
 import curses
 import colorama
 import pygments
@@ -15,7 +16,7 @@ from pygments.formatters import TerminalFormatter
 
 #Initiatizing OpenAI
 # Defining the New Code with New OpenAI changes 
-client = OpenAI(api_key="  ")
+client = OpenAI(api_key="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")
 
 # Initializing Colorama
 colorama.init()
@@ -48,10 +49,25 @@ def gpt3(ask):
     return content
 
 
+def read_text_with_espeak(text, voice="en-us"):
+    try:
+        subprocess.call(['espeak', '-v', voice, text])
+    except OSError:
+        print("Error: espeak is not installed or accessible.")
+
+
+
+
+
 def text_to_speech(text,filename):
     
+    audiostore = "KBrain_Audio"
     filestring = "speech_" + filename + ".mp3"
-    speech_file_path = Path("G:\\KBrain_Audio").parent/filestring
+
+    if not os.path.exists(audiostore):
+        os.makedirs(audiostore)
+
+    speech_file_path = Path("KBrain_Audio").parent/filestring
     
     response = client.audio.speech.create(
         
@@ -119,10 +135,14 @@ while True:
     now = datetime.datetime.now()
     file_name = f'{now.year}-{now.month}-{now.day}_{now.hour}{now.minute}{now.second}.okpt'
     audiofilename = gen_random_string(10)
-    storedir = "G:/"
+    storedir = "output"
     store_path = os.path.join(storedir,file_name)
     charCount = str(len(promptcx))
     wordCount = str(len(promptcx.split()))
+
+
+    if not os.path.exists(storedir):
+        os.makedirs(storedir)
 
 
     reply = input(colorama.Fore.RED + "\n Menu - (q) quite | (cx) Clear Context \n Set System Prompt - (sc) \n Status:("+charCount+"/"+str(tokens)+"CR - "+wordCount+" Word )\n\n "+colorama.Fore.YELLOW+"Ask K-Brain : $ ")
@@ -170,7 +190,7 @@ while True:
    # it will type the output from GPT3
       for char in  phpcode:
         print(char, end="", flush=True)
-        time.sleep(0.07276)
+        time.sleep(0.04276)
         #time.sleep(random.uniform(0.05,0.2))
 
       print(colorama.Fore.WHITE + "")
@@ -179,7 +199,7 @@ while True:
 
 
    #Converting the Output to Speech 
-      text_to_speech(answer,audiofilename)
+      # text_to_speech(answer,audiofilename)
 
 
 

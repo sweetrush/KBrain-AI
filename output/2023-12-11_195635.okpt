@@ -1,0 +1,31 @@
+Sure! Here's a simple Python web app using Flask framework that calculates the sum of two numbers.
+
+```python
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return '''
+        <form action="/calculate" method="post">
+            <input type="text" name="num1" />
+            <input type="text" name="num2" />
+            <input type="submit" value="Calculate" />
+        </form>
+    '''
+
+@app.route('/calculate', methods=['POST'])
+def calculate():
+    num1 = float(request.form['num1'])
+    num2 = float(request.form['num2'])
+    result = num1 + num2
+    return 'The sum of the numbers is: {}'.format(result)
+
+if __name__ == '__main__':
+    app.run()
+```
+
+Save this code to a file, for example `app.py`, and then run it using `python app.py` in your terminal. This will start a local server where you can access the web app.
+
+When you open `http://127.0.0.1:5000/` in your browser, you will see a simple form where you can enter two numbers. After submitting the form, the app will calculate the sum of the numbers and display the result.
