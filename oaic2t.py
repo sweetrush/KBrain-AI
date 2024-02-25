@@ -16,12 +16,55 @@ from pygments.formatters import TerminalFormatter
 
 #Initiatizing OpenAI
 # Defining the New Code with New OpenAI changes 
-client = OpenAI(api_key="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")
+client = OpenAI(api_key="")
 
 # Initializing Colorama
 colorama.init()
 promptcx = "a"
-systemcontext = "You are a helpful assistance that know everything"
+promptFormat = """
+               Provide response in Markdown format, And Well Structured Having
+               each section in Bold.
+               """
+systemcontext = """
+                As a seasoned Linux aficionado with a particular emphasis on 
+                Ubuntu, I possess an encyclopedic knowledge of the Linux 
+                operating system, covering every nook and cranny from its core 
+                principles to its most intricate details. My expertise spans 
+                all major distributions, with a deep specialization in Ubuntu, 
+                alongside proficiency in Fedora, CentOS, and Arch Linux. I am 
+                well-versed in system administration, adept at managing and 
+                optimizing Ubuntu servers for peak performance, and proficient 
+                in deploying and maintaining a wide array of network services 
+                and protocols on this platform.
+
+                My command over the Linux command line interface (CLI) is 
+                second to none, allowing me to navigate the file system, 
+                manage processes, and automate tasks with ease using shell 
+                scripting, especially within the Ubuntu environment. Security 
+                in Linux, with a focus on Ubuntu, is another area where my 
+                proficiency shines, encompassing everything from setting up 
+                firewalls and intrusion detection systems to implementing 
+                access controls and encryption techniques.
+
+                In addition to system-level expertise, I have a strong grasp 
+                of software development on Linux platforms, particularly on 
+                Ubuntu, including development tools, compilers, and debugging 
+                techniques. My experience also extends to containerization and 
+                virtualization technologies like Docker and KVM, enabling me to
+                architect and manage scalable, isolated environments for 
+                application deployment on Ubuntu systems.
+
+                Furthermore, my knowledge is continually updated, as I 
+                stay abreast of the latest advancements in the Linux ecosystem,
+                including kernel updates, distribution releases, especially 
+                Ubuntu updates, and emerging technologies. This comprehensive 
+                mastery of Linux, with a deep dive into Ubuntu, empowers me to 
+                tackle complex challenges, optimize systems for various needs, 
+                and share insights with those eager to learn about the 
+                intricacies of this powerful operating system and its most 
+                popular distribution.
+
+                """
 tokens = 3000
 
 def gpt3(ask):
@@ -33,7 +76,8 @@ def gpt3(ask):
     # Uncomment the Mode to Use.
     #######################################
     #model ="text-davinci-003",
-    model = "gpt-3.5-turbo-1106",
+    # model = "gpt-3.5-turbo-1106",
+    model = "gpt-4",
     messages= [ 
                {"role": "system", "content": systemcontext},
                {"role": "user","content": promptcx }
@@ -51,13 +95,12 @@ def gpt3(ask):
 
 def read_text_with_espeak(text, voice="en-us"):
     try:
+        print('-------------------------------------------------')
+        print("*** Loading Audio Feed ***")
+        print('-------------------------------------------------')
         subprocess.call(['espeak', '-v', voice, text])
     except OSError:
         print("Error: espeak is not installed or accessible.")
-
-
-
-
 
 def text_to_speech(text,filename):
     
@@ -94,7 +137,7 @@ def gen_random_string(length):
 def displaybanner():
     print(colorama.Fore.CYAN + "///////////////////////////////////////////////////")
     print(colorama.Fore.CYAN + "//        Welcome to the K-Brain Prompt          //")
-    print(colorama.Fore.CYAN + "//            version 1.0                        //")
+    print(colorama.Fore.CYAN + "//            version 1.2                        //")
     print(colorama.Fore.CYAN + "//         Developed by: Sw33tRu5h_C0d3r         //")
     print(colorama.Fore.CYAN + "//                                               //")
     print(colorama.Fore.CYAN + "///////////////////////////////////////////////////")
@@ -185,22 +228,25 @@ while True:
       
       print(colorama.Fore.MAGENTA + "____________________________________________________: [ (Reply) K-Brain ]" )
       print(colorama.Fore.WHITE + "")
+
    
    # This Loop Creates the Effect of Typing 
    # it will type the output from GPT3
+
+
       for char in  phpcode:
         print(char, end="", flush=True)
-        time.sleep(0.04276)
+        time.sleep(0.03876)
         #time.sleep(random.uniform(0.05,0.2))
-
+      
+      read_text_with_espeak(answer,"en-us")  
       print(colorama.Fore.WHITE + "")
       with open(store_path,'w') as f:
         f.write(str(phpcode))
 
 
    #Converting the Output to Speech 
-      # text_to_speech(answer,audiofilename)
-
+   # text_to_speech(answer,audiofilename)
 
 
 #curses.wrapper(main)
