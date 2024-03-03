@@ -6,7 +6,7 @@ import datetime
 import json
 import subprocess
 import curses
-import colorama
+import colorama as clm
 import pygments
 from playsound           import playsound
 from pathlib             import Path
@@ -14,12 +14,12 @@ from openai              import OpenAI
 from pygments.lexers     import PhpLexer
 from pygments.formatters import TerminalFormatter
 
-#Initiatizing OpenAI
-# Defining the New Code with New OpenAI changes 
+#  Initiatizing OpenAI
+#  Defining the New Code with New OpenAI changes 
 client = OpenAI(api_key="")
 
-# Initializing Colorama
-colorama.init()
+#  Initializing Colorama
+clm.init()
 promptcx = "a"
 promptFormat = """
                Provide response in Markdown format, And Well Structured Having
@@ -67,6 +67,7 @@ systemcontext = """
                 """
 tokens = 3000
 
+
 def gpt3(ask):
     global promptcx
     global systemcontext
@@ -75,7 +76,7 @@ def gpt3(ask):
 
     # Uncomment the Mode to Use.
     #######################################
-    #model ="text-davinci-003",
+    # model ="text-davinci-003",
     # model = "gpt-3.5-turbo-1106",
     model = "gpt-4",
     messages= [ 
@@ -85,22 +86,22 @@ def gpt3(ask):
                ],
     )
 
-
     # content = response.choices[0].text.split('.')   #OLD CODE
     content = response.choices[0].message.content             #New Code 
-    #print(content)
+    # print(content)
 
     return content
 
 
 def read_text_with_espeak(text, voice="en-us"):
     try:
-        print('-------------------------------------------------')
-        print("*** Loading Audio Feed ***")
-        print('-------------------------------------------------')
+        print(clm.Fore.YELLOW+'-----------------------------------------')
+        print(clm.Fore.YELLOW+"*** Loading Audio Feed ***")
+        print(clm.Fore.YELLOW+'-----------------------------------------')
         subprocess.call(['espeak', '-v', voice, text])
     except OSError:
         print("Error: espeak is not installed or accessible.")
+
 
 def text_to_speech(text,filename):
     
@@ -120,29 +121,26 @@ def text_to_speech(text,filename):
         
         )
 
-
     response.stream_to_file(speech_file_path)
     playsound(speech_file_path)
     pass
+
 
 def gen_random_string(length):
 
     characters = string.ascii_letters + string.digits 
     genstring = ''.join(random.choice(characters) for i in range(length))
 
-
     return genstring
 
 
 def displaybanner():
-    print(colorama.Fore.CYAN + "///////////////////////////////////////////////////")
-    print(colorama.Fore.CYAN + "//        Welcome to the K-Brain Prompt          //")
-    print(colorama.Fore.CYAN + "//            version 1.2                        //")
-    print(colorama.Fore.CYAN + "//         Developed by: Sw33tRu5h_C0d3r         //")
-    print(colorama.Fore.CYAN + "//                                               //")
-    print(colorama.Fore.CYAN + "///////////////////////////////////////////////////")
-
-
+    print(clm.Fore.CYAN + "///////////////////////////////////////////////////")
+    print(clm.Fore.CYAN + "//        Welcome to the K-Brain Prompt          //")
+    print(clm.Fore.CYAN + "//            version 1.2                        //")
+    print(clm.Fore.CYAN + "//         Developed by: Sw33tRu5h_C0d3r         //")
+    print(clm.Fore.CYAN + "//                                               //")
+    print(clm.Fore.CYAN + "///////////////////////////////////////////////////")
 
 
 def main(stdscr):
@@ -165,7 +163,6 @@ def main(stdscr):
            pass
 
 
-
 ####################################################################################
 #                 AREA OF CODE START : 
 ####################################################################################
@@ -173,23 +170,25 @@ def main(stdscr):
 
 displaybanner()
 while True:
-    
-    
+        
     now = datetime.datetime.now()
-    file_name = f'{now.year}-{now.month}-{now.day}_{now.hour}{now.minute}{now.second}.okpt'
+    file_name = f'{now.year}-{now.month}-{now.day}_{now.hour}_{now.minute}_{now.second}.okpt.md'
     audiofilename = gen_random_string(10)
     storedir = "output"
     store_path = os.path.join(storedir,file_name)
     charCount = str(len(promptcx))
     wordCount = str(len(promptcx.split()))
 
-
     if not os.path.exists(storedir):
         os.makedirs(storedir)
 
+    reply = input(clm.Fore.RED + "\n Menu - (q) quite | (cx) Clear Context \n "
+                                 "Set System Prompt - (sc) \n Status:("
+                                 ""+charCount+"/"+str(tokens)+"CR - "
+                                 ""+wordCount+" Word )\n\n "
+                                 ""+clm.Fore.YELLOW+">>> ")
 
-    reply = input(colorama.Fore.RED + "\n Menu - (q) quite | (cx) Clear Context \n Set System Prompt - (sc) \n Status:("+charCount+"/"+str(tokens)+"CR - "+wordCount+" Word )\n\n "+colorama.Fore.YELLOW+"Ask K-Brain : $ ")
-     
+    print(clm.Fore.GREEN + "\n----> Request Sent\n")
     if len(promptcx) > 3500:
        promptcx = " "   
 
@@ -208,14 +207,13 @@ while True:
     else: 
       answer = gpt3(promptcx+reply)
 
-      print(colorama.Fore.BLUE + "[Human(Question)] :____________________________________________ " )
-      print(colorama.Fore.GREEN + "")
+      print(clm.Fore.BLUE + "<---- [Human(Question)]" )
+      print(clm.Fore.GREEN + "")
       print(reply)
-      print(colorama.Fore.GREEN + "")
+      print(clm.Fore.GREEN + "")
 
-
-   # UNCOMMENT TO SEE THE FULL Responses
-   #  - Debugging Perposes. 
+    # UNCOMMENT TO SEE THE FULL Responses
+    #  - Debugging Perposes. 
       # print(answer)  
    
       # dataanswer = answer
@@ -226,27 +224,24 @@ while True:
       
       phpcode = pygments.highlight(answer, PhpLexer(), TerminalFormatter())
       
-      print(colorama.Fore.MAGENTA + "____________________________________________________: [ (Reply) K-Brain ]" )
-      print(colorama.Fore.WHITE + "")
-
+      print(clm.Fore.MAGENTA + "----> [ (Reply) K-Brain ]" )
+      print(clm.Back.BLACK+clm.Fore.WHITE + "")
    
-   # This Loop Creates the Effect of Typing 
-   # it will type the output from GPT3
+    # This Loop Creates the Effect of Typing 
+    # it will type the output from GPT3
 
-
-      for char in  phpcode:
+      for char in phpcode:
         print(char, end="", flush=True)
         time.sleep(0.03876)
-        #time.sleep(random.uniform(0.05,0.2))
+        # time.sleep(random.uniform(0.05,0.2))
       
       read_text_with_espeak(answer,"en-us")  
-      print(colorama.Fore.WHITE + "")
+      print(clm.Fore.WHITE + "")
       with open(store_path,'w') as f:
+        f.write(str("\n\n### QUESTION BY HUMAN ###\n\n"))
+        f.write(str(reply))
+        f.write(str("\n\n#### MIAH Assistance Reponse ####\n\n"))
         f.write(str(phpcode))
 
-
-   #Converting the Output to Speech 
-   # text_to_speech(answer,audiofilename)
-
-
-#curses.wrapper(main)
+    # Converting the Output to Speech 
+    # text_to_speech(answer,audiofilename)
