@@ -13,16 +13,12 @@ import io
 import colorama
 
 
-
-genai.configure(api_key="")
-
+# genai.configure(api_key="")
 
 
 Banner = '\n\n           Welcome to the Gemini Miah AI     \n'
 Banner = Banner+'           by SweetRushC0d3r             \n'
 Banner = Banner+'            v.1.0.1 @ 2024               \n\n'
-
-
 
 
 txtRED = colorama.Fore.RED
@@ -34,7 +30,6 @@ txtMAGENTA = colorama.Fore.MAGENTA
 txtCYAN = colorama.Fore.CYAN
 txtWHITE = colorama.Fore.WHITE
 txtRESET = colorama.Fore.RESET
-
 
 
 userprompttag = "\n\nMe : ************************************** \n\n"
