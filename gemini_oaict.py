@@ -13,7 +13,6 @@ import io
 import colorama
 
 
-# genai.configure(api_key="")
 
 
 Banner = '\n\n           Welcome to the Gemini Miah AI     \n'
