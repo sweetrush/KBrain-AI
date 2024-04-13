@@ -11,10 +11,15 @@ import datetime
 import os
 import io
 import colorama
+import configparser
 
 
+config = configparser.ConfigParser()
+config.read('config.ini')
+apivalue = config.get("APIKEYS", "api")
 
-genai.configure(api_key="AIzaSyBDeE1KALtshDXH9lUcTKwY5wDrrTjQMKU")
+
+genai.configure(api_key=apivalue)
 
 
 
