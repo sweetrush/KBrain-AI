@@ -14,10 +14,15 @@ import colorama
 
 
 
+genai.configure(api_key="AIzaSyBDeE1KALtshDXH9lUcTKwY5wDrrTjQMKU")
+
+
 
 Banner = '\n\n           Welcome to the Gemini Miah AI     \n'
 Banner = Banner+'           by SweetRushC0d3r             \n'
 Banner = Banner+'            v.1.0.1 @ 2024               \n\n'
+
+
 
 
 txtRED = colorama.Fore.RED
@@ -40,7 +45,7 @@ generation_config = {
   "temperature": 0.03,
   "top_p": 1,
   "top_k": 1,
-  # "max_output_tokens": 4048,
+  "max_output_tokens": 4048,
 }
 
 safety_settings = [
