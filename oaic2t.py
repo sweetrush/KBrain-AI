@@ -8,6 +8,7 @@ import subprocess
 import curses
 import colorama as clm
 import pygments
+import configparser
 from playsound           import playsound
 from pathlib             import Path
 from openai              import OpenAI
@@ -16,7 +17,18 @@ from pygments.formatters import TerminalFormatter
 
 #  Initiatizing OpenAI
 #  Defining the New Code with New OpenAI changes 
-client = OpenAI(api_key="")
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+apivalue = config.get("APIKEYS", "api_openai")
+
+
+client = OpenAI(api_key=apivalue)
+
+def read_file_to_array(file_path):
+    with open(file_path, 'r') as file:
+        content = file.readlines()
+    return [line.strip() for line in content]
 
 #  Initializing Colorama
 clm.init()
