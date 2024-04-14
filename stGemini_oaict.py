@@ -14,55 +14,6 @@ import streamlit as st
 
 ####################
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-apivalue = config.get("APIKEYS", "api")
-
-
-genai.configure(api_key=apivalue)
-
-
-st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
-
-st.title("Miah's AI Gemini Assistance")
-
-
-# Set up the model
-generation_config = {
-  "temperature": 0.05,
-  "top_p": 1,
-  "top_k": 1,
-  "max_output_tokens": 4048,
-}
-
-safety_settings = [
-  {
-    "category": "HARM_CATEGORY_HARASSMENT",
-    "threshold": "BLOCK_NONE"
-  },
-  {
-    "category": "HARM_CATEGORY_HATE_SPEECH",
-    "threshold": "BLOCK_NONE"
-  },
-  {
-    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-    "threshold": "BLOCK_NONE"
-  },
-  {
-    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-    "threshold": "BLOCK_NONE"
-  },
-]
-
-model_name = "gemini-1.0-pro-latest"
-
-model = genai.GenerativeModel(model_name=model_name,
-                              generation_config=generation_config,
-                              safety_settings=safety_settings)
-
-chatdata = []
-
-
 def read_from_file(filename):
     pathDirAssistanceDef = "assistancedb/"
     assistance_filename = filename
@@ -88,6 +39,21 @@ def write_to_file(filename, text):
         print(f"Error writing to file: {e}")
 
 
+
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+apivalue = config.get("APIKEYS", "api")
+
+
+genai.configure(api_key=apivalue)
+
+
+st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
+
+
+st.title("Miah's AI Gemini Assistance")
+
 assistant0 = read_from_file("Default.atx")
 assistant1 = read_from_file("linux_assistance.atx")
 assistant2 = read_from_file("Python_assistance.atx")
@@ -98,6 +64,9 @@ assistant3 = read_from_file("General.atx")
 
 
 with st.sidebar:
+    global tempture_val
+    tempture_val = st.text_input("Prompt Temperature", value="0.01", max_chars=None)
+    convert_tpv = float(tempture_val)
     selection = st.selectbox("Active Assistance:", 
                             (
                                 "Default",
@@ -122,6 +91,41 @@ with st.sidebar:
         assistantcontext = "General Assistance"
 
 
+
+# Set up the model
+generation_config = {
+  "temperature": convert_tpv,
+  "top_p": 1,
+  "top_k": 1,
+  "max_output_tokens": 4048,
+}
+
+safety_settings = [
+  {
+    "category": "HARM_CATEGORY_HARASSMENT",
+    "threshold": "BLOCK_NONE"
+  },
+  {
+    "category": "HARM_CATEGORY_HATE_SPEECH",
+    "threshold": "BLOCK_NONE"
+  },
+  {
+    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+    "threshold": "BLOCK_NONE"
+  },
+  {
+    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+    "threshold": "BLOCK_NONE"
+  },
+]
+
+model_name = "gemini-1.0-pro-latest"
+chatdata = []
+model = genai.GenerativeModel(model_name=model_name,
+                              generation_config=generation_config,
+                              safety_settings=safety_settings)
+
+
 if "chathistory" not in st.session_state:
     st.session_state.chathistory = []
 
@@ -135,6 +139,7 @@ for message in st.session_state.chathistory:
 
 
 usermessage = st.chat_input("Provide your Prompt")
+
 
 
 if usermessage:
