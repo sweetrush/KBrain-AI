@@ -39,8 +39,6 @@ def write_to_file(filename, text):
         print(f"Error writing to file: {e}")
 
 
-
-
 config = configparser.ConfigParser()
 config.read('config.ini')
 apivalue = config.get("APIKEYS", "api")
@@ -89,7 +87,6 @@ with st.sidebar:
     elif selection == "General":
         loadassistantcontext = assistant3
         assistantcontext = "General Assistance"
-
 
 
 # Set up the model
@@ -141,7 +138,6 @@ for message in st.session_state.chathistory:
 usermessage = st.chat_input("Provide your Prompt")
 
 
-
 if usermessage:
 
     with st.chat_message("User"):
@@ -165,7 +161,6 @@ if usermessage:
         chatdata.append(res00data)
         chatdata.append(res01data)
         st.write(chatdata)
-
 
     write_to_file(filename, convo.last.text)
     tokencount = model.count_tokens(convo.last.text)
