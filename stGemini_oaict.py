@@ -123,17 +123,20 @@ model = genai.GenerativeModel(model_name=model_name,
                               safety_settings=safety_settings)
 
 
+# For Session Storing Information 
+# ####################################################
 if "chathistory" not in st.session_state:
     st.session_state.chathistory = []
-
 if "chathistoryprompt" not in st.session_state:
     st.session_state.chathistoryprompt = ''
 
-
+# Looping through the session stored Information  
 for message in st.session_state.chathistory:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+# Getting the User Prompt Information 
+# 
 
 usermessage = st.chat_input("Provide your Prompt")
 
@@ -142,11 +145,15 @@ if usermessage:
 
     with st.chat_message("User"):
         st.write(usermessage)
+
+        # Storing User Information to the Session Variable
         st.session_state.chathistory.append({"role": "User", "content": usermessage})  # noqa: E501
 
     filename = usermessage.replace(" ", "")
     filename = filename.replace(',', "")
     filename = filename.replace('.', "")
+    filename = filename[:20]
+    print("[info] FileName is: "+filename+"")
 
     convo = model.start_chat(history=chatdata) 
 
