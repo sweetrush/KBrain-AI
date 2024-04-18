@@ -56,6 +56,8 @@ assistant0 = read_from_file("Default.atx")
 assistant1 = read_from_file("linux_assistance.atx")
 assistant2 = read_from_file("Python_assistance.atx")
 assistant3 = read_from_file("General.atx")
+assistant4 = read_from_file("bashexpert.atx")
+assistant5 = read_from_file("dotplanner.atx")
 
 # loadassistantcontext = ''
 # assistantcontext = ''
@@ -70,7 +72,9 @@ with st.sidebar:
                                 "Default",
                                 "General",
                                 "Linux",
-                                "Python"
+                                "Python",
+                                "2Ddotplan",
+                                "Bash"
                             )
                             , index=0)
 
@@ -87,6 +91,12 @@ with st.sidebar:
     elif selection == "General":
         loadassistantcontext = assistant3
         assistantcontext = "General Assistance"
+    elif selection == "Bash":
+        loadassistantcontext = assistant4
+        assistantcontext = "Bash Assistance"
+    elif selection == "2Ddotplan":
+        loadassistantcontext = assistant5
+        assistantcontext = "2D Dot planner Assistance"
 
 
 # Set up the model
@@ -167,9 +177,12 @@ if usermessage:
         chatdata.append(res02data)
         chatdata.append(res00data)
         chatdata.append(res01data)
+
         st.write(chatdata)
 
     write_to_file(filename, convo.last.text)
+    
+    # This Gets the Number of Tokens needed.  
     tokencount = model.count_tokens(convo.last.text)
 
     with st.chat_message("assistant"):
