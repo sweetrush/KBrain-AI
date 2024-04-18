@@ -59,8 +59,11 @@ assistant3 = read_from_file("General.atx")
 assistant4 = read_from_file("bashexpert.atx")
 assistant5 = read_from_file("dotplanner.atx")
 
+
+
 # loadassistantcontext = ''
 # assistantcontext = ''
+
 
 
 with st.sidebar:
