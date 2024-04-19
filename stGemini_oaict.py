@@ -12,6 +12,8 @@ import datetime
 import os
 import streamlit as st
 
+version = "1.3"
+
 ####################
 
 def read_from_file(filename):
@@ -101,6 +103,8 @@ with st.sidebar:
         loadassistantcontext = assistant5
         assistantcontext = "2D Dot planner Assistance"
 
+    st.write("version: "+version)
+
 
 # Set up the model
 generation_config = {
@@ -136,7 +140,7 @@ model = genai.GenerativeModel(model_name=model_name,
                               safety_settings=safety_settings)
 
 
-# For Session Storing Information 
+# For Session Storing Information  
 # ####################################################
 if "chathistory" not in st.session_state:
     st.session_state.chathistory = []
