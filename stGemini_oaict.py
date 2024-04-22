@@ -155,8 +155,8 @@ safety_settings = [
   },
 ]
 
-model_name = "gemini-1.0-pro-latest"
 chatdata = []
+model_name = "gemini-1.0-pro-latest"
 model = genai.GenerativeModel(model_name=model_name,
                               generation_config=generation_config,
                               safety_settings=safety_settings)
