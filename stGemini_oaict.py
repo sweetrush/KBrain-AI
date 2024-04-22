@@ -67,6 +67,15 @@ assistant6 = read_from_file("emailhelper.atx")
 # loadassistantcontext = ''
 # assistantcontext = ''
 
+listofAssistance = [
+                    {"Default", "Default Assistance"},
+                    {"General", "General Assisance"},
+                    {"Linux", "Linux Assistance"},
+                    {"Python", "Python Assistance"},
+                    {"2Ddotplan", "2D Plot Assistance"},
+                    {"Emailhelper", " Email Helper Assistance"},
+                    {"Bash", "Bash Assistance"}
+                    ]
 
 
 with st.sidebar:
@@ -74,16 +83,15 @@ with st.sidebar:
     tempture_val = st.text_input("Prompt Temperature", value="0.01", max_chars=None)
     convert_tpv = float(tempture_val)
     selection = st.selectbox("Active Assistance:", 
-                            (
-                                "Default",
-                                "General",
-                                "Linux",
-                                "Python",
-                                "2Ddotplan",
-                                "Emailhelper",
-                                "Bash"
-                            )
-                            , index=0)
+                             (
+                                listofAssistance[0][0],
+                                listofAssistance[1][0],
+                                listofAssistance[2][0],
+                                listofAssistance[3][0],
+                                listofAssistance[4][0],
+                                listofAssistance[5][0],
+                                listofAssistance[6][0]
+                             ), index=0)
 
     global loadassistantcontext, assistantcontext, adcn
     if selection == "Default":
