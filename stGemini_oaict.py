@@ -16,6 +16,7 @@ version = "1.3"
 
 ####################
 
+
 def read_from_file(filename):
     pathDirAssistanceDef = "assistancedb/"
     assistance_filename = filename
@@ -47,35 +48,32 @@ apivalue = config.get("APIKEYS", "api")
 
 
 genai.configure(api_key=apivalue)
-
-
 st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
-
-
 st.title("Miah's AI Gemini Assistance")
 
-assistant0 = read_from_file("Default.atx")
-assistant1 = read_from_file("linux_assistance.atx")
-assistant2 = read_from_file("Python_assistance.atx")
-assistant3 = read_from_file("General.atx")
-assistant4 = read_from_file("bashexpert.atx")
-assistant5 = read_from_file("dotplanner.atx")
-assistant6 = read_from_file("emailhelper.atx")
 
+listofAssistance = [
+                    {"Default", "Default Assistance", "Default.atx"},
+                    {"General", "General Assisance", "General.atx"},
+                    {"Linux", "Linux Assistance", "linux_assistance.atx"}, 
+                    {"Python", "Python Assistance", "Python_assistance.atx"},
+                    {"2Ddotplan", "2D Plot Assistance", "dotplanner.atx"},
+                    {"Emailhelper", "EmailHelper Assistance", "emailhelper.atx"},
+                    {"Bash", "Bash Assistance", "bashexpert.atx"}
+                    ]
+
+
+assistant0 = read_from_file(listofAssistance[0][2])
+assistant1 = read_from_file(listofAssistance[1][2])
+assistant2 = read_from_file(listofAssistance[2][2])
+assistant3 = read_from_file(listofAssistance[3][2])
+assistant4 = read_from_file(listofAssistance[4][2])
+assistant5 = read_from_file(listofAssistance[5][2])
+assistant6 = read_from_file(listofAssistance[6][2])
 
 
 # loadassistantcontext = ''
 # assistantcontext = ''
-
-listofAssistance = [
-                    {"Default", "Default Assistance"},
-                    {"General", "General Assisance"},
-                    {"Linux", "Linux Assistance"},
-                    {"Python", "Python Assistance"},
-                    {"2Ddotplan", "2D Plot Assistance"},
-                    {"Emailhelper", " Email Helper Assistance"},
-                    {"Bash", "Bash Assistance"}
-                    ]
 
 
 with st.sidebar:
