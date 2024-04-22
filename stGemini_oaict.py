@@ -94,27 +94,27 @@ with st.sidebar:
                              ), index=0)
 
     global loadassistantcontext, assistantcontext, adcn
-    if selection == "Default":
+    if selection == listofAssistance[0][0]:
         loadassistantcontext = assistant0
-        assistantcontext = "Default Assistance"
-    elif selection == "Linux":
+        assistantcontext = listofAssistance[0][1]
+    elif selection == listofAssistance[1][0]:
         loadassistantcontext = assistant1
-        assistantcontext = "Linux Assistance"
-    elif selection == "Python":
+        assistantcontext = listofAssistance[1][1]
+    elif selection == listofAssistance[2][0]:
         loadassistantcontext = assistant2
-        assistantcontext = "Python Assistance"
-    elif selection == "General":
+        assistantcontext = listofAssistance[2][1]
+    elif selection == listofAssistance[3][0]:
         loadassistantcontext = assistant3
-        assistantcontext = "General Assistance"
-    elif selection == "Bash":
+        assistantcontext = listofAssistance[3][1]
+    elif selection == listofAssistance[4][0]:
         loadassistantcontext = assistant4
-        assistantcontext = "Bash Assistance"
-    elif selection == "2Ddotplan":
+        assistantcontext = listofAssistance[4][1]
+    elif selection == listofAssistance[5][0]:
         loadassistantcontext = assistant5
-        assistantcontext = "2D Dot planner Assistance"
-    elif selection == "Emailhelper":
+        assistantcontext = listofAssistance[5][1]
+    elif selection == listofAssistance[6][0]:
         loadassistantcontext = assistant6
-        assistantcontext = "EmailHelper Assistance"
+        assistantcontext = listofAssistance[6][1]
 
     st.toast("**:blue[Using AI:]** :red["+assistantcontext+"]")
     adcn = st.text_area(label="Additional Context")
