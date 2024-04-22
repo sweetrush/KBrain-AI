@@ -53,13 +53,13 @@ st.title("Miah's AI Gemini Assistance")
 
 
 listofAssistance = [
-                    {"Default", "Default Assistance", "Default.atx"},
-                    {"General", "General Assisance", "General.atx"},
-                    {"Linux", "Linux Assistance", "linux_assistance.atx"}, 
-                    {"Python", "Python Assistance", "Python_assistance.atx"},
-                    {"2Ddotplan", "2D Plot Assistance", "dotplanner.atx"},
-                    {"Emailhelper", "EmailHelper Assistance", "emailhelper.atx"},
-                    {"Bash", "Bash Assistance", "bashexpert.atx"}
+                    ["Default", "Default Assistance", "Default.atx"],
+                    ["General", "General Assisance", "General.atx"],
+                    ["Linux", "Linux Assistance", "linux_assistance.atx"], 
+                    ["Python", "Python Assistance", "Python_assistance.atx"],
+                    ["2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
+                    ["Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
+                    ["Bash", "Bash Assistance", "bashexpert.atx"]
                     ]
 
 
@@ -95,24 +95,31 @@ with st.sidebar:
     if selection == listofAssistance[0][0]:
         loadassistantcontext = assistant0
         assistantcontext = listofAssistance[0][1]
+        fileloaded = listofAssistance[0][2]
     elif selection == listofAssistance[1][0]:
         loadassistantcontext = assistant1
         assistantcontext = listofAssistance[1][1]
+        fileloaded = listofAssistance[1][2]
     elif selection == listofAssistance[2][0]:
         loadassistantcontext = assistant2
         assistantcontext = listofAssistance[2][1]
+        fileloaded = listofAssistance[2][2]
     elif selection == listofAssistance[3][0]:
         loadassistantcontext = assistant3
         assistantcontext = listofAssistance[3][1]
+        fileloaded = listofAssistance[3][2]
     elif selection == listofAssistance[4][0]:
         loadassistantcontext = assistant4
         assistantcontext = listofAssistance[4][1]
+        fileloaded = listofAssistance[4][2]
     elif selection == listofAssistance[5][0]:
         loadassistantcontext = assistant5
         assistantcontext = listofAssistance[5][1]
+        fileloaded = listofAssistance[5][2]
     elif selection == listofAssistance[6][0]:
         loadassistantcontext = assistant6
         assistantcontext = listofAssistance[6][1]
+        fileloaded = listofAssistance[6][2]
 
     st.toast("**:blue[Using AI:]** :red["+assistantcontext+"]")
     adcn = st.text_area(label="Additional Context")
