@@ -77,8 +77,10 @@ assistant6 = read_from_file(listofAssistance[6][2])
 
 
 with st.sidebar:
-    global tempture_val
-    tempture_val = st.text_input("Prompt Temperature", value="0.01", max_chars=None)
+    global tempture_val, fileloaded
+    global loadassistantcontext, assistantcontext, adcn
+
+    tempture_val = st.text_input("Prompt Temperature", value="0.06", max_chars=None)
     convert_tpv = float(tempture_val)
     selection = st.selectbox("Active Assistance:", 
                              (
@@ -91,7 +93,6 @@ with st.sidebar:
                                 listofAssistance[6][0]
                              ), index=0)
 
-    global loadassistantcontext, assistantcontext, adcn
     if selection == listofAssistance[0][0]:
         loadassistantcontext = assistant0
         assistantcontext = listofAssistance[0][1]
@@ -121,7 +122,7 @@ with st.sidebar:
         assistantcontext = listofAssistance[6][1]
         fileloaded = listofAssistance[6][2]
 
-    st.toast("**:blue[Using AI:]** :red["+assistantcontext+"]")
+    st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]\n :green[File: ]"+fileloaded)
     adcn = st.text_area(label="Additional Context")
     st.write("version: "+version)
 
