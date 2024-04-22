@@ -60,6 +60,7 @@ assistant2 = read_from_file("Python_assistance.atx")
 assistant3 = read_from_file("General.atx")
 assistant4 = read_from_file("bashexpert.atx")
 assistant5 = read_from_file("dotplanner.atx")
+assistant6 = read_from_file("emailhelper.atx")
 
 
 
@@ -79,6 +80,7 @@ with st.sidebar:
                                 "Linux",
                                 "Python",
                                 "2Ddotplan",
+                                "Emailhelper",
                                 "Bash"
                             )
                             , index=0)
@@ -102,7 +104,11 @@ with st.sidebar:
     elif selection == "2Ddotplan":
         loadassistantcontext = assistant5
         assistantcontext = "2D Dot planner Assistance"
+    elif selection == "Emailhelper":
+        loadassistantcontext = assistant6
+        assistantcontext = "EmailHelper Assistance"
 
+    st.toast("**:blue[Using AI:]** :red["+assistantcontext+"]")
     st.write("version: "+version)
 
 
