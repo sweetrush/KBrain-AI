@@ -122,7 +122,8 @@ with st.sidebar:
         assistantcontext = listofAssistance[6][1]
         fileloaded = listofAssistance[6][2]
 
-    st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]\n :green[File: ]"+fileloaded)
+    st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]")
+    st.toast(":green[File:]"+fileloaded)
     adcn = st.text_area(label="Additional Context")
     st.write("version: "+version)
 
