@@ -161,18 +161,15 @@ for message in st.session_state.chathistory:
 
 # Getting the User Prompt Information 
 # 
-
 aa = st.chat_input("Provide your Prompt")
-
-
 if adcn is not None and aa is not None:
     usermessage = aa+'\n[Additional Context]\n'+str(adcn)
 else:
     usermessage = aa
 
 
+# Runs What the User has input
 if usermessage:
-
     with st.chat_message("User"):
         st.write(usermessage)
 
