@@ -109,6 +109,8 @@ with st.sidebar:
         assistantcontext = "EmailHelper Assistance"
 
     st.toast("**:blue[Using AI:]** :red["+assistantcontext+"]")
+    adcn = st.text_input("Additional Context")
+    additional_context = "[This is additional Context]\n"+adcn 
     st.write("version: "+version)
 
 
@@ -162,6 +164,7 @@ for message in st.session_state.chathistory:
 # 
 
 usermessage = st.chat_input("Provide your Prompt")
+usermessage = usermessage+additional_context
 
 
 if usermessage:
