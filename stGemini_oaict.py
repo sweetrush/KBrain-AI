@@ -85,7 +85,7 @@ with st.sidebar:
                             )
                             , index=0)
 
-    global loadassistantcontext, assistantcontext
+    global loadassistantcontext, assistantcontext, adcn
     if selection == "Default":
         loadassistantcontext = assistant0
         assistantcontext = "Default Assistance"
@@ -109,8 +109,7 @@ with st.sidebar:
         assistantcontext = "EmailHelper Assistance"
 
     st.toast("**:blue[Using AI:]** :red["+assistantcontext+"]")
-    adcn = st.text_input("Additional Context")
-    additional_context = "[This is additional Context]\n"+adcn 
+    adcn = st.text_area(label="Additional Context")
     st.write("version: "+version)
 
 
@@ -163,8 +162,13 @@ for message in st.session_state.chathistory:
 # Getting the User Prompt Information 
 # 
 
-usermessage = st.chat_input("Provide your Prompt")
-usermessage = usermessage+additional_context
+aa = st.chat_input("Provide your Prompt")
+
+
+if adcn is not None and aa is not None:
+    usermessage = aa+'\n[Additional Context]\n'+str(adcn)
+else:
+    usermessage = aa
 
 
 if usermessage:
