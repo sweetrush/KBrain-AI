@@ -53,6 +53,7 @@ st.title("Miah's AI Gemini Assistance")
 
 
 listofAssistance = [
+                   
                     ["Default", "Default Assistance", "Default.atx"],
                     ["General", "General Assisance", "General.atx"],
                     ["Linux", "Linux Assistance", "linux_assistance.atx"], 
@@ -60,7 +61,8 @@ listofAssistance = [
                     ["2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
                     ["Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
                     ["Bash", "Bash Assistance", "bashexpert.atx"]
-                    ]
+                   
+                   ]
 
 
 assistant0 = read_from_file(listofAssistance[0][2])
@@ -80,8 +82,13 @@ with st.sidebar:
     global tempture_val, fileloaded
     global loadassistantcontext, assistantcontext, adcn
 
-    tempture_val = st.text_input("Prompt Temperature", value="0.06", max_chars=None)
-    convert_tpv = float(tempture_val)
+    with st.expander("Prompt Config", expanded=False):
+        tempture_val = st.text_input("Prompt Temperature", value="0.06", max_chars=None)
+        topp = st.text_input("Set Top P", value="1", max_chars=None)
+        topk = st.text_input("Set Top K", value="1", max_chars=None)
+        mot = st.text_input("Max Output Tokens", value="4024", max_chars=None)
+        convert_tpv = float(tempture_val)
+    
     selection = st.selectbox("Active Assistance:", 
                              (
                                 listofAssistance[0][0],
@@ -131,9 +138,9 @@ with st.sidebar:
 # Set up the model
 generation_config = {
   "temperature": convert_tpv,
-  "top_p": 1,
-  "top_k": 1,
-  "max_output_tokens": 4048,
+  "top_p": int(topp),
+  "top_k": int(topk),
+  "max_output_tokens": int(mot),
 }
 
 safety_settings = [
