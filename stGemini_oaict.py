@@ -34,7 +34,6 @@ def write_to_file(filename, text):
 
     if not os.path.exists(storedir):
         os.makedirs(storedir)
-
     try:
         with open(store_path+"_gemin.md", "a", encoding="utf-8") as file:
             file.write(text + "\n")  # Add a newline at the end
@@ -207,7 +206,6 @@ if usermessage:
     convo = model.start_chat(history=chatdata) 
 
     with st.status("Processing Request ...."):
-
         convo.send_message(loadassistantcontext+usermessage)
         ca = st.session_state.chathistoryprompt = st.session_state.chathistoryprompt+convo.last.text+usermessage
         res00data = {"role": "user", "parts": [ca]}
@@ -216,7 +214,6 @@ if usermessage:
         chatdata.append(res02data)
         chatdata.append(res00data)
         chatdata.append(res01data)
-
         st.write(chatdata)
 
     write_to_file(filename, convo.last.text)
