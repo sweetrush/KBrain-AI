@@ -12,7 +12,7 @@ import datetime
 import os
 import streamlit as st
 
-version = "1.3"
+version = "1.4"
 
 ####################
 
@@ -82,7 +82,7 @@ with st.sidebar:
     global loadassistantcontext, assistantcontext, adcn
 
     with st.expander("Prompt Config", expanded=False):
-        tempture_val = st.text_input("Prompt Temperature", value="0.06", max_chars=None)
+        tempture_val = st.text_input("Prompt Temperature", value="0.07", max_chars=None)
         topp = st.text_input("Set Top P", value="1", max_chars=None)
         topk = st.text_input("Set Top K", value="1", max_chars=None)
         mot = st.text_input("Max Output Tokens", value="4024", max_chars=None)
@@ -137,7 +137,7 @@ with st.sidebar:
 # Set up the model
 generation_config = {
   "temperature": convert_tpv,
-  "top_p": int(topp),
+  "top_p": float(topp),
   "top_k": int(topk),
   "max_output_tokens": int(mot),
 }
@@ -162,7 +162,7 @@ safety_settings = [
 ]
 
 chatdata = []
-model_name = "gemini-1.0-pro-latest"
+model_name = "gemini-1.5-pro-latest"
 model = genai.GenerativeModel(model_name=model_name,
                               generation_config=generation_config,
                               safety_settings=safety_settings)
@@ -184,7 +184,7 @@ for message in st.session_state.chathistory:
 # 
 aa = st.chat_input("Provide your Prompt")
 if adcn is not None and aa is not None:
-    usermessage = aa+'\n[Additional Context]\n'+str(adcn)
+    usermessage = aa+'\n##### [Additional Context] #####\n'+str(adcn)
 else:
     usermessage = aa
 
