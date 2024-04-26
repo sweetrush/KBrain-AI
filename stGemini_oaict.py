@@ -185,6 +185,7 @@ with st.sidebar:
 
     st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]")
     st.toast(":green[File:]"+fileloaded)
+    st.toast(":green[Model:]"+model_select)
     adcn = st.text_area(label="Additional Context")
     st.write("version: "+version)
 
