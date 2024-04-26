@@ -50,6 +50,13 @@ genai.configure(api_key=apivalue)
 st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
 st.title("Miah's AI Gemini Assistance")
 
+safety_options = [ 
+                  "BLOCK_NONE", 
+                  "BLOCK_FEW", 
+                  "BLOCK_SOME", 
+                  "BLOCK_MOST"
+                 ]
+
 
 listofAssistance = [
                    
@@ -78,7 +85,7 @@ assistant6 = read_from_file(listofAssistance[6][2])
 
 
 with st.sidebar:
-    global tempture_val, fileloaded
+    global tempture_val, fileloaded, opt1_safe, opt2_safe, opt3_safe, opt4_safe
     global loadassistantcontext, assistantcontext, adcn
 
     with st.expander("Prompt Config", expanded=False):
@@ -87,7 +94,8 @@ with st.sidebar:
         topk = st.text_input("Set Top K", value="1", max_chars=None)
         mot = st.text_input("Max Output Tokens", value="4024", max_chars=None)
         convert_tpv = float(tempture_val)
-    
+
+
     selection = st.selectbox("Active Assistance:", 
                              (
                                 listofAssistance[0][0],
@@ -128,6 +136,35 @@ with st.sidebar:
         assistantcontext = listofAssistance[6][1]
         fileloaded = listofAssistance[6][2]
 
+    with st.expander("Safety Config", expanded=False):
+        opt1_safe = st.selectbox("Harassment", (
+                              safety_options[0],
+                              safety_options[1],
+                              safety_options[2],
+                              safety_options[3]
+                              ), index=0)
+
+        opt2_safe = st.selectbox("Hate", (
+                              safety_options[0],
+                              safety_options[1],
+                              safety_options[2],
+                              safety_options[3]
+                              ), index=0)
+
+        opt3_safe = st.selectbox("Sexually Explicit", (
+                              safety_options[0],
+                              safety_options[1],
+                              safety_options[2],
+                              safety_options[3]
+                              ), index=0)
+
+        opt4_safe = st.selectbox("Dangerous Content", (
+                              safety_options[0],
+                              safety_options[1],
+                              safety_options[2],
+                              safety_options[3]
+                              ), index=0)
+
     st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]")
     st.toast(":green[File:]"+fileloaded)
     adcn = st.text_area(label="Additional Context")
@@ -145,19 +182,19 @@ generation_config = {
 safety_settings = [
   {
     "category": "HARM_CATEGORY_HARASSMENT",
-    "threshold": "BLOCK_NONE"
+    "threshold": opt1_safe
   },
   {
     "category": "HARM_CATEGORY_HATE_SPEECH",
-    "threshold": "BLOCK_NONE"
+    "threshold": opt2_safe
   },
   {
     "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-    "threshold": "BLOCK_NONE"
+    "threshold": opt3_safe
   },
   {
     "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-    "threshold": "BLOCK_NONE"
+    "threshold": opt4_safe
   },
 ]
 
