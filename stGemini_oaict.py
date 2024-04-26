@@ -140,7 +140,7 @@ with st.sidebar:
                                models[2],
                                models[3],
                                models[4],
-                               models[2]
+                               models[5]
                              ), index=0)
 
     selection = st.selectbox("Active Assistance:", 
