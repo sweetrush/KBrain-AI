@@ -12,7 +12,7 @@ import datetime
 import os
 import streamlit as st
 
-version = "1.4"
+version = "1.5"
 
 ####################
 
