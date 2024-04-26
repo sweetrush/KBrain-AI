@@ -51,11 +51,11 @@ st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide"
 st.title("Miah's AI Gemini Assistance")
 
 models = [
-          "gemini-1.0-pro-latest",
-          "gemini-1.1-pro-latest",
-          "gemini-1.2-pro-latest",
-          "gemini-1.3-pro-latest",
-          "gemini-1.4-pro-latest",
+          "gemini-1.0-pro",
+          "gemini-1.1-pro",
+          "gemini-1.2-pro",
+          "gemini-1.3-pro",
+          "gemini-1.4-pro",
           "gemini-1.5-pro-latest"
          ]
 
@@ -240,7 +240,7 @@ for message in st.session_state.chathistory:
 # 
 aa = st.chat_input("Provide your Prompt")
 if adcn is not None and aa is not None:
-    usermessage = aa+'\n##### [Additional Context] #####\n'+str(adcn)
+    usermessage = aa+'?'+'\n##### [Additional Context] #####\n'+str(adcn)
 else:
     usermessage = aa
 
