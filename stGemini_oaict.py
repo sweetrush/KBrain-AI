@@ -52,10 +52,6 @@ st.title("Miah's AI Gemini Assistance")
 
 models = [
           "gemini-1.0-pro",
-          "gemini-1.1-pro",
-          "gemini-1.2-pro",
-          "gemini-1.3-pro",
-          "gemini-1.4-pro",
           "gemini-1.5-pro-latest"
          ]
 
@@ -76,7 +72,8 @@ listofAssistance = [
                     ["Python", "Python Assistance", "Python_assistance.atx"],
                     ["2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
                     ["Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
-                    ["Bash", "Bash Assistance", "bashexpert.atx"]
+                    ["Bash", "Bash Assistance", "bashexpert.atx"],
+                    ["RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"]
                    
                    ]
 
@@ -88,6 +85,7 @@ assistant3 = read_from_file(listofAssistance[3][2])
 assistant4 = read_from_file(listofAssistance[4][2])
 assistant5 = read_from_file(listofAssistance[5][2])
 assistant6 = read_from_file(listofAssistance[6][2])
+assistant7 = read_from_file(listofAssistance[7][2])
 
 
 # loadassistantcontext = ''
@@ -151,37 +149,50 @@ with st.sidebar:
                                 listofAssistance[3][0],
                                 listofAssistance[4][0],
                                 listofAssistance[5][0],
-                                listofAssistance[6][0]
+                                listofAssistance[6][0],
+                                listofAssistance[7][0]
                              ), index=0)
 
     if selection == listofAssistance[0][0]:
         loadassistantcontext = assistant0
-        assistantcontext = listofAssistance[0][1]
-        fileloaded = listofAssistance[0][2]
+        assistantcontext     = listofAssistance[0][1]
+        fileloaded           = listofAssistance[0][2]
+    
     elif selection == listofAssistance[1][0]:
         loadassistantcontext = assistant1
-        assistantcontext = listofAssistance[1][1]
-        fileloaded = listofAssistance[1][2]
+        assistantcontext     = listofAssistance[1][1]
+        fileloaded           = listofAssistance[1][2]
+    
     elif selection == listofAssistance[2][0]:
         loadassistantcontext = assistant2
-        assistantcontext = listofAssistance[2][1]
-        fileloaded = listofAssistance[2][2]
+        assistantcontext     = listofAssistance[2][1]
+        fileloaded           = listofAssistance[2][2]
+    
     elif selection == listofAssistance[3][0]:
         loadassistantcontext = assistant3
-        assistantcontext = listofAssistance[3][1]
-        fileloaded = listofAssistance[3][2]
+        assistantcontext     = listofAssistance[3][1]
+        fileloaded           = listofAssistance[3][2]
+    
     elif selection == listofAssistance[4][0]:
         loadassistantcontext = assistant4
-        assistantcontext = listofAssistance[4][1]
-        fileloaded = listofAssistance[4][2]
+        assistantcontext     = listofAssistance[4][1]
+        fileloaded           = listofAssistance[4][2]
+    
     elif selection == listofAssistance[5][0]:
         loadassistantcontext = assistant5
-        assistantcontext = listofAssistance[5][1]
-        fileloaded = listofAssistance[5][2]
+        assistantcontext     = listofAssistance[5][1]
+        fileloaded           = listofAssistance[5][2]
+    
     elif selection == listofAssistance[6][0]:
         loadassistantcontext = assistant6
-        assistantcontext = listofAssistance[6][1]
-        fileloaded = listofAssistance[6][2]
+        assistantcontext     = listofAssistance[6][1]
+        fileloaded           = listofAssistance[6][2]
+    
+    elif selection == listofAssistance[7][0]:
+
+        loadassistantcontext = assistant7
+        assistantcontext     = listofAssistance[7][1]
+        fileloaded           = listofAssistance[7][2]
 
     st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]")
     st.toast(":green[File:]"+fileloaded)
