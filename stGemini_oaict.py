@@ -50,6 +50,16 @@ genai.configure(api_key=apivalue)
 st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
 st.title("Miah's AI Gemini Assistance")
 
+models = [
+          "gemini-1.0-pro-latest",
+          "gemini-1.1-pro-latest",
+          "gemini-1.2-pro-latest",
+          "gemini-1.3-pro-latest",
+          "gemini-1.4-pro-latest",
+          "gemini-1.5-pro-latest"
+         ]
+
+
 safety_options = [ 
                   "BLOCK_NONE", 
                   "BLOCK_FEW", 
@@ -95,6 +105,43 @@ with st.sidebar:
         mot = st.text_input("Max Output Tokens", value="4024", max_chars=None)
         convert_tpv = float(tempture_val)
 
+    with st.expander("Safety Config", expanded=False):
+        opt1_safe = st.selectbox("Harassment", (
+                              safety_options[0],
+                              safety_options[1],
+                              safety_options[2],
+                              safety_options[3]
+                              ), index=0)
+
+        opt2_safe = st.selectbox("Hate", (
+                              safety_options[0],
+                              safety_options[1],
+                              safety_options[2],
+                              safety_options[3]
+                              ), index=0)
+
+        opt3_safe = st.selectbox("Sexually Explicit", (
+                              safety_options[0],
+                              safety_options[1],
+                              safety_options[2],
+                              safety_options[3]
+                              ), index=0)
+
+        opt4_safe = st.selectbox("Dangerous Content", (
+                              safety_options[0],
+                              safety_options[1],
+                              safety_options[2],
+                              safety_options[3]
+                              ), index=0)
+
+    model_select = st.selectbox("Choose Model", (
+                               models[0],
+                               models[1],
+                               models[2],
+                               models[3],
+                               models[4],
+                               models[2]
+                             ), index=0)
 
     selection = st.selectbox("Active Assistance:", 
                              (
@@ -136,35 +183,6 @@ with st.sidebar:
         assistantcontext = listofAssistance[6][1]
         fileloaded = listofAssistance[6][2]
 
-    with st.expander("Safety Config", expanded=False):
-        opt1_safe = st.selectbox("Harassment", (
-                              safety_options[0],
-                              safety_options[1],
-                              safety_options[2],
-                              safety_options[3]
-                              ), index=0)
-
-        opt2_safe = st.selectbox("Hate", (
-                              safety_options[0],
-                              safety_options[1],
-                              safety_options[2],
-                              safety_options[3]
-                              ), index=0)
-
-        opt3_safe = st.selectbox("Sexually Explicit", (
-                              safety_options[0],
-                              safety_options[1],
-                              safety_options[2],
-                              safety_options[3]
-                              ), index=0)
-
-        opt4_safe = st.selectbox("Dangerous Content", (
-                              safety_options[0],
-                              safety_options[1],
-                              safety_options[2],
-                              safety_options[3]
-                              ), index=0)
-
     st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]")
     st.toast(":green[File:]"+fileloaded)
     adcn = st.text_area(label="Additional Context")
@@ -199,7 +217,7 @@ safety_settings = [
 ]
 
 chatdata = []
-model_name = "gemini-1.5-pro-latest"
+model_name = model_select
 model = genai.GenerativeModel(model_name=model_name,
                               generation_config=generation_config,
                               safety_settings=safety_settings)
