@@ -134,11 +134,7 @@ with st.sidebar:
 
     model_select = st.selectbox("Choose Model", (
                                models[0],
-                               models[1],
-                               models[2],
-                               models[3],
-                               models[4],
-                               models[5]
+                               models[1]
                              ), index=0)
 
     selection = st.selectbox("Active Assistance:", 
@@ -155,44 +151,36 @@ with st.sidebar:
 
     if selection == listofAssistance[0][0]:
         loadassistantcontext = assistant0
-        assistantcontext     = listofAssistance[0][1]
-        fileloaded           = listofAssistance[0][2]
-    
+        assistantcontext = listofAssistance[0][1]
+        fileloaded = listofAssistance[0][2]
     elif selection == listofAssistance[1][0]:
         loadassistantcontext = assistant1
-        assistantcontext     = listofAssistance[1][1]
-        fileloaded           = listofAssistance[1][2]
-    
+        assistantcontext = listofAssistance[1][1]
+        fileloaded = listofAssistance[1][2]
     elif selection == listofAssistance[2][0]:
         loadassistantcontext = assistant2
-        assistantcontext     = listofAssistance[2][1]
-        fileloaded           = listofAssistance[2][2]
-    
+        assistantcontext = listofAssistance[2][1]
+        fileloaded = listofAssistance[2][2]
     elif selection == listofAssistance[3][0]:
         loadassistantcontext = assistant3
-        assistantcontext     = listofAssistance[3][1]
-        fileloaded           = listofAssistance[3][2]
-    
+        assistantcontext = listofAssistance[3][1]
+        fileloaded = listofAssistance[3][2]
     elif selection == listofAssistance[4][0]:
         loadassistantcontext = assistant4
-        assistantcontext     = listofAssistance[4][1]
-        fileloaded           = listofAssistance[4][2]
-    
+        assistantcontext = listofAssistance[4][1]
+        fileloaded = listofAssistance[4][2]
     elif selection == listofAssistance[5][0]:
         loadassistantcontext = assistant5
-        assistantcontext     = listofAssistance[5][1]
-        fileloaded           = listofAssistance[5][2]
-    
+        assistantcontext = listofAssistance[5][1]
+        fileloaded = listofAssistance[5][2]
     elif selection == listofAssistance[6][0]:
         loadassistantcontext = assistant6
-        assistantcontext     = listofAssistance[6][1]
-        fileloaded           = listofAssistance[6][2]
-    
+        assistantcontext = listofAssistance[6][1]
+        fileloaded = listofAssistance[6][2]
     elif selection == listofAssistance[7][0]:
-
         loadassistantcontext = assistant7
-        assistantcontext     = listofAssistance[7][1]
-        fileloaded           = listofAssistance[7][2]
+        assistantcontext = listofAssistance[7][1]
+        fileloaded = listofAssistance[7][2]
 
     st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]")
     st.toast(":green[File:]"+fileloaded)
@@ -252,6 +240,7 @@ for message in st.session_state.chathistory:
 aa = st.chat_input("Provide your Prompt")
 if adcn is not None and aa is not None:
     usermessage = aa+'?'+'\n##### [Additional Context] #####\n'+str(adcn)
+    st.echo(str(adcn))
 else:
     usermessage = aa
 
