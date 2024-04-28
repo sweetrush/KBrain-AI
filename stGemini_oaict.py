@@ -7,14 +7,24 @@ $ pip install google-generativeai
 
 
 import google.generativeai as genai
+from pypdf import PdfReader
 import configparser
 import datetime
 import os
 import streamlit as st
 
-version = "1.5"
+version = "1.6"
 
 ####################
+
+
+def openpdf_exttext(pdffile):
+    exttext = ''
+    preFile = PdfReader(pdffile)
+    numberofpages = len(preFile.pages)
+    for ps in range(numberofpages):
+        exttext += preFile.pages[ps].extract_text()
+    return exttext
 
 
 def read_from_file(filename):
@@ -94,7 +104,10 @@ assistant7 = read_from_file(listofAssistance[7][2])
 
 with st.sidebar:
     global tempture_val, fileloaded, opt1_safe, opt2_safe, opt3_safe, opt4_safe
-    global loadassistantcontext, assistantcontext, adcn
+    global loadassistantcontext, assistantcontext, adcn, pdftext 
+    uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
+    if uploaded_file is not None:
+        pdftext = openpdf_exttext(uploaded_file)
 
     with st.expander("Prompt Config", expanded=False):
         tempture_val = st.text_input("Prompt Temperature", value="0.07", max_chars=None)
@@ -262,11 +275,12 @@ if usermessage:
     convo = model.start_chat(history=chatdata) 
 
     with st.status("Processing Request ...."):
-        convo.send_message(loadassistantcontext+usermessage)
+        groupcontext = loadassistantcontext+pdftext
+        convo.send_message(groupcontext+usermessage)
         ca = st.session_state.chathistoryprompt = st.session_state.chathistoryprompt+convo.last.text+usermessage
         res00data = {"role": "user", "parts": [ca]}
         res01data = {"role": "model", "parts": [convo.last.text]}
-        res02data = {"role": "user", "parts": [loadassistantcontext+usermessage]}
+        res02data = {"role": "user", "parts": [groupcontext+usermessage]}
         chatdata.append(res02data)
         chatdata.append(res00data)
         chatdata.append(res01data)
