@@ -201,6 +201,8 @@ with st.sidebar:
     adcn = st.text_area(label="Additional Context")
     st.write("version: "+version)
 
+# END OF: Sidebar  #################################################### 
+
 
 # Set up the model
 generation_config = {
@@ -247,6 +249,8 @@ if "chathistoryprompt" not in st.session_state:
 for message in st.session_state.chathistory:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
+
+# END OF: Session Storing Information ################
 
 # Getting the User Prompt Information 
 # 
