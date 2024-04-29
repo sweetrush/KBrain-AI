@@ -12,6 +12,7 @@ import configparser
 import datetime
 import os
 import streamlit as st
+import pandas as pd
 
 version = "1.6"
 
@@ -61,8 +62,8 @@ st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide"
 st.title("Miah's AI Gemini Assistance")
 
 models = [
-          "gemini-1.0-pro",
-          "gemini-1.5-pro-latest"
+          "gemini-1.5-pro-latest",
+          "gemini-1.0-pro"
          ]
 
 
@@ -105,9 +106,21 @@ assistant7 = read_from_file(listofAssistance[7][2])
 with st.sidebar:
     global tempture_val, fileloaded, opt1_safe, opt2_safe, opt3_safe, opt4_safe
     global loadassistantcontext, assistantcontext, adcn, pdftext 
-    uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
-    if uploaded_file is not None:
-        pdftext = openpdf_exttext(uploaded_file)
+
+    with st.expander("Files Upload", expanded=False):
+        uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
+        if uploaded_file is not None:
+            pdftext = openpdf_exttext(uploaded_file)
+        else:
+            pdftext = ""
+
+
+        uploaded_csv = st.file_uploader("Choose a CSV file", type="csv")
+        if uploaded_csv is not None:
+            df = pd.read_csv(uploaded_csv)
+            json_data = df.to_json(orient='records')
+        else: 
+            json_data = ""
 
     with st.expander("Prompt Config", expanded=False):
         tempture_val = st.text_input("Prompt Temperature", value="0.07", max_chars=None)
@@ -279,7 +292,17 @@ if usermessage:
     convo = model.start_chat(history=chatdata) 
 
     with st.status("Processing Request ...."):
-        groupcontext = loadassistantcontext+pdftext
+
+        if pdftext == "":
+            groupcontext = loadassistantcontext
+        else:
+            groupcontext = loadassistantcontext+pdftext
+
+        if json_data == "":
+            groupcontext += ""
+        else:
+            groupcontext += json_data
+
         convo.send_message(groupcontext+usermessage)
         ca = st.session_state.chathistoryprompt = st.session_state.chathistoryprompt+convo.last.text+usermessage
         res00data = {"role": "user", "parts": [ca]}
