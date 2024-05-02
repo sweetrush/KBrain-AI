@@ -8,6 +8,8 @@ $ pip install google-generativeai
 
 import google.generativeai as genai
 from pypdf import PdfReader
+import re
+import logging
 import configparser
 import datetime
 import os
@@ -19,15 +21,51 @@ version = "1.6"
 ####################
 
 
+# def openpdf_exttext(pdffile):
+#     exttext = ''
+#     preFile = PdfReader(pdffile)
+#     numberofpages = len(preFile.pages)
+#     for ps in range(numberofpages):
+#         exttext += preFile.pages[ps].extract_text()
+#     return exttext
+
+def replace_chars(text, chars_to_replace, replacement):
+   """Replaces specific characters in a string using regular expressions.
+
+  Args:
+    text: The input string.
+    chars_to_replace: A string containing the characters to be replaced.
+    replacement: The replacement character or string.
+
+  Returns:
+    The modified string with the specified characters replaced.
+   """
+   pattern = f"[{chars_to_replace}]"  # Create a character class pattern
+   return re.sub(pattern, replacement, text)
+
+# Example usage
+# text = "This is a sample string with special characters like # and %."
+# chars_to_replace = "#%"
+# replacement = "*"
+# result = replace_chars(text, chars_to_replace, replacement)
+# print(result)  # Output: This is a sample string with special characters like * and *.
+
+
+@st.cache_data
 def openpdf_exttext(pdffile):
-    exttext = ''
-    preFile = PdfReader(pdffile)
-    numberofpages = len(preFile.pages)
-    for ps in range(numberofpages):
-        exttext += preFile.pages[ps].extract_text()
-    return exttext
+    """Extracts text from a PDF file with improved error handling and potential optimization."""
+    try:
+        pdf_reader = PdfReader(pdffile)
+        number_of_pages = len(pdf_reader.pages)
+        extracted_text = ""
+        for page_num in range(number_of_pages):
+            extracted_text += pdf_reader.pages[page_num].extract_text(layout=True)
+        return extracted_text
+    except Exception as e:
+        logging.error(f"Error extracting text from PDF: {e}")
+        return ""  # Or raise an exception depending on your error handling strategy
 
-
+@st.cache_data
 def read_from_file(filename):
     pathDirAssistanceDef = "assistancedb/"
     assistance_filename = filename
@@ -113,7 +151,6 @@ with st.sidebar:
             pdftext = openpdf_exttext(uploaded_file)
         else:
             pdftext = ""
-
 
         uploaded_csv = st.file_uploader("Choose a CSV file", type="csv")
         if uploaded_csv is not None:
@@ -283,16 +320,18 @@ if usermessage:
         # Storing User Information to the Session Variable
         st.session_state.chathistory.append({"role": "User", "content": usermessage})  # noqa: E501
 
-    filename = usermessage.replace(" ", "")
-    filename = filename.replace(',', "")
-    filename = filename.replace('.', "")
+    chars_tobe_replaced = " ,."
+    chars_swap = ""  # Noted that this will make the space as the char swap
+    # filename = usermessage.replace(" ", "")
+    # filename = filename.replace(',', "")
+    # filename = filename.replace('.', "")
+    filename = replace_chars(usermessage, chars_tobe_replaced, chars_swap)
     filename = filename[:20]
     print("[info] FileName is: "+filename+"")
 
     convo = model.start_chat(history=chatdata) 
 
     with st.status("Processing Request ...."):
-
         if pdftext == "":
             groupcontext = loadassistantcontext
         else:
@@ -312,6 +351,7 @@ if usermessage:
         chatdata.append(res00data)
         chatdata.append(res01data)
         st.write(chatdata)
+        st.toast("Generated Response Completed", icon=None)
 
     write_to_file(filename, convo.last.text)
     
