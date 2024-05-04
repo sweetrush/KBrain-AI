@@ -304,12 +304,12 @@ for message in st.session_state.chathistory:
 
 # Getting the User Prompt Information 
 # 
-aa = st.chat_input("Provide your Prompt")
-if adcn is not None and aa is not None:
-    usermessage = aa+'?'+'\n##### [Additional Context] #####\n'+str(adcn)
+inputquestion = st.chat_input("Provide your Prompt")
+if adcn is not None and inputquestion is not None:
+    usermessage = inputquestion+'?'+'\n##### [Additional Context] #####\n'+str(adcn)
     st.echo(str(adcn))
 else:
-    usermessage = aa
+    usermessage = inputquestion
 
 
 # Runs What the User has input
@@ -322,10 +322,7 @@ if usermessage:
 
     chars_tobe_replaced = " ,."
     chars_swap = ""  # Noted that this will make the space as the char swap
-    # filename = usermessage.replace(" ", "")
-    # filename = filename.replace(',', "")
-    # filename = filename.replace('.', "")
-    filename = replace_chars(usermessage, chars_tobe_replaced, chars_swap)
+    filename = replace_chars(inputquestion, chars_tobe_replaced, chars_swap)
     filename = filename[:20]
     print("[info] FileName is: "+filename+"")
 
@@ -344,6 +341,8 @@ if usermessage:
 
         convo.send_message(groupcontext+usermessage)
         ca = st.session_state.chathistoryprompt = st.session_state.chathistoryprompt+convo.last.text+usermessage
+
+        print(st.session_state.chathistoryprompt)
         res00data = {"role": "user", "parts": [ca]}
         res01data = {"role": "model", "parts": [convo.last.text]}
         res02data = {"role": "user", "parts": [groupcontext+usermessage]}
@@ -351,7 +350,7 @@ if usermessage:
         chatdata.append(res00data)
         chatdata.append(res01data)
         st.write(chatdata)
-        st.toast("Generated Response Completed", icon=None)
+        st.toast(":green[Generated Response Completed]", icon=None)
 
     write_to_file(filename, convo.last.text)
     
