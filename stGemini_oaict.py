@@ -30,25 +30,8 @@ version = "1.6"
 #     return exttext
 
 def replace_chars(text, chars_to_replace, replacement):
-   """Replaces specific characters in a string using regular expressions.
-
-  Args:
-    text: The input string.
-    chars_to_replace: A string containing the characters to be replaced.
-    replacement: The replacement character or string.
-
-  Returns:
-    The modified string with the specified characters replaced.
-   """
-   pattern = f"[{chars_to_replace}]"  # Create a character class pattern
-   return re.sub(pattern, replacement, text)
-
-# Example usage
-# text = "This is a sample string with special characters like # and %."
-# chars_to_replace = "#%"
-# replacement = "*"
-# result = replace_chars(text, chars_to_replace, replacement)
-# print(result)  # Output: This is a sample string with special characters like * and *.
+    pattern = f"[{chars_to_replace}]"  # Create a character class pattern
+    return re.sub(pattern, replacement, text)
 
 
 @st.cache_data
@@ -143,7 +126,7 @@ assistant7 = read_from_file(listofAssistance[7][2])
 
 with st.sidebar:
     global tempture_val, fileloaded, opt1_safe, opt2_safe, opt3_safe, opt4_safe
-    global loadassistantcontext, assistantcontext, adcn, pdftext 
+    global loadassistantcontext, assistantcontext, adcn, pdftext
 
     with st.expander("Files Upload", expanded=False):
         uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
@@ -248,11 +231,13 @@ with st.sidebar:
     st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]")
     st.toast(":green[File:]"+fileloaded)
     st.toast(":green[Model:]"+model_select)
-    adcn = st.text_area(label="Additional Context")
+
+    adcn = st.text_area(label="Additional Context", key="KK09923")
+
     st.write("version: "+version)
 
-# END OF: Sidebar  #################################################### 
-
+# END OF: Sidebar  ######################################################## 
+###########################################################################
 
 # Set up the model
 generation_config = {
@@ -289,7 +274,9 @@ model = genai.GenerativeModel(model_name=model_name,
 
 
 # For Session Storing Information  
-# ####################################################
+# ##################################################################
+# ##################################################################
+
 if "chathistory" not in st.session_state:
     st.session_state.chathistory = []
 if "chathistoryprompt" not in st.session_state:
@@ -301,6 +288,9 @@ for message in st.session_state.chathistory:
         st.markdown(message["content"])
 
 # END OF: Session Storing Information ################
+# ####################################################
+
+
 
 # Getting the User Prompt Information 
 # 
@@ -320,7 +310,7 @@ if usermessage:
         # Storing User Information to the Session Variable
         st.session_state.chathistory.append({"role": "User", "content": usermessage})  # noqa: E501
 
-    chars_tobe_replaced = " ,."
+    chars_tobe_replaced = ' ,.'
     chars_swap = ""  # Noted that this will make the space as the char swap
     filename = replace_chars(inputquestion, chars_tobe_replaced, chars_swap)
     filename = filename[:20]
@@ -342,7 +332,9 @@ if usermessage:
         convo.send_message(groupcontext+usermessage)
         ca = st.session_state.chathistoryprompt = st.session_state.chathistoryprompt+convo.last.text+usermessage
 
-        print(st.session_state.chathistoryprompt)
+        # Uncomment to View ChathistroyPrompt data in terminal 
+        # print(st.session_state.chathistoryprompt)
+
         res00data = {"role": "user", "parts": [ca]}
         res01data = {"role": "model", "parts": [convo.last.text]}
         res02data = {"role": "user", "parts": [groupcontext+usermessage]}
