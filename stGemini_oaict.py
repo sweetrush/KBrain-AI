@@ -32,8 +32,6 @@ version = "1.6"
 def replace_chars(text, chars_to_replace, replacement):
     pattern = f"[{chars_to_replace}]"  # Create a character class pattern
     return re.sub(pattern, replacement, text)
-
-
 @st.cache_data
 def openpdf_exttext(pdffile):
     """Extracts text from a PDF file with improved error handling and potential optimization."""
@@ -48,7 +46,7 @@ def openpdf_exttext(pdffile):
         logging.error(f"Error extracting text from PDF: {e}")
         return ""  # Or raise an exception depending on your error handling strategy
 
-@st.cache_data
+
 def read_from_file(filename):
     pathDirAssistanceDef = "assistancedb/"
     assistance_filename = filename
@@ -73,6 +71,15 @@ def write_to_file(filename, text):
         print(f"Error writing to file: {e}")
 
 
+def question_combinder(adcn_01, uquestions):
+    if adcn_01 is not None and uquestions is not None:
+        umessage = inputquestion+'?'+'\n##### [Additional Context] #####\n'+str(adcn_01)
+        st.echo(str(adcn_01))
+    else:
+        umessage = inputquestion
+    return umessage
+
+
 config = configparser.ConfigParser()
 config.read('config.ini')
 apivalue = config.get("APIKEYS", "api")
@@ -81,6 +88,9 @@ apivalue = config.get("APIKEYS", "api")
 genai.configure(api_key=apivalue)
 st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
 st.title("Miah's AI Gemini Assistance")
+
+
+model_tokens = "8024"
 
 models = [
           "gemini-1.5-pro-latest",
@@ -98,31 +108,29 @@ safety_options = [
 
 listofAssistance = [
                    
-                    ["Default", "Default Assistance", "Default.atx"],
-                    ["General", "General Assisance", "General.atx"],
-                    ["Linux", "Linux Assistance", "linux_assistance.atx"], 
-                    ["Python", "Python Assistance", "Python_assistance.atx"],
-                    ["2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
-                    ["Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
-                    ["Bash", "Bash Assistance", "bashexpert.atx"],
-                    ["RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"]
+                    ["AA_Default", "Default Assistance", "Default.atx"],
+                    ["AA_General", "General Assisance", "General.atx"],
+                    ["TN_Linux", "Linux Assistance", "linux_assistance.atx"], 
+                    ["TN_Python", "Python Assistance", "Python_assistance.atx"],
+                    ["BB_2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
+                    ["BB_Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
+                    ["TN_Bash", "Bash Assistance", "bashexpert.atx"],
+                    ["TN_RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
+                    ["BB_BusniessExpert", "BE Assistance", "BusniessExpert.atx"]
                    
                    ]
 
-
-assistant0 = read_from_file(listofAssistance[0][2])
-assistant1 = read_from_file(listofAssistance[1][2])
-assistant2 = read_from_file(listofAssistance[2][2])
-assistant3 = read_from_file(listofAssistance[3][2])
-assistant4 = read_from_file(listofAssistance[4][2])
-assistant5 = read_from_file(listofAssistance[5][2])
-assistant6 = read_from_file(listofAssistance[6][2])
-assistant7 = read_from_file(listofAssistance[7][2])
-
-
-# loadassistantcontext = ''
-# assistantcontext = ''
-
+assistant = [
+             read_from_file(listofAssistance[0][2]),
+             read_from_file(listofAssistance[1][2]),
+             read_from_file(listofAssistance[2][2]),
+             read_from_file(listofAssistance[3][2]),
+             read_from_file(listofAssistance[4][2]),
+             read_from_file(listofAssistance[5][2]),
+             read_from_file(listofAssistance[6][2]),
+             read_from_file(listofAssistance[7][2]),
+             read_from_file(listofAssistance[8][2])
+            ]
 
 with st.sidebar:
     global tempture_val, fileloaded, opt1_safe, opt2_safe, opt3_safe, opt4_safe
@@ -146,7 +154,7 @@ with st.sidebar:
         tempture_val = st.text_input("Prompt Temperature", value="0.07", max_chars=None)
         topp = st.text_input("Set Top P", value="1", max_chars=None)
         topk = st.text_input("Set Top K", value="1", max_chars=None)
-        mot = st.text_input("Max Output Tokens", value="4024", max_chars=None)
+        mot = st.text_input("Max Output Tokens", value=model_tokens, max_chars=None)
         convert_tpv = float(tempture_val)
 
     with st.expander("Safety Config", expanded=False):
@@ -178,10 +186,17 @@ with st.sidebar:
                               safety_options[3]
                               ), index=0)
 
+    #
+    # Setting the Module Selection for the Assistance 
+    # ################################################
+
     model_select = st.selectbox("Choose Model", (
                                models[0],
                                models[1]
                              ), index=0)
+
+    # Setting the selected Active Assistance 
+    # ################################################
 
     selection = st.selectbox("Active Assistance:", 
                              (
@@ -192,41 +207,61 @@ with st.sidebar:
                                 listofAssistance[4][0],
                                 listofAssistance[5][0],
                                 listofAssistance[6][0],
-                                listofAssistance[7][0]
+                                listofAssistance[7][0],
+                                listofAssistance[8][0]
                              ), index=0)
 
+    # Checking and setting the Selected Assistance 
+    # ##############################################
+
     if selection == listofAssistance[0][0]:
-        loadassistantcontext = assistant0
+        loadassistantcontext = assistant[0]
         assistantcontext = listofAssistance[0][1]
         fileloaded = listofAssistance[0][2]
+
     elif selection == listofAssistance[1][0]:
-        loadassistantcontext = assistant1
+        loadassistantcontext = assistant[1]
         assistantcontext = listofAssistance[1][1]
         fileloaded = listofAssistance[1][2]
+
     elif selection == listofAssistance[2][0]:
-        loadassistantcontext = assistant2
+        loadassistantcontext = assistant[2]
         assistantcontext = listofAssistance[2][1]
         fileloaded = listofAssistance[2][2]
+
     elif selection == listofAssistance[3][0]:
-        loadassistantcontext = assistant3
+        loadassistantcontext = assistant[3]
         assistantcontext = listofAssistance[3][1]
         fileloaded = listofAssistance[3][2]
+
     elif selection == listofAssistance[4][0]:
-        loadassistantcontext = assistant4
+        loadassistantcontext = assistant[4]
         assistantcontext = listofAssistance[4][1]
         fileloaded = listofAssistance[4][2]
+
     elif selection == listofAssistance[5][0]:
-        loadassistantcontext = assistant5
+        loadassistantcontext = assistant[5]
         assistantcontext = listofAssistance[5][1]
         fileloaded = listofAssistance[5][2]
+
     elif selection == listofAssistance[6][0]:
-        loadassistantcontext = assistant6
+        loadassistantcontext = assistant[6]
         assistantcontext = listofAssistance[6][1]
         fileloaded = listofAssistance[6][2]
+
     elif selection == listofAssistance[7][0]:
-        loadassistantcontext = assistant7
+        loadassistantcontext = assistant[7]
         assistantcontext = listofAssistance[7][1]
         fileloaded = listofAssistance[7][2]
+
+    elif selection == listofAssistance[8][0]:
+        loadassistantcontext = assistant[8]
+        assistantcontext = listofAssistance[8][1]
+        fileloaded = listofAssistance[8][2]
+
+    # 
+    # END OF the selected Assistance 
+    # ############################################################
 
     st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]")
     st.toast(":green[File:]"+fileloaded)
@@ -291,16 +326,11 @@ for message in st.session_state.chathistory:
 # ####################################################
 
 
-
 # Getting the User Prompt Information 
 # 
 inputquestion = st.chat_input("Provide your Prompt")
-if adcn is not None and inputquestion is not None:
-    usermessage = inputquestion+'?'+'\n##### [Additional Context] #####\n'+str(adcn)
-    st.echo(str(adcn))
-else:
-    usermessage = inputquestion
 
+usermessage = question_combinder(adcn, inputquestion)
 
 # Runs What the User has input
 if usermessage:
