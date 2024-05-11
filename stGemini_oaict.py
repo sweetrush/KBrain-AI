@@ -12,6 +12,7 @@ import re
 import logging
 import configparser
 import datetime
+import pyperclip
 import os
 import streamlit as st
 import pandas as pd
@@ -84,7 +85,6 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 apivalue = config.get("APIKEYS", "api")
 
-
 genai.configure(api_key=apivalue)
 st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
 st.title("Miah's AI Gemini Assistance")
@@ -94,7 +94,8 @@ model_tokens = "8024"
 
 models = [
           "gemini-1.5-pro-latest",
-          "gemini-1.0-pro"
+          "gemini-1.0-pro",
+          "gemini-pro-vision"
          ]
 
 
@@ -134,7 +135,7 @@ assistant = [
 
 with st.sidebar:
     global tempture_val, fileloaded, opt1_safe, opt2_safe, opt3_safe, opt4_safe
-    global loadassistantcontext, assistantcontext, adcn, pdftext
+    global loadassistantcontext, assistantcontext, adcn, pdftext, getResponsetext
 
     with st.expander("Files Upload", expanded=False):
         uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
@@ -149,6 +150,8 @@ with st.sidebar:
             json_data = df.to_json(orient='records')
         else: 
             json_data = ""
+
+        uploaded_img = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
 
     with st.expander("Prompt Config", expanded=False):
         tempture_val = st.text_input("Prompt Temperature", value="0.07", max_chars=None)
@@ -192,7 +195,8 @@ with st.sidebar:
 
     model_select = st.selectbox("Choose Model", (
                                models[0],
-                               models[1]
+                               models[1],
+                               models[2]
                              ), index=0)
 
     # Setting the selected Active Assistance 
@@ -270,6 +274,8 @@ with st.sidebar:
     adcn = st.text_area(label="Additional Context", key="KK09923")
 
     st.write("version: "+version)
+    copyresponsetoClip = st.button("CC") 
+
 
 # END OF: Sidebar  ######################################################## 
 ###########################################################################
@@ -303,6 +309,7 @@ safety_settings = [
 
 chatdata = []
 model_name = model_select
+
 model = genai.GenerativeModel(model_name=model_name,
                               generation_config=generation_config,
                               safety_settings=safety_settings)
@@ -314,8 +321,13 @@ model = genai.GenerativeModel(model_name=model_name,
 
 if "chathistory" not in st.session_state:
     st.session_state.chathistory = []
+
 if "chathistoryprompt" not in st.session_state:
     st.session_state.chathistoryprompt = ''
+
+if "lastchatoutput" not in st.session_state:
+    st.session_state.lastchatoutput = ''
+
 
 # Looping through the session stored Information  
 for message in st.session_state.chathistory:
@@ -359,7 +371,13 @@ if usermessage:
         else:
             groupcontext += json_data
 
-        convo.send_message(groupcontext+usermessage)
+        try: 
+            convo.send_message(groupcontext+usermessage)
+
+        except Exception as e:
+            st.toast(":red[Error:] on call", icon=None)
+            st.error(e, icon=None)
+
         ca = st.session_state.chathistoryprompt = st.session_state.chathistoryprompt+convo.last.text+usermessage
 
         # Uncomment to View ChathistroyPrompt data in terminal 
@@ -375,7 +393,8 @@ if usermessage:
         st.toast(":green[Generated Response Completed]", icon=None)
 
     write_to_file(filename, convo.last.text)
-    
+    st.session_state.lastchatoutput = convo.last.text
+
     # This Gets the Number of Tokens needed.  
     tokencount = model.count_tokens(convo.last.text)
 
@@ -388,3 +407,8 @@ if usermessage:
         st.session_state.chathistory.append({"role": "assistant", "content": botmessage})  #noqa: E501
         st.session_state.chathistory.append({"role": "status", "content": status_cache})
         # 
+
+
+if copyresponsetoClip:
+    pyperclip.copy(st.session_state.lastchatoutput)
+    st.success("Text copied to clipboard!")

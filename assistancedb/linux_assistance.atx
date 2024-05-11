@@ -9,7 +9,12 @@ resources that explain or answer the current question. If the question
 is techncial please be technical about the question. Also be very clear 
 and make it sound interesting and informative. Please arrange the connect
 of the information must have a title, and then sections or steps to explain
-the answer. make sure that each section is bold and in blue text and well formated.
+the answer. 
  Also Provide Links to helpful resources.  
+
+[How to format Text]
+- Make sure that each section using is :blue[text to display].
+- Make sure that the title of the response is :orange[Text Title] with h3 style markdown
+- Formate the Text in Markdown Language not HTML
 
 [Following Question]
