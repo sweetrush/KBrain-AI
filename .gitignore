@@ -6,3 +6,4 @@ config.ini
 #[Folders]
 output/
 kivy_venv/
+ai_audio/

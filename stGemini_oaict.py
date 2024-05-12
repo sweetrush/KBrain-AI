@@ -5,21 +5,49 @@ At the command line, only need to run once to install the package via pip:
 $ pip install google-generativeai
 """
 
+# Definding Imported Libaries for the Program 
+# #################################################
 
-import google.generativeai as genai
 from pypdf import PdfReader
+from gtts import gTTS
+from io import BytesIO
 import re
+import requests
 import logging
 import configparser
 import datetime
 import pyperclip
 import os
+import google.generativeai as genai
 import streamlit as st
 import pandas as pd
 
-version = "1.6"
+
+# Definding the Current working version 
+# of the Miah AI assistance 
+# #################################################
+
+version = "1.7"
 
 ####################
+
+emj_tophat = ' 🎩 '
+emj_billcap = ' 🧢 '
+emj_gradcap = ' 🎓 '
+emj_clamper = ' 🗜 '
+emj_aaudio = ' 🔊 '
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+apivalue = config.get("APIKEYS", "api")
+api11labs = config.get("APIKEYS", "api_11labs")
+
+# Defind Date Tags for Filenaming
+now = datetime.datetime.now()
+datetag_string = f'{now.year}.{now.month}.{now.day}_{now.hour}{now.minute}{now.second}'
+
+genai.configure(api_key=apivalue)
+st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
 
 
 # def openpdf_exttext(pdffile):
@@ -33,6 +61,8 @@ version = "1.6"
 def replace_chars(text, chars_to_replace, replacement):
     pattern = f"[{chars_to_replace}]"  # Create a character class pattern
     return re.sub(pattern, replacement, text)
+
+
 @st.cache_data
 def openpdf_exttext(pdffile):
     """Extracts text from a PDF file with improved error handling and potential optimization."""
@@ -48,6 +78,7 @@ def openpdf_exttext(pdffile):
         return ""  # Or raise an exception depending on your error handling strategy
 
 
+@st.cache_data
 def read_from_file(filename):
     pathDirAssistanceDef = "assistancedb/"
     assistance_filename = filename
@@ -58,9 +89,8 @@ def read_from_file(filename):
 
 
 def write_to_file(filename, text):
-    now = datetime.datetime.now()
     storedir = "output/gemini_out"
-    datetag = f'{now.year}.{now.month}.{now.day}_{now.hour}{now.minute}{now.second}'
+    datetag = datetag_string
     store_path = os.path.join(storedir, datetag+'_'+filename)
 
     if not os.path.exists(storedir):
@@ -81,13 +111,67 @@ def question_combinder(adcn_01, uquestions):
     return umessage
 
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-apivalue = config.get("APIKEYS", "api")
+def get_assistant_details(selection, listofAssistance, assistant):
+    """Retrieves assistant details based on selection.
 
-genai.configure(api_key=apivalue)
-st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
-st.title("Miah's AI Gemini Assistance")
+    Args:
+       selection: The selected assistant identifier.
+       listofAssistance: A list of tuples containing assistant information.
+       assistant: A list of assistant objects.
+
+    Returns:
+      A tuple containing loadassistantcontext, assistantcontext, and fileloaded.
+    """
+    for i, (assistant_id, context, file) in enumerate(listofAssistance):
+        if selection == assistant_id:
+            return assistant[i], context, file
+  
+    return None, None, None  # Return None values if no match is found
+
+
+def text_to_speech(text):
+    """Converts text to speech using gTTS and returns an audio file."""
+    tts = gTTS(text=text, lang='en')  # You can change the language if needed
+    fp = BytesIO()
+    tts.write_to_fp(fp)
+    fp.seek(0)
+    return fp
+
+
+def get_audio(texttomp3, prefix, auid):
+    ellskey = api11labs
+    voiceid = "21m00Tcm4TlvDq8ikWAM"
+    CHUNK_SIZE = 1024
+    url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid
+
+    headers = {
+        "Accept": "audio/mpeg",
+        "Content-Type": "application/json",
+        "xi-api-key": ellskey
+    }
+
+    data = {
+        "text": texttomp3,
+        "voice_settings": {
+            "stability": 0.5,
+            "similarity_boost": 0.5
+        }
+    }
+
+    response = requests.post(url, json=data, headers=headers)
+    mp3fileName = prefix + "_" + auid + '_output.mp3'
+    
+    folder_path = "ai_audio"
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+    mp3_path = os.path.join(folder_path, mp3fileName)
+
+    with open(mp3_path, 'wb') as f:
+        for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
+            if chunk:
+                f.write(chunk)
+
+    return mp3_path
 
 
 model_tokens = "8024"
@@ -110,37 +194,50 @@ safety_options = [
 listofAssistance = [
                    
                     # General Agents 
-                    ["GA_Default", "Default Assistance", "Default.atx"],
-                    ["GA_General", "General Assisance", "General.atx"],
+                    [emj_billcap+"GA_Default", "Default Assistance", "Default.atx"],
+                    [emj_billcap+"GA_General", "General Assisance", "General.atx"],
 
                     # Technical Agents 
-                    ["TA_Linux", "Linux Assistance", "linux_assistance.atx"], 
-                    ["TA_Python", "Python Assistance", "Python_assistance.atx"],
-                    ["TA_Bash", "Bash Assistance", "bashexpert.atx"],
-                    ["TA_RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
+                    [emj_tophat+"TA_Linux", "Linux Assistance", "linux_assistance.atx"], 
+                    [emj_tophat+"TA_Python", "Python Assistance", "Python_assistance.atx"],
+                    [emj_tophat+"TA_Bash", "Bash Assistance", "bashexpert.atx"],
+                    [emj_tophat+"TA_RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
 
                     # Assistive Professional Agents 
-                    ["PA_2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
-                    ["PA_Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
-                    ["PA_BusniessExpert", "BE Assistance", "BusniessExpert.atx"]
+                    [emj_gradcap+"PA_2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
+                    [emj_gradcap+"PA_Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
+                    [emj_gradcap+"PA_BusniessExpert", "BE Assistance", "BusniessExpert.atx"]
                    
                    ]
 
-assistant = [
-             read_from_file(listofAssistance[0][2]),
-             read_from_file(listofAssistance[1][2]),
-             read_from_file(listofAssistance[2][2]),
-             read_from_file(listofAssistance[3][2]),
-             read_from_file(listofAssistance[4][2]),
-             read_from_file(listofAssistance[5][2]),
-             read_from_file(listofAssistance[6][2]),
-             read_from_file(listofAssistance[7][2]),
-             read_from_file(listofAssistance[8][2])
-            ]
+
+assistant = []
+for i in range(len(listofAssistance)):
+    assistant.append(read_from_file(listofAssistance[i][2]))
+
+# assistant = [
+#              read_from_file(listofAssistance[0][2]),
+#              read_from_file(listofAssistance[1][2]),
+#              read_from_file(listofAssistance[2][2]),
+#              read_from_file(listofAssistance[3][2]),
+#              read_from_file(listofAssistance[4][2]),
+#              read_from_file(listofAssistance[5][2]),
+#              read_from_file(listofAssistance[6][2]),
+#              read_from_file(listofAssistance[7][2]),
+#              read_from_file(listofAssistance[8][2])
+#             ]
+
+# ###################################################################################
+#  SIDE BAR CODE FOR THE PROGRAM 
+#    - This is the start of the Side bar and with all elements 
+# ###################################################################################
+
 
 with st.sidebar:
     global tempture_val, fileloaded, opt1_safe, opt2_safe, opt3_safe, opt4_safe
     global loadassistantcontext, assistantcontext, adcn, pdftext, getResponsetext
+
+    st.title(emj_clamper+"Miah's AI Gemini Assistance")
 
     with st.expander("Files Upload", expanded=False):
         uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
@@ -207,66 +304,75 @@ with st.sidebar:
     # Setting the selected Active Assistance 
     # ################################################
 
+    # selection = st.selectbox("Active Assistance:", 
+    #                          (
+    #                             listofAssistance[0][0],
+    #                             listofAssistance[1][0],
+    #                             listofAssistance[2][0],
+    #                             listofAssistance[3][0],
+    #                             listofAssistance[4][0],
+    #                             listofAssistance[5][0],
+    #                             listofAssistance[6][0],
+    #                             listofAssistance[7][0],
+    #                             listofAssistance[8][0]
+    #                          ), index=0)
+
     selection = st.selectbox("Active Assistance:", 
-                             (
-                                listofAssistance[0][0],
-                                listofAssistance[1][0],
-                                listofAssistance[2][0],
-                                listofAssistance[3][0],
-                                listofAssistance[4][0],
-                                listofAssistance[5][0],
-                                listofAssistance[6][0],
-                                listofAssistance[7][0],
-                                listofAssistance[8][0]
-                             ), index=0)
+                             [item[0] for item in listofAssistance[:min(9,
+                              len(listofAssistance))]], index=0
+                             )
 
     # Checking and setting the Selected Assistance 
     # ##############################################
 
-    if selection == listofAssistance[0][0]:
-        loadassistantcontext = assistant[0]
-        assistantcontext = listofAssistance[0][1]
-        fileloaded = listofAssistance[0][2]
+    # if selection == listofAssistance[0][0]:
+    #     loadassistantcontext = assistant[0]
+    #     assistantcontext = listofAssistance[0][1]
+    #     fileloaded = listofAssistance[0][2]
 
-    elif selection == listofAssistance[1][0]:
-        loadassistantcontext = assistant[1]
-        assistantcontext = listofAssistance[1][1]
-        fileloaded = listofAssistance[1][2]
+    # elif selection == listofAssistance[1][0]:
+    #     loadassistantcontext = assistant[1]
+    #     assistantcontext = listofAssistance[1][1]
+    #     fileloaded = listofAssistance[1][2]
 
-    elif selection == listofAssistance[2][0]:
-        loadassistantcontext = assistant[2]
-        assistantcontext = listofAssistance[2][1]
-        fileloaded = listofAssistance[2][2]
+    # elif selection == listofAssistance[2][0]:
+    #     loadassistantcontext = assistant[2]
+    #     assistantcontext = listofAssistance[2][1]
+    #     fileloaded = listofAssistance[2][2]
 
-    elif selection == listofAssistance[3][0]:
-        loadassistantcontext = assistant[3]
-        assistantcontext = listofAssistance[3][1]
-        fileloaded = listofAssistance[3][2]
+    # elif selection == listofAssistance[3][0]:
+    #     loadassistantcontext = assistant[3]
+    #     assistantcontext = listofAssistance[3][1]
+    #     fileloaded = listofAssistance[3][2]
 
-    elif selection == listofAssistance[4][0]:
-        loadassistantcontext = assistant[4]
-        assistantcontext = listofAssistance[4][1]
-        fileloaded = listofAssistance[4][2]
+    # elif selection == listofAssistance[4][0]:
+    #     loadassistantcontext = assistant[4]
+    #     assistantcontext = listofAssistance[4][1]
+    #     fileloaded = listofAssistance[4][2]
 
-    elif selection == listofAssistance[5][0]:
-        loadassistantcontext = assistant[5]
-        assistantcontext = listofAssistance[5][1]
-        fileloaded = listofAssistance[5][2]
+    # elif selection == listofAssistance[5][0]:
+    #     loadassistantcontext = assistant[5]
+    #     assistantcontext = listofAssistance[5][1]
+    #     fileloaded = listofAssistance[5][2]
 
-    elif selection == listofAssistance[6][0]:
-        loadassistantcontext = assistant[6]
-        assistantcontext = listofAssistance[6][1]
-        fileloaded = listofAssistance[6][2]
+    # elif selection == listofAssistance[6][0]:
+    #     loadassistantcontext = assistant[6]
+    #     assistantcontext = listofAssistance[6][1]
+    #     fileloaded = listofAssistance[6][2]
 
-    elif selection == listofAssistance[7][0]:
-        loadassistantcontext = assistant[7]
-        assistantcontext = listofAssistance[7][1]
-        fileloaded = listofAssistance[7][2]
+    # elif selection == listofAssistance[7][0]:
+    #     loadassistantcontext = assistant[7]
+    #     assistantcontext = listofAssistance[7][1]
+    #     fileloaded = listofAssistance[7][2]
 
-    elif selection == listofAssistance[8][0]:
-        loadassistantcontext = assistant[8]
-        assistantcontext = listofAssistance[8][1]
-        fileloaded = listofAssistance[8][2]
+    # elif selection == listofAssistance[8][0]:
+    #     loadassistantcontext = assistant[8]
+    #     assistantcontext = listofAssistance[8][1]
+    #     fileloaded = listofAssistance[8][2]
+
+    loadassistantcontext, assistantcontext, fileloaded = get_assistant_details(
+        selection, listofAssistance, assistant
+    )
 
     # 
     # END OF the selected Assistance 
@@ -277,12 +383,14 @@ with st.sidebar:
     st.toast(":green[Model:]"+model_select)
 
     adcn = st.text_area(label="Additional Context", key="KK09923")
-
+    activate_audio_output = st.checkbox(emj_aaudio+"Activate Audio:", value=False)
     st.write("version: "+version)
-    copyresponsetoClip = st.button("CC") 
+    copyresponsetoClip = st.button("CC")
 
 
+# #########################################################################
 # END OF: Sidebar  ######################################################## 
+#
 ###########################################################################
 
 # Set up the model
@@ -395,7 +503,14 @@ if usermessage:
         chatdata.append(res00data)
         chatdata.append(res01data)
         st.write(chatdata)
-        st.toast(":green[Generated Response Completed]", icon=None)
+
+    successtext = "Generated Response Completed"
+        
+    # Comment to Use the Toast as the Alert element
+    st.success(successtext)
+
+    # Uncomment to use the toast as the Alert element
+    # st.toast(":green["+successtext+"]", icon=None)
 
     write_to_file(filename, convo.last.text)
     st.session_state.lastchatoutput = convo.last.text
@@ -406,12 +521,26 @@ if usermessage:
     with st.chat_message("assistant"):
         botmessage = convo.last.text
         st.write(botmessage)
+
+        if activate_audio_output:
+            audiofilename = datetag_string+"_"+filename
+            audiopath = get_audio(botmessage, "el11_au", audiofilename)
+            audiofile = open(audiopath, "rb")
+            audiobytes = audiofile.read()
+            st.audio(audiobytes, format='audio/mp3')
+            st.toast(":blue[Audio] :green[activated]")
+
         status_string = "<strong style='color:red'>Using: "+assistantcontext+" [ "+str(tokencount)+" ]</strong>"  # noqa: E501
         status_cache = "**:red[Using: "+assistantcontext+" ( "+str(tokencount)+" )]**"  # noqa: E501
         st.markdown(status_string, unsafe_allow_html=True)
         st.session_state.chathistory.append({"role": "assistant", "content": botmessage})  #noqa: E501
         st.session_state.chathistory.append({"role": "status", "content": status_cache})
         # 
+
+if activate_audio_output:
+    st.toast(":blue[Audio] :green[activated]")
+else:
+    st.toast(":blue[Audio] :red[deactivated]")
 
 
 if copyresponsetoClip:
