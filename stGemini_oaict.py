@@ -399,7 +399,7 @@ with st.sidebar:
 
     with st.expander("Extention Context", expanded=False):
         adcn = st.text_area(label="Additional Context", key="KK09923")
-        copyresponsetoClip = st.button("CC")
+        copyresponsetoClip = st.button("CC",help="Copy Clipboard")
 
     with st.expander("Audio Config", expanded=False):
         activate_audio_output = st.checkbox(emj_aaudio+"Activate Audio:", value=False)
