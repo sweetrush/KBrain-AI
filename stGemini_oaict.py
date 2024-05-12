@@ -36,6 +36,7 @@ emj_billcap = ' 🧢 '
 emj_gradcap = ' 🎓 '
 emj_clamper = ' 🗜 '
 emj_aaudio = ' 🔊 '
+emj_assistance = ' 👾 '
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -102,13 +103,27 @@ def write_to_file(filename, text):
         print(f"Error writing to file: {e}")
 
 
-def question_combinder(adcn_01, uquestions):
-    if adcn_01 is not None and uquestions is not None:
-        umessage = inputquestion+'?'+'\n##### [Additional Context] #####\n'+str(adcn_01)
-        st.echo(str(adcn_01))
-    else:
-        umessage = inputquestion
-    return umessage
+def question_combinder(additional_context, user_question):
+
+    """Combines a user question with additional context.
+
+      Args:
+        additional_context: A string containing additional context.
+        user_question: A string representing the user's question.
+
+      Returns:
+        A formatted string combining the question and context, or None if 
+        user_question is None.
+      """
+    if not user_question:
+        return None
+
+    combined_question = user_question+"?"
+
+    if additional_context:
+        combined_question += f"\n##### [Additional Context] #####\n{additional_context}"
+
+    return combined_question
 
 
 def get_assistant_details(selection, listofAssistance, assistant):
@@ -194,19 +209,19 @@ safety_options = [
 listofAssistance = [
                    
                     # General Agents 
-                    [emj_billcap+"GA_Default", "Default Assistance", "Default.atx"],
-                    [emj_billcap+"GA_General", "General Assisance", "General.atx"],
+                    [emj_billcap+"Default", "Default Assistance", "Default.atx"],
+                    [emj_billcap+"General", "General Assisance", "General.atx"],
 
                     # Technical Agents 
-                    [emj_tophat+"TA_Linux", "Linux Assistance", "linux_assistance.atx"], 
-                    [emj_tophat+"TA_Python", "Python Assistance", "Python_assistance.atx"],
-                    [emj_tophat+"TA_Bash", "Bash Assistance", "bashexpert.atx"],
-                    [emj_tophat+"TA_RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
+                    [emj_tophat+"Linux", "Linux Assistance", "linux_assistance.atx"], 
+                    [emj_tophat+"Python", "Python Assistance", "Python_assistance.atx"],
+                    [emj_tophat+"Bash", "Bash Assistance", "bashexpert.atx"],
+                    [emj_tophat+"RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
 
                     # Assistive Professional Agents 
-                    [emj_gradcap+"PA_2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
-                    [emj_gradcap+"PA_Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
-                    [emj_gradcap+"PA_BusniessExpert", "BE Assistance", "BusniessExpert.atx"]
+                    [emj_gradcap+"2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
+                    [emj_gradcap+"Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
+                    [emj_gradcap+"BusniessExpert", "BE Assistance", "BusniessExpert.atx"]
                    
                    ]
 
@@ -295,7 +310,7 @@ with st.sidebar:
     # Setting the Module Selection for the Assistance 
     # ################################################
 
-    model_select = st.selectbox("Choose Model", (
+    model_select = st.selectbox(emj_clamper+"Choose Model", (
                                models[0],
                                models[1],
                                models[2]
@@ -317,7 +332,7 @@ with st.sidebar:
     #                             listofAssistance[8][0]
     #                          ), index=0)
 
-    selection = st.selectbox("Active Assistance:", 
+    selection = st.selectbox(emj_assistance+"Active Assistance:", 
                              [item[0] for item in listofAssistance[:min(9,
                               len(listofAssistance))]], index=0
                              )
@@ -382,12 +397,14 @@ with st.sidebar:
     st.toast(":green[File:]"+fileloaded)
     st.toast(":green[Model:]"+model_select)
 
-    adcn = st.text_area(label="Additional Context", key="KK09923")
-    activate_audio_output = st.checkbox(emj_aaudio+"Activate Audio:", value=False)
+    with st.expander("Extention Context", expanded=False):
+        adcn = st.text_area(label="Additional Context", key="KK09923")
+        copyresponsetoClip = st.button("CC")
+
+    with st.expander("Audio Config", expanded=False):
+        activate_audio_output = st.checkbox(emj_aaudio+"Activate Audio:", value=False)
     st.write("version: "+version)
-    copyresponsetoClip = st.button("CC")
-
-
+    
 # #########################################################################
 # END OF: Sidebar  ######################################################## 
 #
@@ -467,7 +484,7 @@ if usermessage:
 
     chars_tobe_replaced = ' ,.'
     chars_swap = ""  # Noted that this will make the space as the char swap
-    filename = replace_chars(inputquestion, chars_tobe_replaced, chars_swap)
+    filename = replace_chars(str(inputquestion), chars_tobe_replaced, chars_swap)
     filename = filename[:20]
     print("[info] FileName is: "+filename+"")
 
