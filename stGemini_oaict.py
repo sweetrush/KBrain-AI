@@ -109,15 +109,20 @@ safety_options = [
 
 listofAssistance = [
                    
-                    ["AA_Default", "Default Assistance", "Default.atx"],
-                    ["AA_General", "General Assisance", "General.atx"],
-                    ["TN_Linux", "Linux Assistance", "linux_assistance.atx"], 
-                    ["TN_Python", "Python Assistance", "Python_assistance.atx"],
-                    ["BB_2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
-                    ["BB_Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
-                    ["TN_Bash", "Bash Assistance", "bashexpert.atx"],
-                    ["TN_RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
-                    ["BB_BusniessExpert", "BE Assistance", "BusniessExpert.atx"]
+                    # General Agents 
+                    ["GA_Default", "Default Assistance", "Default.atx"],
+                    ["GA_General", "General Assisance", "General.atx"],
+
+                    # Technical Agents 
+                    ["TA_Linux", "Linux Assistance", "linux_assistance.atx"], 
+                    ["TA_Python", "Python Assistance", "Python_assistance.atx"],
+                    ["TA_Bash", "Bash Assistance", "bashexpert.atx"],
+                    ["TA_RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
+
+                    # Assistive Professional Agents 
+                    ["PA_2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
+                    ["PA_Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
+                    ["PA_BusniessExpert", "BE Assistance", "BusniessExpert.atx"]
                    
                    ]
 
