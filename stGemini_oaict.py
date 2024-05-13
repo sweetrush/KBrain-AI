@@ -33,18 +33,24 @@ version = "1.7"
 
 ####################
 
+
+# Definding Emoji's 
+# ########################################
+
 emj_tophat = ' 🎩 '
 emj_billcap = ' 🧢 '
 emj_gradcap = ' 🎓 '
 emj_clamper = ' 🗜 '
 emj_aaudio = ' 🔊 '
 emj_assistance = ' 👾 '
-
 emj_filebox = ' 🗃 '
 emj_gear = ' ⚙ '
 emj_safety = ' 🩺 '
 emj_pencil = ' ✏ '
 
+
+# Defining the Configuration Settings 
+# ##################################################
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -52,20 +58,20 @@ apivalue = config.get("APIKEYS", "api")
 api11labs = config.get("APIKEYS", "api_11labs")
 
 # Defind Date Tags for Filenaming
+# ##################################################
+
 now = datetime.datetime.now()
 datetag_string = f'{now.year}.{now.month}.{now.day}_{now.hour}{now.minute}{now.second}'
+
 
 genai.configure(api_key=apivalue)
 st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
 
 
-# def openpdf_exttext(pdffile):
-#     exttext = ''
-#     preFile = PdfReader(pdffile)
-#     numberofpages = len(preFile.pages)
-#     for ps in range(numberofpages):
-#         exttext += preFile.pages[ps].extract_text()
-#     return exttext
+# #########################################################################################
+# Start of Function Definitions 
+# #########################################################################################
+
 
 def replace_chars(text, chars_to_replace, replacement):
     pattern = f"[{chars_to_replace}]"  # Create a character class pattern
@@ -196,6 +202,9 @@ def get_audio(texttomp3, prefix, auid):
 
     return mp3_path
 
+
+# Defining more Variables
+# ##############################################################
 
 model_tokens = "8024"
 
