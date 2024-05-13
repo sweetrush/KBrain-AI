@@ -188,7 +188,7 @@ def get_audio(texttomp3, prefix, auid):
     }
 
     response = requests.post(url, json=data, headers=headers)
-    mp3fileName = prefix + "_" + auid + '_output.mp3'
+    mp3fileName = prefix + "_" + auid + '.mp3'
     
     folder_path = "ai_audio"
     if not os.path.exists(folder_path):
@@ -256,8 +256,9 @@ for i in range(len(listofAssistance)):
 
 
 with st.sidebar:
-    global tempture_val, fileloaded, opt1_safe, opt2_safe, opt3_safe, opt4_safe
-    global loadassistantcontext, assistantcontext, adcn, pdftext, getResponsetext
+    global tempture_val, fileloaded, opt1_safe, opt2_safe
+    global opt3_safe, opt4_safe, pdftext, getResponsetext
+    global loadassistantcontext, assistantcontext, adcn
 
     st.title(emj_clamper+"Miah's AI Gemini Assistance")
 
@@ -391,10 +392,11 @@ model_name = model_select
 
 model = genai.GenerativeModel(model_name=model_name,
                               generation_config=generation_config,
-                              safety_settings=safety_settings)
+                              safety_settings=safety_settings
+                              )
 
 
-# For Session Storing Information  
+# For Session Storing Information [ Caching ] 
 # ##################################################################
 # ##################################################################
 
@@ -418,9 +420,9 @@ for message in st.session_state.chathistory:
 
 
 # Getting the User Prompt Information 
-# 
-inputquestion = st.chat_input("Provide your Prompt")
+# #################################################### 
 
+inputquestion = st.chat_input("Provide your Prompt")
 usermessage = question_combinder(adcn, inputquestion)
 
 # Runs What the User has input
