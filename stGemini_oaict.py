@@ -491,12 +491,14 @@ if usermessage:
         st.write(botmessage)
 
         if activate_audio_output:
+            st.warning("Processing Audio request")
             audiofilename = datetag_string+"_"+filename
             audiopath = get_audio(botmessage, "el11_au", audiofilename)
             audiofile = open(audiopath, "rb")
             audiobytes = audiofile.read()
             st.audio(audiobytes, format='audio/mp3')
             st.toast(":blue[Audio] :green[activated]")
+            st.write("Audio Generation Completed")
 
         status_string = "<strong style='color:red'>Using: "+assistantcontext+" [ "+str(tokencount)+" ]</strong>"  # noqa: E501
         status_cache = "**:red[Using: "+assistantcontext+" ( "+str(tokencount)+" )]**"  # noqa: E501
