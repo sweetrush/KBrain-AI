@@ -21,6 +21,8 @@ import os
 import google.generativeai as genai
 import streamlit as st
 import pandas as pd
+import time
+import numpy as np
 
 
 # Definding the Current working version 
@@ -37,6 +39,12 @@ emj_gradcap = ' 🎓 '
 emj_clamper = ' 🗜 '
 emj_aaudio = ' 🔊 '
 emj_assistance = ' 👾 '
+
+emj_filebox = ' 🗃 '
+emj_gear = ' ⚙ '
+emj_safety = ' 🩺 '
+emj_pencil = ' ✏ '
+
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -219,6 +227,7 @@ listofAssistance = [
                     [emj_tophat+"RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
 
                     # Assistive Professional Agents 
+                    [emj_gradcap+"ProposalDev", "Proposal Dev Assistant", "proposaldev.atx"],
                     [emj_gradcap+"2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
                     [emj_gradcap+"Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
                     [emj_gradcap+"BusniessExpert", "BE Assistance", "BusniessExpert.atx"]
@@ -230,17 +239,6 @@ assistant = []
 for i in range(len(listofAssistance)):
     assistant.append(read_from_file(listofAssistance[i][2]))
 
-# assistant = [
-#              read_from_file(listofAssistance[0][2]),
-#              read_from_file(listofAssistance[1][2]),
-#              read_from_file(listofAssistance[2][2]),
-#              read_from_file(listofAssistance[3][2]),
-#              read_from_file(listofAssistance[4][2]),
-#              read_from_file(listofAssistance[5][2]),
-#              read_from_file(listofAssistance[6][2]),
-#              read_from_file(listofAssistance[7][2]),
-#              read_from_file(listofAssistance[8][2])
-#             ]
 
 # ###################################################################################
 #  SIDE BAR CODE FOR THE PROGRAM 
@@ -254,7 +252,7 @@ with st.sidebar:
 
     st.title(emj_clamper+"Miah's AI Gemini Assistance")
 
-    with st.expander("Files Upload", expanded=False):
+    with st.expander(emj_filebox+"Files Upload", expanded=False):
         uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
         if uploaded_file is not None:
             pdftext = openpdf_exttext(uploaded_file)
@@ -270,14 +268,14 @@ with st.sidebar:
 
         uploaded_img = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
 
-    with st.expander("Prompt Config", expanded=False):
+    with st.expander(emj_gear+"Prompt Config", expanded=False):
         tempture_val = st.text_input("Prompt Temperature", value="0.07", max_chars=None)
         topp = st.text_input("Set Top P", value="1", max_chars=None)
         topk = st.text_input("Set Top K", value="1", max_chars=None)
         mot = st.text_input("Max Output Tokens", value=model_tokens, max_chars=None)
         convert_tpv = float(tempture_val)
 
-    with st.expander("Safety Config", expanded=False):
+    with st.expander(emj_safety+"Safety Config", expanded=False):
         opt1_safe = st.selectbox("Harassment", (
                               safety_options[0],
                               safety_options[1],
@@ -319,19 +317,6 @@ with st.sidebar:
     # Setting the selected Active Assistance 
     # ################################################
 
-    # selection = st.selectbox("Active Assistance:", 
-    #                          (
-    #                             listofAssistance[0][0],
-    #                             listofAssistance[1][0],
-    #                             listofAssistance[2][0],
-    #                             listofAssistance[3][0],
-    #                             listofAssistance[4][0],
-    #                             listofAssistance[5][0],
-    #                             listofAssistance[6][0],
-    #                             listofAssistance[7][0],
-    #                             listofAssistance[8][0]
-    #                          ), index=0)
-
     selection = st.selectbox(emj_assistance+"Active Assistance:", 
                              [item[0] for item in listofAssistance[:min(9,
                               len(listofAssistance))]], index=0
@@ -339,51 +324,6 @@ with st.sidebar:
 
     # Checking and setting the Selected Assistance 
     # ##############################################
-
-    # if selection == listofAssistance[0][0]:
-    #     loadassistantcontext = assistant[0]
-    #     assistantcontext = listofAssistance[0][1]
-    #     fileloaded = listofAssistance[0][2]
-
-    # elif selection == listofAssistance[1][0]:
-    #     loadassistantcontext = assistant[1]
-    #     assistantcontext = listofAssistance[1][1]
-    #     fileloaded = listofAssistance[1][2]
-
-    # elif selection == listofAssistance[2][0]:
-    #     loadassistantcontext = assistant[2]
-    #     assistantcontext = listofAssistance[2][1]
-    #     fileloaded = listofAssistance[2][2]
-
-    # elif selection == listofAssistance[3][0]:
-    #     loadassistantcontext = assistant[3]
-    #     assistantcontext = listofAssistance[3][1]
-    #     fileloaded = listofAssistance[3][2]
-
-    # elif selection == listofAssistance[4][0]:
-    #     loadassistantcontext = assistant[4]
-    #     assistantcontext = listofAssistance[4][1]
-    #     fileloaded = listofAssistance[4][2]
-
-    # elif selection == listofAssistance[5][0]:
-    #     loadassistantcontext = assistant[5]
-    #     assistantcontext = listofAssistance[5][1]
-    #     fileloaded = listofAssistance[5][2]
-
-    # elif selection == listofAssistance[6][0]:
-    #     loadassistantcontext = assistant[6]
-    #     assistantcontext = listofAssistance[6][1]
-    #     fileloaded = listofAssistance[6][2]
-
-    # elif selection == listofAssistance[7][0]:
-    #     loadassistantcontext = assistant[7]
-    #     assistantcontext = listofAssistance[7][1]
-    #     fileloaded = listofAssistance[7][2]
-
-    # elif selection == listofAssistance[8][0]:
-    #     loadassistantcontext = assistant[8]
-    #     assistantcontext = listofAssistance[8][1]
-    #     fileloaded = listofAssistance[8][2]
 
     loadassistantcontext, assistantcontext, fileloaded = get_assistant_details(
         selection, listofAssistance, assistant
@@ -397,11 +337,11 @@ with st.sidebar:
     st.toast(":green[File:]"+fileloaded)
     st.toast(":green[Model:]"+model_select)
 
-    with st.expander("Extention Context", expanded=False):
+    with st.expander(emj_pencil+"Extention Context", expanded=False):
         adcn = st.text_area(label="Additional Context", key="KK09923")
-        copyresponsetoClip = st.button("CC",help="Copy Clipboard")
+        copyresponsetoClip = st.button("CC", help="Copy Clipboard")
 
-    with st.expander("Audio Config", expanded=False):
+    with st.expander(emj_aaudio+"Audio Config", expanded=False):
         activate_audio_output = st.checkbox(emj_aaudio+"Activate Audio:", value=False)
     st.write("version: "+version)
     
