@@ -47,7 +47,11 @@ emj_filebox = ' 🗃 '
 emj_gear = ' ⚙ '
 emj_safety = ' 🩺 '
 emj_pencil = ' ✏ '
+emj_stats = ' 📊 '
 
+# Generated Data Output Directors 
+dataOPD = "output/gemini_out"
+audioOD = "ai_audio"
 
 # Defining the Configuration Settings 
 # ##################################################
@@ -104,7 +108,7 @@ def read_from_file(filename):
 
 
 def write_to_file(filename, text):
-    storedir = "output/gemini_out"
+    storedir = dataOPD
     datetag = datetag_string
     store_path = os.path.join(storedir, datetag+'_'+filename)
 
@@ -190,7 +194,7 @@ def get_audio(texttomp3, prefix, auid):
     response = requests.post(url, json=data, headers=headers)
     mp3fileName = prefix + "_" + auid + '.mp3'
     
-    folder_path = "ai_audio"
+    folder_path = audioOD
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
     mp3_path = os.path.join(folder_path, mp3fileName)
@@ -203,8 +207,28 @@ def get_audio(texttomp3, prefix, auid):
     return mp3_path
 
 
+def count_files(directory_path):
+    """Counts the number of files in a directory.
+
+    Args:
+        directory_path (str): The path to the directory.
+
+    Returns:
+        int: The number of files in the directory.
+    """
+    file_count = 0
+    for item in os.listdir(directory_path):
+        item_path = os.path.join(directory_path, item)
+        if os.path.isfile(item_path):
+            file_count += 1
+    return file_count
+
 # Defining more Variables
 # ##############################################################
+
+
+fileInStore = count_files(dataOPD)
+audioInStore = count_files(audioOD)
 
 model_tokens = "8024"
 
@@ -267,7 +291,6 @@ with st.sidebar:
     global loadassistantcontext, assistantcontext, adcn
 
     st.title(emj_clamper+"Miah's AI Gemini Assistance")
-
     with st.expander(emj_filebox+"Files Upload", expanded=False):
         uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
         if uploaded_file is not None:
@@ -359,7 +382,12 @@ with st.sidebar:
 
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
         activate_audio_output = st.checkbox(emj_aaudio+"Activate Audio:", value=False)
-    st.write("version: "+version)
+    
+    with st.expander(emj_stats+"Status", expanded=False):
+        st.write("##### Number of SAR: "+str(fileInStore))
+        st.write("##### Number of SAF: "+str(audioInStore))
+
+    st.write("##### Version: "+version)
     
 # #########################################################################
 # END OF: Sidebar  ######################################################## 
