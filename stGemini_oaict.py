@@ -29,7 +29,7 @@ import numpy as np
 # of the Miah AI assistance 
 # #################################################
 
-version = "1.7"
+version = "1.8"
 
 ####################
 
@@ -210,6 +210,7 @@ model_tokens = "8024"
 
 models = [
           "gemini-1.5-pro-latest",
+          "gemini-1.5-flash-latest",
           "gemini-1.0-pro",
           "gemini-pro-vision"
          ]
@@ -233,13 +234,18 @@ listofAssistance = [
                     [emj_tophat+"Linux", "Linux Assistance", "linux_assistance.atx"], 
                     [emj_tophat+"Python", "Python Assistance", "Python_assistance.atx"],
                     [emj_tophat+"Bash", "Bash Assistance", "bashexpert.atx"],
+                    [emj_tophat+"Docker", "Docker Assistance", "Dockerassist.atx"],
+
                     [emj_tophat+"RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
 
                     # Assistive Professional Agents 
                     [emj_gradcap+"ProposalDev", "Proposal Dev Assistant", "proposaldev.atx"],
                     [emj_gradcap+"2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
                     [emj_gradcap+"Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
-                    [emj_gradcap+"BusniessExpert", "BE Assistance", "BusniessExpert.atx"]
+                    [emj_gradcap+"BusniessExpert", "BE Assistance", "BusniessExpert.atx"],
+
+                    # Test Phase Assistance 
+                    [emj_assistance+"DarkAI", "Dark Assistance", "darkai.atx"]
                    
                    ]
 
@@ -328,7 +334,7 @@ with st.sidebar:
     # ################################################
 
     selection = st.selectbox(emj_assistance+"Active Assistance:", 
-                             [item[0] for item in listofAssistance[:min(9,
+                             [item[0] for item in listofAssistance[:min(20,
                               len(listofAssistance))]], index=0
                              )
 
