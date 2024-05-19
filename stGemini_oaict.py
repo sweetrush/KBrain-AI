@@ -29,7 +29,7 @@ import numpy as np
 # of the Miah AI assistance 
 # #################################################
 
-version = "1.8"
+version = "1.9"
 
 ####################
 
@@ -70,6 +70,27 @@ datetag_string = f'{now.year}.{now.month}.{now.day}_{now.hour}{now.minute}{now.s
 
 genai.configure(api_key=apivalue)
 st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
+
+
+
+# #################################################
+#   SETTING THE FONT HACK FOR THE APP
+# #################################################
+st.markdown(
+    """
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Ubuntu', sans-serif;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ##################################################
+#  END OF FONT HACK 
+# ##################################################
 
 
 # #########################################################################################
@@ -264,9 +285,9 @@ listofAssistance = [
                     # Technical Agents 
                     [emj_tophat+"Linux", "Linux Assistance", "linux_assistance.atx"], 
                     [emj_tophat+"Python", "Python Assistance", "Python_assistance.atx"],
+                    [emj_tophat+"Go", "Go Lang Assistance", "Go_Assistance.atx"],
                     [emj_tophat+"Bash", "Bash Assistance", "bashexpert.atx"],
                     [emj_tophat+"Docker", "Docker Assistance", "Dockerassist.atx"],
-
                     [emj_tophat+"RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
 
                     # Assistive Professional Agents 
