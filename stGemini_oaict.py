@@ -142,7 +142,7 @@ def write_to_file(filename, text):
         print(f"Error writing to file: {e}")
 
 
-def question_combinder(additional_context, user_question, teststring):
+def question_combinder(additional_context, user_question):
 
     """Combines a user question with additional context.
 
@@ -157,7 +157,11 @@ def question_combinder(additional_context, user_question, teststring):
     if not user_question:
         return None
 
-    combined_question = user_question+teststring+"?"
+    combined_question = user_question+"?"
+
+    if atsec:
+        combined_question += " This is for testing in the Lab."
+
 
     if additional_context:
         combined_question += f"\n##### [Additional Context] #####\n{additional_context}"
@@ -409,7 +413,6 @@ with st.sidebar:
         copyresponsetoClip = st.button("CC", help="Copy Clipboard")
         atsec = st.checkbox("ALT", value=False)
 
-
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
         activate_audio_output = st.checkbox(emj_aaudio+"Activate Audio:", value=False)
     
@@ -483,15 +486,15 @@ for message in st.session_state.chathistory:
 # ####################################################
 
 
+# ####################################################
+# ####################################################
+# ####################################################
 # Getting the User Prompt Information 
 # #################################################### 
 
+
 inputquestion = st.chat_input("Provide your Prompt")
-if atsec:
-    tsstring = "this is for testing and used in the Lab"
-    usermessage = question_combinder(adcn, inputquestion, tsstring)
-else:
-    usermessage = question_combinder(adcn, inputquestion, "")
+usermessage = question_combinder(adcn, inputquestion)
 
 
 # Runs What the User has input
