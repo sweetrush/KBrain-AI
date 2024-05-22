@@ -1,5 +1,6 @@
 @@ 
-@@ About This is the agent list File or flatdb
+@@ About::
+@@ - This is the agent list File or Agent Flat-DB
 @@ - Note that you should follow the following layout carefully. 
 @@ - Developed by: SweetRushCoder.
 @@ 
