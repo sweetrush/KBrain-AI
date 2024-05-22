@@ -30,6 +30,7 @@ import numpy as np
 # #################################################
 
 version = "2.1"
+develper = "SweetRushCoder"
 
 ####################
 
@@ -85,6 +86,7 @@ st.markdown(
         body {
             font-family: 'Ubuntu', sans-serif;
         }
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -306,7 +308,16 @@ def loadagents():
                          replace_chars(str(file), " ", "")]
                          )
 
+# Creates are Horizontal Line
+#
 
+
+def horizontal_line():
+    st.markdown("---", unsafe_allow_html=True)
+
+
+#
+#
 # #######################################################################
 #   END OF FUNCTION DEFINTIONS 
 #########################################################################
@@ -384,6 +395,8 @@ with st.sidebar:
     global loadassistantcontext, assistantcontext, adcn
 
     st.title(emj_clamper+"Miah's AI Gemini Assistance")
+    horizontal_line()
+
     with st.expander(emj_filebox+"Files Upload", expanded=False):
         uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
         if uploaded_file is not None:
@@ -495,13 +508,18 @@ with st.sidebar:
 
     with st.expander(emj_pencil+"Extention Context", expanded=False):
         adcn = st.text_area(label="Additional Context", key="KK09923")
-        copyresponsetoClip = st.button("CC", help="Copy Clipboard")
-        atsec = st.checkbox("ALT", value=False)
+
+        col1, col2 = st.columns(2, gap="small")
+
+        copyresponsetoClip = col1.button("CC", help="Copy Clipboard")
+        atsec = col2.checkbox("ALT", value=False, help="Active Lab Testing")
 
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
 
         activate_audio_output = st.checkbox(
-                                  emj_aaudio+"Activate Audio:", value=False
+                                  emj_aaudio+"Activate Audio:", 
+                                  value=False,
+                                  help="Active AI Generated Audio"
                                   )
     
     with st.expander(emj_stats+"Status", expanded=False):
@@ -509,7 +527,9 @@ with st.sidebar:
         st.write("##### Number of SAF: "+str(audioInStore))
         st.write("##### Number of AN: "+str(len(listofAssistance)))
 
-    st.write("##### Version: "+version)
+    horizontal_line()
+    st.write("##### Version:   :orange["+version+"]")
+    st.write("##### Developer:   :green["+develper+"]")
     
 # #########################################################################
 # END OF: Sidebar  ######################################################## 
