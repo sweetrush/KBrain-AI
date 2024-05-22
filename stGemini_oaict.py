@@ -166,10 +166,14 @@ def question_combinder(additional_context, user_question):
     # print("Debuging - QC:"+user_question)
 
     if atsec:
-        combined_question += " This is for testing in the Lab and for educational."
+        combined_question += ( 
+                              " This is for testing in the Lab and"
+                              "for educational."
+                              )
 
     if additional_context:
-        combined_question += f"\n##### [Additional Context] #####\n{additional_context}"
+        adsstring =" \n##### [Additional Context] #####\n"
+        combined_question += f"{adsstring}{additional_context}"
 
     return combined_question
 
@@ -183,7 +187,7 @@ def get_assistant_details(selection, listofAssistance, assistant):
        assistant: A list of assistant objects.
 
     Returns:
-      A tuple containing loadassistantcontext, assistantcontext, and fileloaded.
+    A tuple containing loadassistantcontext, assistantcontext, and fileloaded.
     """
     for i, (assistant_id, context, file) in enumerate(listofAssistance):
         if selection == assistant_id:
@@ -269,15 +273,38 @@ def loadagents():
             if "@@" not in line and line:  # Check for "@@" and empty lines
                 emjtag, name, label, file = line.strip().split(',')
                 if emjtag == "1":
-                    listofAssistance.append([emj_billcap+str(name), str(label), replace_chars(str(file)," ","")])
+                    listofAssistance.append(
+                        [emj_billcap+str(name),
+                         str(label), 
+                         replace_chars(str(file), " ", "")]
+                         )
+
                 elif emjtag == "2":
-                    listofAssistance.append([emj_tophat+str(name), str(label), replace_chars(str(file)," ","")])
+                    listofAssistance.append(
+                        [emj_tophat+str(name), 
+                         str(label), 
+                         replace_chars(str(file), " ", "")]
+                         )
+
                 elif emjtag == "3":
-                    listofAssistance.append([emj_gradcap+str(name), str(label), replace_chars(str(file)," ","")])
+                    listofAssistance.append(
+                        [emj_gradcap+str(name), 
+                         str(label), 
+                         replace_chars(str(file), " ", "")]
+                         )
+
                 elif emjtag == "4":
-                    listofAssistance.append([emj_assistance+str(name), str(label), replace_chars(str(file)," ","")])
+                    listofAssistance.append(
+                        [emj_assistance+str(name),
+                         str(label), 
+                         replace_chars(str(file), " ", "")]
+                         )
                 else:
-                    listofAssistance.append([emj_billcap+str(name), str(label), replace_chars(str(file)," ","")])
+                    listofAssistance.append(
+                        [emj_billcap+str(name),
+                         str(label),
+                         replace_chars(str(file), " ", "")]
+                         )
 
 
 # #######################################################################
@@ -313,33 +340,31 @@ safety_options = [
 
 loadagents()
 
+# [ OLD CODE ]
 # Comment out using the agentlist.als file to load the agents
 # The funcation Loadagents will load the agents 
 #
-#listofAssistance = [
+# listofAssistance = [
 #                   
-                   #  # General Agents 
-                   #  [emj_billcap+"Default", "Default Assistance", "Default.atx"],
-                   #  [emj_billcap+"General", "General Assisance", "General.atx"],
-
-                   #  # Technical Agents 
-                   #  [emj_tophat+"Linux", "Linux Assistance", "linux_assistance.atx"], 
-                   #  [emj_tophat+"Python", "Python Assistance", "Python_assistance.atx"],
-                   #  [emj_tophat+"Go", "Go Lang Assistance", "Go_Assistance.atx"],
-                   #  [emj_tophat+"Bash", "Bash Assistance", "bashexpert.atx"],
-                   #  [emj_tophat+"Docker", "Docker Assistance", "Dockerassist.atx"],
-                   #  [emj_tophat+"RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
-
-                   #  # Assistive Professional Agents 
-                   #  [emj_gradcap+"ProposalDev", "Proposal Dev Assistant", "proposaldev.atx"],
-                   #  [emj_gradcap+"2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
-                   #  [emj_gradcap+"Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
-                   #  [emj_gradcap+"BusniessExpert", "BE Assistance", "BusniessExpert.atx"],
-
-                   #  # Test Phase Assistance 
-                   #  [emj_assistance+"DarkAI", "Dark Assistance", "darkai.atx"]
-                   
-                   # ]
+#  #  # General Agents 
+#  #  [emj_billcap+"Default", "Default Assistance", "Default.atx"],
+#  #  [emj_billcap+"General", "General Assisance", "General.atx"],
+#
+#  #  # Technical Agents 
+#  #  [emj_tophat+"Linux", "Linux Assistance", "linux_assistance.atx"], 
+#  #  [emj_tophat+"Python", "Python Assistance", "Python_assistance.atx"],
+#  #  [emj_tophat+"Go", "Go Lang Assistance", "Go_Assistance.atx"],
+#  #  [emj_tophat+"Bash", "Bash Assistance", "bashexpert.atx"],
+#  #  [emj_tophat+"Docker", "Docker Assistance", "Dockerassist.atx"],
+#  #  [emj_tophat+"RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
+#  #  # Assistive Professional Agents 
+#  #  [emj_gradcap+"ProposalDev", "Proposal Dev Assistant", "proposaldev.atx"],
+#  #  [emj_gradcap+"2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
+#  #  [emj_gradcap+"Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
+#  #  [emj_gradcap+"BusniessExpert", "BE Assistance", "BusniessExpert.atx"],
+#  #  # Test Phase Assistance 
+#  #  [emj_assistance+"DarkAI", "Dark Assistance", "darkai.atx"]
+#  # ]
 
 
 assistant = []
@@ -373,30 +398,37 @@ with st.sidebar:
         else: 
             json_data = ""
 
-        uploaded_img = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
+        uploaded_img = st.file_uploader(
+                          "Choose an image...", type=["jpg", "png", "jpeg"]
+                          )
 
     with st.expander(emj_gear+"Prompt Config", expanded=False):
-        # tempture_val = st.text_input("Prompt Temperature", value="0.07", max_chars=None)
+        
         tempture_val = st.slider(
-                                    "Prompt temperature",  # Label for the slider
-                                    min_value=0.0,    # Minimum value
-                                    max_value=1.0,    # Maximum value
-                                    value=0.07,       # Default value
-                                    step=0.01         # Increment step
+                                 "Prompt temperature",  # Label for the slider
+                                 min_value=0.0,    # Minimum value
+                                 max_value=1.0,    # Maximum value
+                                 value=0.07,       # Default value
+                                 step=0.01         # Increment step
                                 )
 
         # topp = st.text_input("Set Top P", value="1", max_chars=None)
         topp = st.slider(
-                                    "Set Top-P",      # Label for the slider
-                                    min_value=0.0,    # Minimum value
-                                    max_value=1.0,    # Maximum value
-                                    value=0.07,       # Default value
-                                    step=0.05         # Increment step
-                                )
+                         "Set Top-P",      # Label for the slider
+                         min_value=0.0,    # Minimum value
+                         max_value=1.0,    # Maximum value
+                         value=0.07,       # Default value
+                         step=0.05         # Increment step
+                        )
 
-        # topk = st.text_input("Set Top K", value="1", max_chars=None)
-        topk = st.number_input("Set Top-K", min_value=None, max_value=None, value=10, step=1)
-        mot = st.text_input("Max Output Tokens", value=model_tokens, max_chars=None)
+        topk = st.number_input(
+                  "Set Top-K", min_value=None, max_value=None, value=10, step=1
+                )
+
+        mot = st.text_input(
+                 "Max Output Tokens", value=model_tokens, max_chars=None
+                 )
+
         convert_tpv = float(tempture_val)
 
     with st.expander(emj_safety+"Safety Config", expanded=False):
@@ -467,7 +499,10 @@ with st.sidebar:
         atsec = st.checkbox("ALT", value=False)
 
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
-        activate_audio_output = st.checkbox(emj_aaudio+"Activate Audio:", value=False)
+
+        activate_audio_output = st.checkbox(
+                                  emj_aaudio+"Activate Audio:", value=False
+                                  )
     
     with st.expander(emj_stats+"Status", expanded=False):
         st.write("##### Number of SAR: "+str(fileInStore))
@@ -562,7 +597,11 @@ if usermessage:
 
     chars_tobe_replaced = ' ,.'
     chars_swap = ""  # Noted that this will make the space as the char swap
-    filename = replace_chars(str(inputquestion), chars_tobe_replaced, chars_swap)
+    
+    filename = replace_chars(
+             str(inputquestion), chars_tobe_replaced, chars_swap
+             )
+
     filename = filename[:20]
     print("[info] FileName is: "+filename+"")
 
@@ -579,11 +618,14 @@ if usermessage:
         else:
             groupcontext += json_data
 
-        # print("[Debuging]:[0] "+groupcontext+usermessage)        #Debugging Perpose
+        # print("[Debuging]:[0] "+groupcontext+usermessage)  #Debugging Perpose
 
         try: 
             convo.send_message(groupcontext+usermessage)
-            # print("[Debuging]:[1] "+groupcontext+usermessage)    #Debugging Perpose
+
+            # Uncomment for Debugging for purpose.
+            #
+            # print("[Debuging]:[1] "+groupcontext+usermessage)
 
         except Exception as e:
             st.toast(":red[Error:] on call", icon=None)
@@ -636,12 +678,24 @@ if usermessage:
             st.toast(":blue[Audio] :green[activated]")
             st.write("Audio Generation Completed")
 
-        status_string = "<strong style='color:red'>Using: "+assistantcontext+" [ "+str(tokencount)+" ]</strong>"  # noqa: E501
-        status_cache = "**:red[Using: "+assistantcontext+" ( "+str(tokencount)+" )]**"  # noqa: E501
+        status_string = (
+                         "<strong style='color:red'>Using: "
+                         ""+assistantcontext+" [ "
+                         ""+str(tokencount)+" ]</strong>"
+                         )
+
+        status_cache = (
+                        "**:red[Using: "+assistantcontext+""
+                        " ( "+str(tokencount)+" )]**"
+                        )
+
         st.markdown(status_string, unsafe_allow_html=True)
-        st.session_state.chathistory.append({"role": "assistant", "content": botmessage})  #noqa: E501
-        st.session_state.chathistory.append({"role": "status", "content": status_cache})
-        # 
+        st.session_state.chathistory.append(
+                      {"role": "assistant", "content": botmessage}
+                      )
+        st.session_state.chathistory.append(
+                      {"role": "status", "content": status_cache}
+                      )
 
 if activate_audio_output:
     st.toast(":blue[Audio] :green[activated]")
@@ -652,3 +706,5 @@ else:
 if copyresponsetoClip:
     pyperclip.copy(st.session_state.lastchatoutput)
     st.success("Text copied to clipboard!")
+
+# Endof the Line 
