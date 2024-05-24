@@ -29,14 +29,14 @@ import numpy as np
 # of the Miah AI assistance 
 # #################################################
 
-version = "2.1"
+version = "2.3"
 develper = "SweetRushCoder"
 
-####################
+###################################################
 
 
 # Definding Emoji's 
-# ########################################
+# #################################################
 
 emj_tophat = ' 🎩 '
 emj_billcap = ' 🧢 '
@@ -69,19 +69,29 @@ api11labs = config.get("APIKEYS", "api_11labs")
 # ##################################################
 
 now = datetime.datetime.now()
-datetag_string = f'{now.year}.{now.month}.{now.day}_{now.hour}{now.minute}{now.second}'
+ynm = f'{now.year}.{now.month}.{now.day}'    # shortdata
+hms = f'{now.hour}{now.minute}{now.second}'  # Hour-Min-Sec 
+datetag_string = f'{ynm}_{hms}'
 
 
 genai.configure(api_key=apivalue)
-st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
+st.set_page_config(
+    page_title="Miah GeminiAI", 
+    page_icon=":tada:", 
+    layout="wide"
+    )
 
 
 # #################################################
 #   SETTING THE FONT HACK FOR THE APP
 # #################################################
+urlfontUbuntu = (
+                 "https://fonts.googleapis.com/css2?family="
+                 "Ubuntu:wght@400;700&display=swap"
+                 )
 st.markdown(
     """
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap">
+    <link rel="stylesheet" href="{urlfontUbuntu}">
     <style>
         body {
             font-family: 'Ubuntu', sans-serif;
@@ -109,17 +119,25 @@ def replace_chars(text, chars_to_replace, replacement):
 
 @st.cache_data
 def openpdf_exttext(pdffile):
-    """Extracts text from a PDF file with improved error handling and potential optimization."""
+    
+    """Extracts text from a PDF file with improved error 
+    handling and potential optimization."""
+    
     try:
         pdf_reader = PdfReader(pdffile)
         number_of_pages = len(pdf_reader.pages)
         extracted_text = ""
         for page_num in range(number_of_pages):
-            extracted_text += pdf_reader.pages[page_num].extract_text(layout=True)
+            extracted_text += pdf_reader.pages[page_num].extract_text(
+                layout=True
+                )
         return extracted_text
     except Exception as e:
         logging.error(f"Error extracting text from PDF: {e}")
-        return ""  # Or raise an exception depending on your error handling strategy
+        return ""  
+        
+        # Or raise an exception depending 
+        # on your error handling strategy
 
 
 @st.cache_data
@@ -169,12 +187,12 @@ def question_combinder(additional_context, user_question):
 
     if atsec:
         combined_question += ( 
-                              " This is for testing in the Lab and"
-                              "for educational."
+                              " This is for testing in the Lab and "
+                              " for educational."
                               )
 
     if additional_context:
-        adsstring =" \n##### [Additional Context] #####\n"
+        adsstring = " \n##### :green[Additional Context] #####\n"
         combined_question += f"{adsstring}{additional_context}"
 
     return combined_question
@@ -314,6 +332,14 @@ def loadagents():
 
 def horizontal_line():
     st.markdown("---", unsafe_allow_html=True)
+
+
+@st.experimental_dialog("About the Developer")
+def display_about_dev():
+    st.title("About the Developer")
+    st.write("Name: SweetRushCoder")
+    st.write("Project: Miah's AI Assistance")
+    st.write("DevYear: 2024")
 
 
 #
@@ -514,6 +540,8 @@ with st.sidebar:
         copyresponsetoClip = col1.button("CC", help="Copy Clipboard")
         atsec = col2.checkbox("ALT", value=False, help="Active Lab Testing")
 
+        dialogpop = col1.button("AD", on_click=display_about_dev(), help="pops a dialog box")
+
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
 
         activate_audio_output = st.checkbox(
@@ -607,6 +635,8 @@ inputquestion = st.chat_input("Provide your Prompt")
 usermessage = question_combinder(adcn, inputquestion)
 
 
+
+
 # Runs What the User has input
 if usermessage:
     with st.chat_message("User"):
@@ -659,7 +689,10 @@ if usermessage:
 
         res00data = {"role": "user", "parts": [ca]}
         res01data = {"role": "model", "parts": [convo.last.text]}
-        res02data = {"role": "user", "parts": [groupcontext+usermessage]}
+        res02data = {"role": "user", "parts": 
+                     [convo.last.text+groupcontext+usermessage]
+                     }
+
         chatdata.append(res02data)
         chatdata.append(res00data)
         chatdata.append(res01data)
