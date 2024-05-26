@@ -667,9 +667,8 @@ with bottom():
                 codewrap = "```"+code+"\n "+codearea+" \n```"
 
         with tb3:
-             # with st.expander(emj_tophat+"Youtube Video Context", expanded=False):
-             youtubeURL = st.text_input("Youtube Video URL", value="", max_chars=None)
-             ac_youtubesc = st.toggle("AYS", value=False, help="Activate Transcript")
+            youtubeURL = st.text_input("Youtube Video URL", value="", max_chars=None)
+            ac_youtubesc = st.toggle("AYS", value=False, help="Activate Transcript")
         
         # Other related Buttons 
         # 
