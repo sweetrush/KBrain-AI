@@ -618,7 +618,11 @@ with st.sidebar:
     with st.expander(emj_safety+"Special Features", expanded=False):
         atsec = st.checkbox("ALT", value=False, help="Active Lab Testing")
 
-    with st.expander(emj_tophat+"Youtube Video Transcript", expanded=False):
+    youtubecontexthelper = """
+                           Paste the Youtube URL and activate AYS to get the 
+                           youtube video context to be used in the request
+                           """
+    with st.expander(emj_tophat+"Youtube Video Context", expanded=False, help=youtubecontexthelper):
         youtubeURL = st.text_input("Video URL", value="", max_chars=None)
         ac_youtubesc = st.checkbox("AYS", value=False, help="Activate Transcript")
 
