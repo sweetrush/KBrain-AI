@@ -615,9 +615,7 @@ with st.sidebar:
     with st.expander(emj_safety+"Special Features", expanded=False):
         atsec = st.toggle("ALT", value=False, help="Active Lab Testing")
 
-    with st.expander(emj_tophat+"Youtube Video Context", expanded=False):
-        youtubeURL = st.text_input("Video URL", value="", max_chars=None)
-        ac_youtubesc = st.toggle("AYS", value=False, help="Activate Transcript")
+    
 
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
 
@@ -658,7 +656,7 @@ codewrap = ""  # initating the var for the code wrap here
 with bottom():
     with st.expander(emj_pencil+"Extention Context", expanded=False):
         # acp = st.toggle("ACP", help="Area for Code input", value=False)
-        tb1, tb2 = st.tabs(["ATC", "ACC"])
+        tb1, tb2, tb3, tb4 = st.tabs(["ATC", "ACC", "AYC", "AB"])
 
         with tb1:
             adcn = st.text_area(
@@ -688,13 +686,19 @@ with bottom():
             else:
                 codewrap = "```"+code+"\n "+codearea+" \n```"
 
+        with tb3:
+             # with st.expander(emj_tophat+"Youtube Video Context", expanded=False):
+             youtubeURL = st.text_input("Youtube Video URL", value="", max_chars=None)
+             ac_youtubesc = st.toggle("AYS", value=False, help="Activate Transcript")
+        
         # Other related Buttons 
         # 
 
-        col1, col2, = st.columns(2, gap="small")
-        # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
-        get_mictext = col1.button("GM", help="Listain to Microphone")
-        dialogpop = col2.button(
+        with tb4:
+            col1, col2, = st.columns(2, gap="small")
+            # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
+            get_mictext = col1.button("GM", help="Listain to Microphone")
+            dialogpop = col2.button(
                                "AD", 
                                on_click=display_about_dev(), 
                                help="pops a dialog box")
@@ -795,6 +799,7 @@ if dialogpop:
 # Runs What the User has input
 if usermessage:
     with st.chat_message("User"):
+        st.rerun()
         st.write(usermessage)
 
         # Storing User Information to the Session Variable
