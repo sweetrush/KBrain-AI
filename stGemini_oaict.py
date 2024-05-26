@@ -657,10 +657,18 @@ codewrap = ""  # initating the var for the code wrap here
 
 with bottom():
     with st.expander(emj_pencil+"Extention Context", expanded=False):
-        acp = st.toggle("ACP", help="Area for Code input", value=False)
+        # acp = st.toggle("ACP", help="Area for Code input", value=False)
+        tb1, tb2 = st.tabs(["ATC", "ACC"])
 
-        adcn = st.text_area(label="Additional Context", height=100, key="KK09923")
-        if acp:
+        with tb1:
+            adcn = st.text_area(
+                               label="Additional Context", 
+                               height=100, 
+                               key="KK09923"
+                               )
+
+        # if acp:
+        with tb2:
             code = st.selectbox('Select Code Type', 
                                 (
                                  "no-code", "bash", "c++", "powershell",
