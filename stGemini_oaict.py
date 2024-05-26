@@ -503,24 +503,6 @@ with st.sidebar:
     st.title(emj_clamper+"Miah's AI Gemini Assistance")
     horizontal_line()
 
-    with st.expander(emj_filebox+"Files Upload", expanded=False):
-        uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
-        if uploaded_file is not None:
-            pdftext = openpdf_exttext(uploaded_file)
-        else:
-            pdftext = ""
-
-        uploaded_csv = st.file_uploader("Choose a CSV file", type="csv")
-        if uploaded_csv is not None:
-            df = pd.read_csv(uploaded_csv)
-            json_data = df.to_json(orient='records')
-        else: 
-            json_data = ""
-
-        uploaded_img = st.file_uploader(
-                          "Choose an image...", type=["jpg", "png", "jpeg"]
-                          )
-
     with st.expander(emj_gear+"Prompt Config", expanded=False):
         
         tempture_val = st.slider(
@@ -615,8 +597,6 @@ with st.sidebar:
     with st.expander(emj_safety+"Special Features", expanded=False):
         atsec = st.toggle("ALT", value=False, help="Active Lab Testing")
 
-    
-
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
 
         activate_audio_output = st.toggle(
@@ -656,7 +636,7 @@ codewrap = ""  # initating the var for the code wrap here
 with bottom():
     with st.expander(emj_pencil+"Extention Context", expanded=False):
         # acp = st.toggle("ACP", help="Area for Code input", value=False)
-        tb1, tb2, tb3, tb4 = st.tabs(["ATC", "ACC", "AYC", "AB"])
+        tb1, tb2, tb3, tb4, tb5 = st.tabs(["ATC", "ACC", "AYC", "FU","AB"])
 
         with tb1:
             adcn = st.text_area(
@@ -703,6 +683,23 @@ with bottom():
                                on_click=display_about_dev(), 
                                help="pops a dialog box")
 
+        with tb5:
+            uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
+            if uploaded_file is not None:
+                pdftext = openpdf_exttext(uploaded_file)
+            else:
+                pdftext = ""
+
+            uploaded_csv = st.file_uploader("Choose a CSV file", type="csv")
+            if uploaded_csv is not None:
+                df = pd.read_csv(uploaded_csv)
+                json_data = df.to_json(orient='records')
+            else: 
+                json_data = ""
+
+            uploaded_img = st.file_uploader(
+                              "Choose an image...", type=["jpg", "png", "jpeg"]
+                              )
 
 # ####################################################################
 # ####################################################################
