@@ -12,6 +12,10 @@ from pypdf import PdfReader
 from gtts import gTTS
 from io import BytesIO
 from youtube_transcript_api import YouTubeTranscriptApi
+
+# From Streamlit Extra Components 
+from streamlit_extras.bottom_container import bottom
+
 import speech_recognition as sr
 import re
 import requests
@@ -78,6 +82,7 @@ datetag_string = f'{ynm}_{hms}'
 
 
 genai.configure(api_key=apivalue)
+
 st.set_page_config(
     page_title="Miah GeminiAI", 
     page_icon=":tada:", 
@@ -605,32 +610,22 @@ with st.sidebar:
     st.toast(":green[File:]"+fileloaded)
     st.toast(":green[Model:]"+model_select)
 
-    with st.expander(emj_pencil+"Extention Context", expanded=False):
-        adcn = st.text_area(label="Additional Context", key="KK09923")
-
-        col1, col2, = st.columns(2, gap="small")
-
-        # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
-        get_mictext = col1.button("GM", help="Listain to Microphone")
-
-        dialogpop = col2.button("AD", on_click=display_about_dev(), help="pops a dialog box")
-
     with st.expander(emj_safety+"Special Features", expanded=False):
-        atsec = st.checkbox("ALT", value=False, help="Active Lab Testing")
+        atsec = st.toggle("ALT", value=False, help="Active Lab Testing")
 
     with st.expander(emj_tophat+"Youtube Video Context", expanded=False):
         youtubeURL = st.text_input("Video URL", value="", max_chars=None)
-        ac_youtubesc = st.checkbox("AYS", value=False, help="Activate Transcript")
+        ac_youtubesc = st.toggle("AYS", value=False, help="Activate Transcript")
 
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
 
-        activate_audio_output = st.checkbox(
-                                  emj_aaudio+"Audio(1):", 
-                                  value=False,
+        activate_audio_output = st.toggle(
+                                  emj_aaudio+"Audio(1):",
+                                  value=False, 
                                   help="Active Audio E11L"
                                   )
 
-        activate_audio_output002 = st.checkbox(
+        activate_audio_output002 = st.toggle(
                                   emj_aaudio+"Audio(2):", 
                                   value=False,
                                   help="Active Audio GTTs"
@@ -650,6 +645,26 @@ with st.sidebar:
 #
 # #########################################################################
 # #########################################################################
+
+
+# ####################################################################
+# ####################################################################
+#   Content Below the Chatline input field
+
+with bottom():
+    with st.expander(emj_pencil+"Extention Context", expanded=False):
+        adcn = st.text_area(label="Additional Context", key="KK09923")
+
+        col1, col2, = st.columns(2, gap="small")
+
+        # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
+        get_mictext = col1.button("GM", help="Listain to Microphone")
+
+        dialogpop = col2.button("AD", on_click=display_about_dev(), help="pops a dialog box")
+
+# ####################################################################
+# ####################################################################
+
 
 # Set up the model
 generation_config = {
@@ -884,9 +899,13 @@ if activate_audio_output:
 else:
     st.toast(":blue[Audio] :red[deactivated]")
 
-
 # if copyresponsetoClip:
 #     pyperclip.copy(st.session_state.lastchatoutput)
 #     st.success("Text copied to clipboard!")
+
+
+
+    
+        
 
 # Endof the Line 
