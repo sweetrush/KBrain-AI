@@ -7,28 +7,30 @@ $ pip install google-generativeai
 
 # Definding Imported Libaries for the Program 
 # #################################################
-
+from youtube_transcript_api import YouTubeTranscriptApi
 from pypdf import PdfReader
 from gtts import gTTS
-from io import BytesIO
-from youtube_transcript_api import YouTubeTranscriptApi
 
 # From Streamlit Extra Components 
 from streamlit_extras.bottom_container import bottom
 
-import speech_recognition as sr
-import re
-import requests
-import logging
-import configparser
-import datetime
-import pyperclip
-import os
 import google.generativeai as genai
+import speech_recognition as sr
 import streamlit as st
 import pandas as pd
-import time
+import configparser
+import requests
+import logging
+import datetime
+import os
+import re
+
+# Might Not be in Use
+from io import BytesIO
 import numpy as np
+import pyperclip
+import time
+
 
 
 # Definding the Current working version 
@@ -651,16 +653,44 @@ with st.sidebar:
 # ####################################################################
 #   Content Below the Chatline input field
 
+codewrap = ""  # initating the var for the code wrap here
+
 with bottom():
     with st.expander(emj_pencil+"Extention Context", expanded=False):
-        adcn = st.text_area(label="Additional Context", key="KK09923")
+        acp = st.toggle("ACP", help="Area for Code input", value=False)
+
+        adcn = st.text_area(label="Additional Context", height=100, key="KK09923")
+        if acp:
+            code = st.selectbox('Select Code Type', 
+                                (
+                                 "no-code", "bash", "c++", "powershell",
+                                 "python", "go", "c", "r", "sh",
+                                 "batch", "php", "perl", "javascript",
+                                ), 
+                                index=0)
+            codearea = st.text_area(
+                                    "Code Area Context", value="", 
+                                    help="Activates the Code Context",
+                                    height=None, 
+                                    max_chars=None
+                                    )
+
+            if code == "no-code":
+                codewrap = codearea
+            else:
+                codewrap = "```"+code+"\n "+codearea+" \n```"
+
+        # Other related Buttons 
+        # 
 
         col1, col2, = st.columns(2, gap="small")
-
         # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
         get_mictext = col1.button("GM", help="Listain to Microphone")
+        dialogpop = col2.button(
+                               "AD", 
+                               on_click=display_about_dev(), 
+                               help="pops a dialog box")
 
-        dialogpop = col2.button("AD", on_click=display_about_dev(), help="pops a dialog box")
 
 # ####################################################################
 # ####################################################################
@@ -732,20 +762,21 @@ for message in st.session_state.chathistory:
 # Getting the User Prompt Information 
 # #################################################### 
 
+# For the Youtube Context Prompt 
+# Gets the Transcript for a Youtube Video 
+###########################################
 transcriptdata = ""
 videoTranscript = ""
-
 if ac_youtubesc:
     video_idd = str(get_video_id(youtubeURL)[1])
     videoTranscript = get_video_transcript(video_idd)
-
     transcriptdata = f'[Video Transcript]: "{videoTranscript}'
     # print("Video Id: "+video_idd)
     # print(transcriptdata)
 
 
-inputquestion = st.chat_input("Provide your Prompt")
-usermessage = question_combinder(f'{adcn}', inputquestion)
+inputquestion = st.chat_input("Provide your Question / Prompt / Reqest")
+usermessage = question_combinder(f'{adcn}{codewrap}', inputquestion)
 
 if get_mictext:
     listain_to_Microphone()
@@ -902,10 +933,6 @@ else:
 # if copyresponsetoClip:
 #     pyperclip.copy(st.session_state.lastchatoutput)
 #     st.success("Text copied to clipboard!")
-
-
-
-    
-        
+#
 
 # Endof the Line 
