@@ -11,6 +11,8 @@ $ pip install google-generativeai
 from pypdf import PdfReader
 from gtts import gTTS
 from io import BytesIO
+from youtube_transcript_api import YouTubeTranscriptApi
+import speech_recognition as sr
 import re
 import requests
 import logging
@@ -82,6 +84,19 @@ st.set_page_config(
     )
 
 
+#
+# Following is a workaround to remove the top developer menu 
+# and Image line on streamlit together with streamlit footer
+#
+
+hide_st_style = """
+                 # MainMenu {visibility : hidden;}
+                 footer {visibility: hidden;}
+                 header {visibility: hidden;}
+
+
+               """
+
 # #################################################
 #   SETTING THE FONT HACK FOR THE APP
 # #################################################
@@ -97,6 +112,8 @@ st.markdown(
             font-family: 'Ubuntu', sans-serif;
         }
 
+        {hide_st_style}
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -111,12 +128,13 @@ st.markdown(
 # Start of Function Definitions 
 # #########################################################################################
 
-
+# 01
 def replace_chars(text, chars_to_replace, replacement):
     pattern = f"[{chars_to_replace}]"  # Create a character class pattern
     return re.sub(pattern, replacement, text)
 
 
+# 02
 @st.cache_data
 def openpdf_exttext(pdffile):
     
@@ -139,7 +157,7 @@ def openpdf_exttext(pdffile):
         # Or raise an exception depending 
         # on your error handling strategy
 
-
+# 03
 @st.cache_data
 def read_from_file(filename):
     pathDirAssistanceDef = "assistancedb/"
@@ -149,7 +167,7 @@ def read_from_file(filename):
         content = file.read()
         return content
 
-
+# 04
 def write_to_file(filename, text):
     storedir = dataOPD
     datetag = datetag_string
@@ -163,7 +181,7 @@ def write_to_file(filename, text):
     except OSError as e:
         print(f"Error writing to file: {e}")
 
-
+# 05
 def question_combinder(additional_context, user_question):
 
     """Combines a user question with additional context.
@@ -197,7 +215,7 @@ def question_combinder(additional_context, user_question):
 
     return combined_question
 
-
+# 06
 def get_assistant_details(selection, listofAssistance, assistant):
     """Retrieves assistant details based on selection.
 
@@ -215,17 +233,17 @@ def get_assistant_details(selection, listofAssistance, assistant):
   
     return None, None, None  # Return None values if no match is found
 
-
+# 07
 def text_to_speech(text):
     """Converts text to speech using gTTS and returns an audio file."""
     tts = gTTS(text=text, lang='en')  # You can change the language if needed
-    fp = BytesIO()
-    tts.write_to_fp(fp)
-    fp.seek(0)
-    return fp
+    filename = "response.mp3"
+    tts.save(filename)
+    return filename
 
-
+# 08
 def get_audio(texttomp3, prefix, auid):
+
     ellskey = api11labs
     voiceid = "21m00Tcm4TlvDq8ikWAM"
     CHUNK_SIZE = 1024
@@ -260,7 +278,7 @@ def get_audio(texttomp3, prefix, auid):
 
     return mp3_path
 
-
+# 09
 def count_files(directory_path):
     """Counts the number of files in a directory.
 
@@ -280,6 +298,7 @@ def count_files(directory_path):
 
 # Function loads the Agent list from agent list files 
 # 
+# 10
 def loadagents():
     pathDirAssistanceConfig = "agentlist/"
     assistance_filename = 'agentlisting.als'
@@ -329,11 +348,11 @@ def loadagents():
 # Creates are Horizontal Line
 #
 
-
+# 11
 def horizontal_line():
     st.markdown("---", unsafe_allow_html=True)
 
-
+# 12
 @st.experimental_dialog("About the Developer")
 def display_about_dev():
     st.title("About the Developer")
@@ -341,6 +360,62 @@ def display_about_dev():
     st.write("Project: Miah's AI Assistance")
     st.write("DevYear: 2024")
 
+# 13
+def listain_to_Microphone():
+    lm = sr.Recognizer()
+
+    st.toast("Mic-Listing", icon=None)
+
+    with sr.Microphone() as source:
+        mic_audio = lm.listen(source)
+        spoken = ""
+
+        try: 
+            spoken = lm.recognize_google(mic_audio)
+            st.toast(spoken, icon=None)
+            print(spoken)
+        except Exception as e:
+            print("Audio Exception:"+str(e))
+
+        st.toast("Mic-Not Listaining", icon=None)
+        return spoken
+
+
+##########################################################
+#
+#  Get Video Transcript Function 
+# 
+##########################################################
+# 14
+@st.cache_data
+def get_video_transcript(video_id):
+
+    try:
+        # Get the transcript for the video
+        transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        text = ""
+
+        # Concatenate the text from each transcript segment
+        for segment in transcript:
+            text += segment['text'] + " "
+
+        return text.strip()
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+
+    return None
+
+# 15
+def get_video_id(url):
+    # Extract the video id from the YouTube URL
+    video_id = re.findall(
+        r"(?:v=|v\/|embed\/|youtu\.be\/|\/v\/|\/e\/|watch\?v=|youtube\.com\/user\/[^#]*#([^\/]*\/)*\w+\/|youtube\.com\/v\/|youtube\.com\/embed\/|youtube\.com\/watch\?v=)([^#\&\?]*[^#\&\?\n]*)",
+        url
+    )
+
+    # Return the video id
+    return video_id[0] if video_id else None
 
 #
 #
@@ -348,7 +423,11 @@ def display_about_dev():
 #   END OF FUNCTION DEFINTIONS 
 #########################################################################
 #########################################################################
-
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
+#########################################################################
 
 # Defining more Variables
 # ##############################################################
@@ -501,21 +580,21 @@ with st.sidebar:
 
     #
     # Setting the Module Selection for the Assistance 
-    # ################################################
-
-    model_select = st.selectbox(emj_clamper+"Choose Model", (
-                               models[0],
-                               models[1],
-                               models[2]
-                             ), index=0)
+    # ###############################################
+    with st.expander(emj_assistance+"Model & Assistance", expanded=True):
+        model_select = st.selectbox(emj_clamper+"Choose Model", (
+                                   models[0],
+                                   models[1],
+                                   models[2]
+                                 ), index=0)
 
     # Setting the selected Active Assistance 
     # ################################################
 
-    selection = st.selectbox(emj_assistance+"Active Assistance:", 
-                             [item[0] for item in listofAssistance[:min(20,
-                              len(listofAssistance))]], index=0
-                             )
+        selection = st.selectbox(emj_assistance+"Active Assistance:", 
+                                 [item[0] for item in listofAssistance[:min(20,
+                                  len(listofAssistance))]], index=0
+                                 )
 
     # Checking and setting the Selected Assistance 
     # ##############################################
@@ -535,19 +614,32 @@ with st.sidebar:
     with st.expander(emj_pencil+"Extention Context", expanded=False):
         adcn = st.text_area(label="Additional Context", key="KK09923")
 
-        col1, col2 = st.columns(2, gap="small")
+        col1, col2, = st.columns(2, gap="small")
 
-        copyresponsetoClip = col1.button("CC", help="Copy Clipboard")
-        atsec = col2.checkbox("ALT", value=False, help="Active Lab Testing")
+        # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
+        get_mictext = col1.button("GM", help="Listain to Microphone")
 
-        dialogpop = col1.button("AD", on_click=display_about_dev(), help="pops a dialog box")
+        dialogpop = col2.button("AD", on_click=display_about_dev(), help="pops a dialog box")
+
+    with st.expander(emj_safety+"Special Features", expanded=False):
+        atsec = st.checkbox("ALT", value=False, help="Active Lab Testing")
+
+    with st.expander(emj_tophat+"Youtube Video Transcript", expanded=False):
+        youtubeURL = st.text_input("Video URL", value="", max_chars=None)
+        ac_youtubesc = st.checkbox("AYS", value=False, help="Activate Transcript")
 
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
 
         activate_audio_output = st.checkbox(
-                                  emj_aaudio+"Activate Audio:", 
+                                  emj_aaudio+"Audio(1):", 
                                   value=False,
-                                  help="Active AI Generated Audio"
+                                  help="Active Audio E11L"
+                                  )
+
+        activate_audio_output002 = st.checkbox(
+                                  emj_aaudio+"Audio(2):", 
+                                  value=False,
+                                  help="Active Audio GTTs"
                                   )
     
     with st.expander(emj_stats+"Status", expanded=False):
@@ -630,12 +722,26 @@ for message in st.session_state.chathistory:
 # Getting the User Prompt Information 
 # #################################################### 
 
+transcriptdata = ""
+videoTranscript = ""
+
+if ac_youtubesc:
+    video_idd = str(get_video_id(youtubeURL)[1])
+    videoTranscript = get_video_transcript(video_idd)
+
+    transcriptdata = f'[Video Transcript]: "{videoTranscript}'
+    # print("Video Id: "+video_idd)
+    # print(transcriptdata)
+
 
 inputquestion = st.chat_input("Provide your Prompt")
-usermessage = question_combinder(adcn, inputquestion)
+usermessage = question_combinder(f'{adcn}', inputquestion)
 
+if get_mictext:
+    listain_to_Microphone()
 
-
+if dialogpop:
+    display_about_dev()
 
 # Runs What the User has input
 if usermessage:
@@ -658,6 +764,10 @@ if usermessage:
     convo = model.start_chat(history=chatdata) 
 
     with st.status("Processing Request ...."):
+
+        # Combinding the Context Information 
+        # ############################################################################
+        
         if pdftext == "":
             groupcontext = loadassistantcontext
         else:
@@ -668,6 +778,14 @@ if usermessage:
         else:
             groupcontext += json_data
 
+        if videoTranscript == "":
+            groupcontext += ""
+        else:
+            groupcontext += transcriptdata
+
+        # End of Context Commincation Checks and Binding
+        # #############################################################################
+        # #############################################################################
         # print("[Debuging]:[0] "+groupcontext+usermessage)  #Debugging Perpose
 
         try: 
@@ -731,6 +849,16 @@ if usermessage:
             st.toast(":blue[Audio] :green[activated]")
             st.write("Audio Generation Completed")
 
+        if activate_audio_output002:
+            st.warning("Processing Audio request")
+            audiofilename = datetag_string+"_"+filename
+            audiopath = text_to_speech(botmessage)
+            audiofile = open(audiopath, "rb")
+            audiobytes = audiofile.read()
+            st.audio(audiobytes, format='audio/mp3')
+            st.toast(":blue[Audio 02] :green[activated]")
+            st.write("Audio Generation Completed")
+
         status_string = (
                          "<strong style='color:red'>Using: "
                          ""+assistantcontext+" [ "
@@ -756,8 +884,8 @@ else:
     st.toast(":blue[Audio] :red[deactivated]")
 
 
-if copyresponsetoClip:
-    pyperclip.copy(st.session_state.lastchatoutput)
-    st.success("Text copied to clipboard!")
+# if copyresponsetoClip:
+#     pyperclip.copy(st.session_state.lastchatoutput)
+#     st.success("Text copied to clipboard!")
 
 # Endof the Line 
