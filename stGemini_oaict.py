@@ -51,6 +51,7 @@ emj_gear = ' ⚙ '
 emj_safety = ' 🩺 '
 emj_pencil = ' ✏ '
 emj_stats = ' 📊 '
+emj_down = ' ⬇ '
 
 # Defining Arrays:
 listofAssistance = []
@@ -90,32 +91,25 @@ st.set_page_config(
 #
 
 hide_st_style = """
+               <style>
                  # MainMenu {visibility : hidden;}
                  footer {visibility: hidden;}
                  header {visibility: hidden;}
-
-
+               </style>
                """
+
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # #################################################
 #   SETTING THE FONT HACK FOR THE APP
 # #################################################
-urlfontUbuntu = (
-                 "https://fonts.googleapis.com/css2?family="
-                 "Ubuntu:wght@400;700&display=swap"
-                 )
+
+ubuntufont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');"
+robotofont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');"
+
+
 st.markdown(
-    """
-    <link rel="stylesheet" href="{urlfontUbuntu}">
-    <style>
-        body {
-            font-family: 'Ubuntu', sans-serif;
-        }
-
-        {hide_st_style}
-
-    </style>
-    """,
+    f'<style>{ubuntufont}</style>',
     unsafe_allow_html=True,
 )
 
@@ -840,22 +834,28 @@ if usermessage:
         st.write(botmessage)
 
         if activate_audio_output:
-            st.warning("Processing Audio request")
-            audiofilename = datetag_string+"_"+filename
-            audiopath = get_audio(botmessage, "el11_au", audiofilename)
-            audiofile = open(audiopath, "rb")
-            audiobytes = audiofile.read()
-            st.audio(audiobytes, format='audio/mp3')
+            acol1, acol2 = st.columns(2, gap="small")
+            with st.status("Processing Audio request"):
+                audiofilename = datetag_string+"_"+filename
+                audiopath = get_audio(botmessage, "el11_au", audiofilename)
+                audiofile = open(audiopath, "rb")
+                audiobytes = audiofile.read()
+            
+            acol1.audio(audiobytes, format='audio/mp3')
+            acol2.download_button(emj_down+"Download Audio", audiobytes, file_name=datetag_string+".mp3", mime=None)
             st.toast(":blue[Audio] :green[activated]")
             st.write("Audio Generation Completed")
 
         if activate_audio_output002:
-            st.warning("Processing Audio request")
-            audiofilename = datetag_string+"_"+filename
-            audiopath = text_to_speech(botmessage)
-            audiofile = open(audiopath, "rb")
-            audiobytes = audiofile.read()
-            st.audio(audiobytes, format='audio/mp3')
+            acol1, acol2 = st.columns(2, gap="small")
+            with st.status("Processing Audio request"):
+                audiofilename = datetag_string+"_"+filename
+                audiopath = text_to_speech(botmessage)
+                audiofile = open(audiopath, "rb")
+                audiobytes = audiofile.read()
+                
+            acol1.audio(audiobytes, format='audio/mp3')
+            acol2.download_button(emj_down+"Download Audio", audiobytes, file_name=datetag_string+".mp3", mime=None)
             st.toast(":blue[Audio 02] :green[activated]")
             st.write("Audio Generation Completed")
 
