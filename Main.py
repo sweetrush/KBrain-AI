@@ -158,6 +158,7 @@ def openpdf_exttext(pdffile):
         # Or raise an exception depending 
         # on your error handling strategy
 
+
 # 03
 @st.cache_data
 def read_from_file(filename):
@@ -167,6 +168,7 @@ def read_from_file(filename):
     with open(fullpath, "r") as file:
         content = file.read()
         return content
+
 
 # 04
 def write_to_file(filename, text):
@@ -181,6 +183,7 @@ def write_to_file(filename, text):
             file.write(text + "\n")  # Add a newline at the end
     except OSError as e:
         print(f"Error writing to file: {e}")
+
 
 # 05
 def question_combinder(additional_context, user_question):
@@ -216,6 +219,7 @@ def question_combinder(additional_context, user_question):
 
     return combined_question
 
+
 # 06
 def get_assistant_details(selection, listofAssistance, assistant):
     """Retrieves assistant details based on selection.
@@ -234,6 +238,7 @@ def get_assistant_details(selection, listofAssistance, assistant):
   
     return None, None, None  # Return None values if no match is found
 
+
 # 07
 def text_to_speech(text):
     """Converts text to speech using gTTS and returns an audio file."""
@@ -241,6 +246,7 @@ def text_to_speech(text):
     filename = "response.mp3"
     tts.save(filename)
     return filename
+
 
 # 08
 def get_audio(texttomp3, prefix, auid):
@@ -278,6 +284,7 @@ def get_audio(texttomp3, prefix, auid):
                 f.write(chunk)
 
     return mp3_path
+
 
 # 09
 def count_files(directory_path):
@@ -349,9 +356,11 @@ def loadagents():
 # Creates are Horizontal Line
 #
 
+
 # 11
 def horizontal_line():
     st.markdown("---", unsafe_allow_html=True)
+
 
 # 12
 @st.experimental_dialog("About the Developer")
@@ -360,6 +369,7 @@ def display_about_dev():
     st.write("Name: SweetRushCoder")
     st.write("Project: Miah's AI Assistance")
     st.write("DevYear: 2024")
+
 
 # 13
 def listain_to_Microphone():
@@ -387,6 +397,8 @@ def listain_to_Microphone():
 #  Get Video Transcript Function 
 # 
 ##########################################################
+
+
 # 14
 @st.cache_data
 def get_video_transcript(video_id):
@@ -407,7 +419,8 @@ def get_video_transcript(video_id):
 
     return None
 
-# 15
+
+#  15
 def get_video_id(url):
     # Extract the video id from the YouTube URL
     video_id = re.findall(
@@ -417,6 +430,12 @@ def get_video_id(url):
 
     # Return the video id
     return video_id[0] if video_id else None
+
+
+# 16 
+def about_the_developer():
+    st.write("##### Version:   :orange["+version+"]")
+    st.write("##### Developer:   :green["+develper+"]")
 
 #
 #
@@ -502,6 +521,27 @@ with st.sidebar:
 
     st.title(emj_clamper+"Miah's AI Gemini Assistance")
     horizontal_line()
+
+    # Uncomment this to reflect the file Upload Feature on the Side Bar
+    #
+    #
+    # with st.expander(emj_tophat+"File Upload", expanded=False):
+    #      uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
+    #      if uploaded_file is not None:
+    #          pdftext = openpdf_exttext(uploaded_file)
+    #      else:
+    #          pdftext = ""
+             
+    #      uploaded_csv = st.file_uploader("Choose a CSV file", type="csv")
+    #      if uploaded_csv is not None:
+    #          df = pd.read_csv(uploaded_csv)
+    #          json_data = df.to_json(orient='records')
+    #      else: 
+    #          json_data = ""
+
+    #      uploaded_img = st.file_uploader(
+    #                                  "Choose an image...", type=["jpg", "png", "jpeg"]
+    #                                     )
 
     with st.expander(emj_gear+"Prompt Config", expanded=False):
         
@@ -617,8 +657,9 @@ with st.sidebar:
         st.write("##### Number of AN: "+str(len(listofAssistance)))
 
     horizontal_line()
-    st.write("##### Version:   :orange["+version+"]")
-    st.write("##### Developer:   :green["+develper+"]")
+    
+    horizontal_line()
+    about_the_developer()
     
 # #########################################################################
 # ##  END OF: Sidebar  #################################################### 
@@ -632,11 +673,10 @@ with st.sidebar:
 #   Content Below the Chatline input field
 
 codewrap = ""  # initating the var for the code wrap here
-
 with bottom():
     with st.expander(emj_pencil+"Extention Context", expanded=False):
         # acp = st.toggle("ACP", help="Area for Code input", value=False)
-        tb1, tb2, tb3, tb4, tb5 = st.tabs(["ATC", "ACC", "AYC", "FU","AB"])
+        tb1, tb2, tb3, tb4, tb5 = st.tabs(["ATC", "ACC", "AYC", "FU", "AB"])
 
         with tb1:
             adcn = st.text_area(
@@ -667,13 +707,43 @@ with bottom():
                 codewrap = "```"+code+"\n "+codearea+" \n```"
 
         with tb3:
-            youtubeURL = st.text_input("Youtube Video URL", value="", max_chars=None)
-            ac_youtubesc = st.toggle("AYS", value=False, help="Activate Transcript")
-        
-        # Other related Buttons 
-        # 
+            youtubeURL = st.text_input("Youtube Video URL", 
+                                       value="", 
+                                       max_chars=None
+                                       )
+
+            ac_youtubesc = st.toggle("AYS", 
+                                     value=False, 
+                                     help="Activate Transcript"
+                                     )
 
         with tb4:
+            uploaded_file = st.file_uploader(
+                                             'Choose your .pdf file', 
+                                             type="pdf"
+                                             )
+            if uploaded_file is not None:
+                pdftext = openpdf_exttext(uploaded_file)
+            else:
+                pdftext = ""
+             
+            uploaded_csv = st.file_uploader(
+                                            "Choose a CSV file", 
+                                            type="csv"
+                                            )
+            if uploaded_csv is not None:
+                df = pd.read_csv(uploaded_csv)
+                json_data = df.to_json(orient='records')
+            else: 
+                json_data = ""
+
+            uploaded_img = st.file_uploader(
+                                      "Choose an image...", 
+                                      type=["jpg", "png", "jpeg"]
+                                    )
+        # Other related Buttons 
+        # 
+        with tb5:
             col1, col2, = st.columns(2, gap="small")
             # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
             get_mictext = col1.button("GM", help="Listain to Microphone")
@@ -682,24 +752,7 @@ with bottom():
                                on_click=display_about_dev(), 
                                help="pops a dialog box")
 
-        with tb5:
-            uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
-            if uploaded_file is not None:
-                pdftext = openpdf_exttext(uploaded_file)
-            else:
-                pdftext = ""
-
-            uploaded_csv = st.file_uploader("Choose a CSV file", type="csv")
-            if uploaded_csv is not None:
-                df = pd.read_csv(uploaded_csv)
-                json_data = df.to_json(orient='records')
-            else: 
-                json_data = ""
-
-            uploaded_img = st.file_uploader(
-                              "Choose an image...", type=["jpg", "png", "jpeg"]
-                              )
-
+    
 # ####################################################################
 # ####################################################################
 
@@ -795,7 +848,6 @@ if dialogpop:
 # Runs What the User has input
 if usermessage:
     with st.chat_message("User"):
-        st.rerun()
         st.write(usermessage)
 
         # Storing User Information to the Session Variable
