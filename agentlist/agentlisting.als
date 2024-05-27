@@ -43,3 +43,8 @@
 @@ #######################################################
 
 4,DarkAI         , Dark Assistance        , darkai.atx
+
+@@ Hugging Face Agents 
+
+4,hf_HacXGpt     , Hacker Gpt Advance Level, hf_HacXGpt.atx 
+4,hf_CoderWriter , CodeWriter              , hf_codewriter.atx 

@@ -553,7 +553,7 @@ with st.sidebar:
     #                                     )
 
     with st.expander(emj_gear+"Prompt Config", expanded=False):
-        
+        popup_notifications = st.toggle("Popup Notification", value=False)
         tempture_val = st.slider(
                                  "Prompt temperature",  # Label for the slider
                                  min_value=0.0,    # Minimum value
@@ -667,9 +667,10 @@ with st.sidebar:
     # END OF the selected Assistance 
     # ############################################################
 
-    st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]")
-    st.toast(":green[File:]"+fileloaded)
-    st.toast(":green[Model:]"+model_select)
+    if popup_notifications:
+        st.toast("**:blue[Using AI:]**\n :red["+assistantcontext+"]")
+        st.toast(":green[File:]"+fileloaded)
+        st.toast(":green[Model:]"+model_select)
 
     with st.expander(emj_safety+"Special Features", expanded=False):
         atsec = st.toggle("ALT", value=False, help="Active Lab Testing")
@@ -989,7 +990,10 @@ if usermessage:
             
             acol1.audio(audiobytes, format='audio/mp3')
             acol2.download_button(emj_down+"Download Audio", audiobytes, file_name=datetag_string+".mp3", mime=None)
-            st.toast(":blue[Audio] :green[activated]")
+            
+            if popup_notifications:
+                st.toast(":blue[Audio] :green[activated]")
+            
             st.write("Audio Generation Completed")
 
         if activate_audio_output002:
@@ -1002,7 +1006,9 @@ if usermessage:
                 
             acol1.audio(audiobytes, format='audio/mp3')
             acol2.download_button(emj_down+"Download Audio", audiobytes, file_name=datetag_string+".mp3", mime=None)
-            st.toast(":blue[Audio 02] :green[activated]")
+            
+            if popup_notifications:
+                st.toast(":blue[Audio 02] :green[activated]")
             st.write("Audio Generation Completed")
 
         status_string = (
@@ -1033,5 +1039,9 @@ else:
 #     pyperclip.copy(st.session_state.lastchatoutput)
 #     st.success("Text copied to clipboard!")
 #
+
+# with bottom():
+    # cl1, cl2 = st.columns(2, gap="small")
+    # cl1.markdown("Using: :red["+model_select+"]")
 
 # Endof the Line 
