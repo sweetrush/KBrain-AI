@@ -466,11 +466,20 @@ models = [
          ]
 
 
-safety_options = [ 
-                  "BLOCK_NONE", 
-                  "BLOCK_FEW", 
-                  "BLOCK_SOME", 
-                  "BLOCK_MOST"
+# OLD Definition 
+# safety_options = [ 
+#                   "BLOCK_NONE", 
+#                   "BLOCK_FEW", 
+#                   "BLOCK_SOME", 
+#                   "BLOCK_MOST"
+#                  ]
+
+# NEW Option Selector
+safety_options = [
+                  "BLOCK_NONE",
+                  "BLOCK_LOW_AND_ABOVE",
+                  "BLOCK_MEDIUM_AND_ABOVE",
+                  "BLOCK_ONLY_HIGH"
                  ]
 
 
@@ -573,12 +582,20 @@ with st.sidebar:
         convert_tpv = float(tempture_val)
 
     with st.expander(emj_safety+"Safety Config", expanded=False):
+
         opt1_safe = st.selectbox("Harassment", (
                               safety_options[0],
                               safety_options[1],
                               safety_options[2],
                               safety_options[3]
                               ), index=0)
+
+        # opt1_safe = st.select_slider("Harassment", (
+        #                        safety_options[0],
+        #                        safety_options[1],
+        #                        safety_options[2],
+        #                        safety_options[3]
+        #                        ), value=None)
 
         opt2_safe = st.selectbox("Hate", (
                               safety_options[0],
@@ -587,12 +604,26 @@ with st.sidebar:
                               safety_options[3]
                               ), index=0)
 
+        # opt2_safe = st.select_slider("Hate", (
+        #                       safety_options[0],
+        #                       safety_options[1],
+        #                       safety_options[2],
+        #                       safety_options[3]
+        #                       ), value=None)
+
         opt3_safe = st.selectbox("Sexually Explicit", (
                               safety_options[0],
                               safety_options[1],
                               safety_options[2],
                               safety_options[3]
                               ), index=0)
+
+        # opt3_safe = st.select_slider("Sexually Explicit", (
+        #                       safety_options[0],
+        #                       safety_options[1],
+        #                       safety_options[2],
+        #                       safety_options[3]
+        #                       ), value=None)
 
         opt4_safe = st.selectbox("Dangerous Content", (
                               safety_options[0],
@@ -601,6 +632,12 @@ with st.sidebar:
                               safety_options[3]
                               ), index=0)
 
+        # opt4_safe = st.select_slider("Dangerous Content", (
+        #                       safety_options[0],
+        #                       safety_options[1],
+        #                       safety_options[2],
+        #                       safety_options[3]
+        #                       ), value=None)
     #
     # Setting the Module Selection for the Assistance 
     # ###############################################
@@ -658,7 +695,7 @@ with st.sidebar:
 
     horizontal_line()
     
-    horizontal_line()
+    # horizontal_line()
     about_the_developer()
     
 # #########################################################################
@@ -747,10 +784,11 @@ with bottom():
             col1, col2, = st.columns(2, gap="small")
             # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
             get_mictext = col1.button("GM", help="Listain to Microphone")
-            dialogpop = col2.button(
-                               "AD", 
-                               on_click=display_about_dev(), 
-                               help="pops a dialog box")
+
+            # dialogpop = col2.button(
+            #                    "AD", 
+            #                    on_click=display_about_dev(), 
+            #                    help="pops a dialog box")
 
     
 # ####################################################################
@@ -842,8 +880,8 @@ usermessage = question_combinder(f'{adcn}{codewrap}', inputquestion)
 if get_mictext:
     listain_to_Microphone()
 
-if dialogpop:
-    display_about_dev()
+# if dialogpop:
+#     display_about_dev()
 
 # Runs What the User has input
 if usermessage:
