@@ -75,6 +75,8 @@ config.read('config.ini')
 apivalue = config.get("APIKEYS", "api")
 api11labs = config.get("APIKEYS", "api_11labs")
 
+epcolor_val = config.get("THEMEING", "ep_color")
+
 # Defind Date Tags for Filenaming
 # ##################################################
 
@@ -489,7 +491,7 @@ def dynamic_css(color):
 
 # Defining more Variables
 # ##############################################################
-
+dynamic_css(epcolor_val)
 
 fileInStore = count_files(dataOPD)
 audioInStore = count_files(audioOD)
@@ -712,10 +714,18 @@ with st.sidebar:
 
     with st.expander(emj_safety+"Special Features", expanded=False):
         atsec = st.toggle("ALT", value=False, help="Active Lab Testing")
-        bexpanderColor = st.color_picker("Theme:", "#7E8180")
+        bexpanderColor = st.color_picker("Theme:", epcolor_val)
+
+        # save new color to Config
+        config['THEMEING']['ep_color'] = bexpanderColor
+        with open('config.ini', 'w') as configfile:
+            config.write(configfile)
+
+
+        # set the session color
         st.session_state.exbclor = bexpanderColor
         dynamic_css(bexpanderColor)
-
+        
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
 
         activate_audio_output = st.toggle(
@@ -743,8 +753,6 @@ with st.sidebar:
 
 if "exbclor" not in st.session_state:
     st.session_state.exbclor = ''
-
-
 
 
 # #########################################################################
@@ -895,8 +903,6 @@ if "chathistoryprompt" not in st.session_state:
 if "lastchatoutput" not in st.session_state:
     st.session_state.lastchatoutput = ''
 
-
-
 # Looping through the session stored Information  
 for message in st.session_state.chathistory:
     with st.chat_message(message["role"]):
@@ -1015,7 +1021,7 @@ if usermessage:
         chatdata.append(res00data)
         chatdata.append(res01data)
         st.write(chatdata)
-        print(f'\n\n Chatdata: {chatdata}\n\n')
+        # print(f'\n\n Chatdata: {chatdata}\n\n') # Uncomment for Deginfo
 
     dynamic_css(st.session_state.exbclor)
     successtext = "Generated Response Completed"
