@@ -32,12 +32,11 @@ import pyperclip
 import time
 
 
-
 # Definding the Current working version 
 # of the Miah AI assistance 
 # #################################################
 
-version = "2.3"
+version = "2.6.1"
 develper = "SweetRushCoder"
 
 ###################################################
@@ -82,6 +81,8 @@ ynm = f'{now.year}.{now.month}.{now.day}'    # shortdata
 hms = f'{now.hour}{now.minute}{now.second}'  # Hour-Min-Sec 
 datetag_string = f'{ynm}_{hms}'
 
+# Definding other Configuration support 
+ai_dont_lie = "Tell me only factual Information and not to lie"
 
 genai.configure(api_key=apivalue)
 
@@ -96,29 +97,35 @@ st.set_page_config(
 # Following is a workaround to remove the top developer menu 
 # and Image line on streamlit together with streamlit footer
 #
+ubuntufont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');"
+robotofont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');"
+
 
 hide_st_style = """
                <style>
                  # MainMenu {visibility : hidden;}
                  footer {visibility: hidden;}
                  header {visibility: hidden;}
+
+                 .custom-expander > div:first-child {
+                border: 2px solid red; /* Example: 2px solid red border */
+                }
+                {ubuntufont}
                </style>
                """
-
 st.markdown(hide_st_style, unsafe_allow_html=True)
+
 
 # #################################################
 #   SETTING THE FONT HACK FOR THE APP
 # #################################################
 
-ubuntufont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');"
-robotofont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');"
 
 
-st.markdown(
-    f'<style>{ubuntufont}</style>',
-    unsafe_allow_html=True,
-)
+# st.markdown(
+#     f'<style>{ubuntufont}</style>',
+#     unsafe_allow_html=True,
+# )
 
 # ##################################################
 #  END OF FONT HACK 
@@ -319,43 +326,54 @@ def loadagents():
             line = line.strip()  # Remove leading/trailing whitespace
             if "@@" not in line and line:  # Check for "@@" and empty lines
                 emjtag, name, label, file = line.strip().split(',')
+
                 if emjtag == "1":
                     listofAssistance.append(
-                        [emj_billcap+str(name),
-                         str(label), 
-                         replace_chars(str(file), " ", "")]
-                         )
+                        [
+                             emj_billcap+str(name),
+                             str(label), 
+                             replace_chars(str(file), " ", "")
+                         ]
+                    )
 
                 elif emjtag == "2":
                     listofAssistance.append(
-                        [emj_tophat+str(name), 
-                         str(label), 
-                         replace_chars(str(file), " ", "")]
-                         )
+                        [
+                            emj_tophat+str(name), 
+                            str(label), 
+                            replace_chars(str(file), " ", "")
+                        ]
+                    )
 
                 elif emjtag == "3":
                     listofAssistance.append(
-                        [emj_gradcap+str(name), 
-                         str(label), 
-                         replace_chars(str(file), " ", "")]
-                         )
+                        [
+                            emj_gradcap+str(name), 
+                            str(label), 
+                            replace_chars(str(file), " ", "")
+                        ]
+                    )
 
                 elif emjtag == "4":
                     listofAssistance.append(
-                        [emj_assistance+str(name),
-                         str(label), 
-                         replace_chars(str(file), " ", "")]
-                         )
+                        [
+                            emj_assistance+str(name),
+                            str(label), 
+                            replace_chars(str(file), " ", "")
+                        ]
+                    )
+
                 else:
                     listofAssistance.append(
-                        [emj_billcap+str(name),
-                         str(label),
-                         replace_chars(str(file), " ", "")]
-                         )
+                        [
+                            emj_billcap+str(name),
+                            str(label),
+                            replace_chars(str(file), " ", "")
+                        ]
+                    )
 
 # Creates are Horizontal Line
 #
-
 
 # 11
 def horizontal_line():
@@ -529,7 +547,7 @@ with st.sidebar:
     global loadassistantcontext, assistantcontext, adcn
 
     st.title(emj_clamper+"Miah's AI Gemini Assistance")
-    horizontal_line()
+    # horizontal_line() # Uncomment to show the Line
 
     # Uncomment this to reflect the file Upload Feature on the Side Bar
     #
@@ -732,6 +750,7 @@ with bottom():
                                  "batch", "php", "perl", "javascript",
                                 ), 
                                 index=0)
+
             codearea = st.text_area(
                                     "Code Area Context", value="", 
                                     help="Activates the Code Context",
@@ -909,28 +928,37 @@ if usermessage:
         # Combinding the Context Information 
         # ############################################################################
         
+        # Checking for PDF Context if Any 
         if pdftext == "":
-            groupcontext = loadassistantcontext
+            grpcontext = ""
         else:
-            groupcontext = loadassistantcontext+pdftext
+            grpcontext = pdftext
 
+        # Cheching for Json Data Context
         if json_data == "":
-            groupcontext += ""
+            grpcontext += ""
         else:
-            groupcontext += json_data
+            grpcontext += json_data
 
+        # Checking for video Context as Text
         if videoTranscript == "":
-            groupcontext += ""
+            grpcontext += ""
         else:
-            groupcontext += transcriptdata
+            grpcontext += transcriptdata
 
         # End of Context Commincation Checks and Binding
         # #############################################################################
         # #############################################################################
         # print("[Debuging]:[0] "+groupcontext+usermessage)  #Debugging Perpose
+        
+        cache_history_now = st.session_state.chathistoryprompt
+        cxt_n_usermsg = loadassistantcontext+usermessage+ai_dont_lie
+
+        # ######## AREA FOR SEND PROMPT INFOR TO AI
+        #
 
         try: 
-            convo.send_message(groupcontext+usermessage)
+            convo.send_message(cache_history_now+grpcontext+cxt_n_usermsg)
 
             # Uncomment for Debugging for purpose.
             #
@@ -940,22 +968,23 @@ if usermessage:
             st.toast(":red[Error:] on call", icon=None)
             st.error(e, icon=None)
 
-        ca = st.session_state.chathistoryprompt+convo.last.text+usermessage
+        ca = cache_history_now+usermessage
         st.session_state.chathistoryprompt = ca
-
+        print(f'\n\n Current CACHE BP:{cache_history_now}')
         # Uncomment to View ChathistroyPrompt data in terminal 
         # print(st.session_state.chathistoryprompt)
 
         res00data = {"role": "user", "parts": [ca]}
         res01data = {"role": "model", "parts": [convo.last.text]}
         res02data = {"role": "user", "parts": 
-                     [convo.last.text+groupcontext+usermessage]
+                     [convo.last.text+grpcontext+usermessage]
                      }
 
         chatdata.append(res02data)
         chatdata.append(res00data)
         chatdata.append(res01data)
         st.write(chatdata)
+        print(f'\n\n Chatdata: {chatdata}\n\n')
 
     successtext = "Generated Response Completed"
         

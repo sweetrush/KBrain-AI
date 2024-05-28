@@ -24,7 +24,8 @@
 @@ and Programming
 @@ ####################################################### 
 
-2,Linux          , Linux Assistance       , linux_assistance.atx 
+2,Linux          , Linux Assistance       , linux_assistance.atx
+2,Linux Cmd Expt , Linux CMD Assistance   , linux_cew.atx
 2,Python         , Python Assistance      , Python_assistance.atx
 2,Go             , Go Lang Assistance     , Go_Assistance.atx
 2,Bash           , Bash Assistance        , bashexpert.atx
