@@ -57,6 +57,8 @@ emj_safety = ' 🩺 '
 emj_pencil = ' ✏ '
 emj_stats = ' 📊 '
 emj_down = ' ⬇ '
+emj_help = ' 📗 '
+emj_help_ico = '📗'
 
 # Defining Arrays:
 listofAssistance = []
@@ -99,7 +101,6 @@ st.set_page_config(
 #
 # ubuntufont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');"
 # robotofont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');"
-
 
 
 
@@ -457,6 +458,23 @@ def about_the_developer():
     st.write("##### Version:   :orange["+version+"]")
     st.write("##### Developer:   :green["+develper+"]")
 
+
+def dynamic_css(color):
+    ubuntu = """
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    """
+    pathcss = os.path.join("appstyle", "app0_style.css")
+    with open(pathcss) as styleconfig:
+        # expanderable_bordercolor = "rgba(82, 153, 127, 0.35)"
+        expanderable_bordercolor = color
+        # Replacing the Codec Mapping with new Value 
+        newtextcss = styleconfig.read().replace("ST_CSS_CODE001", expanderable_bordercolor)
+        st.markdown(f'<style>{ubuntu}{newtextcss}</style>', 
+                    unsafe_allow_html=True)
+
+
 #
 #
 # #######################################################################
@@ -694,6 +712,9 @@ with st.sidebar:
 
     with st.expander(emj_safety+"Special Features", expanded=False):
         atsec = st.toggle("ALT", value=False, help="Active Lab Testing")
+        bexpanderColor = st.color_picker("Theme:", "#7E8180")
+        st.session_state.exbclor = bexpanderColor
+        dynamic_css(bexpanderColor)
 
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
 
@@ -715,10 +736,17 @@ with st.sidebar:
         st.write("##### Number of AN: "+str(len(listofAssistance)))
 
     horizontal_line()
-    
-    # horizontal_line()
-    about_the_developer()
-    
+    st.page_link("pages/help.py", label="Help Guide", icon=emj_help_ico, disabled=False)
+    st.page_link("pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False)
+    horizontal_line()
+    # about_the_developer()
+
+if "exbclor" not in st.session_state:
+    st.session_state.exbclor = ''
+
+
+
+
 # #########################################################################
 # ##  END OF: Sidebar  #################################################### 
 #
@@ -868,6 +896,7 @@ if "lastchatoutput" not in st.session_state:
     st.session_state.lastchatoutput = ''
 
 
+
 # Looping through the session stored Information  
 for message in st.session_state.chathistory:
     with st.chat_message(message["role"]):
@@ -926,7 +955,7 @@ if usermessage:
     convo = model.start_chat(history=chatdata) 
 
     with st.status("Processing Request ...."):
-
+        dynamic_css("#D0A112")
         # Combinding the Context Information 
         # ############################################################################
         
@@ -988,8 +1017,9 @@ if usermessage:
         st.write(chatdata)
         print(f'\n\n Chatdata: {chatdata}\n\n')
 
+    dynamic_css(st.session_state.exbclor)
     successtext = "Generated Response Completed"
-        
+
     # Comment to Use the Toast as the Alert element
     st.success(successtext)
 
@@ -1075,16 +1105,5 @@ else:
     # cl1, cl2 = st.columns(2, gap="small")
     # cl1.markdown("Using: :red["+model_select+"]")
 
-ubuntu = """
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-"""
-pathcss = os.path.join("appstyle", "app0_style.css")
-with open(pathcss) as styleconfig:
-    expanderable_bordercolor = "rgba(82, 153, 127, 0.35)"
-    # Replacing the Codec Mapping with new Value 
-    newtextcss = styleconfig.read().replace("ST_CSS_CODE001", expanderable_bordercolor)
-    st.markdown(f'<style>{ubuntu}{newtextcss}</style>', unsafe_allow_html=True)
 
 # Endof the Line 
