@@ -1,0 +1,37 @@
+/*div.st-emotion-cache-nlpd99{
+	background-color: ;
+	border: 2px solid ;
+
+}*/
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+MainMenu {visibility : hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+.st-emotion-cache-nlpd99 {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  width: 100%;
+  border-style: solid;
+  border-width: 4px;
+  border-color: ST_CSS_CODE001;
+  border-radius: 2rem;
+}
+
+.st-emotion-cache-10rjk4g{
+  visibility: hidden;
+}
+
+.st-emotion-cache-79elbk{
+  visibility: hidden;
+}
+
+p, li {
+
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgb(249, 249, 251);
+}

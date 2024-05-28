@@ -97,29 +97,31 @@ st.set_page_config(
 # Following is a workaround to remove the top developer menu 
 # and Image line on streamlit together with streamlit footer
 #
-ubuntufont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');"
-robotofont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');"
+# ubuntufont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');"
+# robotofont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');"
 
 
-hide_st_style = """
-               <style>
-                 # MainMenu {visibility : hidden;}
-                 footer {visibility: hidden;}
-                 header {visibility: hidden;}
 
-                 .custom-expander > div:first-child {
-                border: 2px solid red; /* Example: 2px solid red border */
-                }
-                {ubuntufont}
-               </style>
-               """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+
+# hide_st_style = """
+#                <style>
+#                  # MainMenu {visibility : hidden;}
+#                  footer {visibility: hidden;}
+#                  header {visibility: hidden;}
+
+#                  .custom-expander > div:first-child {
+#                 border: 2px solid red; /* Example: 2px solid red border */
+#                 }
+#                 {ubuntufont}
+
+#                 div.st-emotion-cache-0 eqpbllx4{}
+#                </style>
+#                """
 
 
 # #################################################
 #   SETTING THE FONT HACK FOR THE APP
 # #################################################
-
 
 
 # st.markdown(
@@ -1072,5 +1074,17 @@ else:
 # with bottom():
     # cl1, cl2 = st.columns(2, gap="small")
     # cl1.markdown("Using: :red["+model_select+"]")
+
+ubuntu = """
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+"""
+pathcss = os.path.join("appstyle", "app0_style.css")
+with open(pathcss) as styleconfig:
+    expanderable_bordercolor = "rgba(82, 153, 127, 0.35)"
+    # Replacing the Codec Mapping with new Value 
+    newtextcss = styleconfig.read().replace("ST_CSS_CODE001", expanderable_bordercolor)
+    st.markdown(f'<style>{ubuntu}{newtextcss}</style>', unsafe_allow_html=True)
 
 # Endof the Line 
