@@ -60,6 +60,7 @@ emj_down = ' ⬇ '
 emj_help = ' 📗 '
 emj_help_ico = '📗'
 
+
 # Defining Arrays:
 listofAssistance = []
 
@@ -95,32 +96,6 @@ st.set_page_config(
     page_icon=":tada:", 
     layout="wide"
     )
-
-
-#
-# Following is a workaround to remove the top developer menu 
-# and Image line on streamlit together with streamlit footer
-#
-# ubuntufont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');"
-# robotofont = "@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');"
-
-
-
-# hide_st_style = """
-#                <style>
-#                  # MainMenu {visibility : hidden;}
-#                  footer {visibility: hidden;}
-#                  header {visibility: hidden;}
-
-#                  .custom-expander > div:first-child {
-#                 border: 2px solid red; /* Example: 2px solid red border */
-#                 }
-#                 {ubuntufont}
-
-#                 div.st-emotion-cache-0 eqpbllx4{}
-#                </style>
-#                """
-
 
 # #################################################
 #   SETTING THE FONT HACK FOR THE APP
@@ -1011,15 +986,20 @@ if usermessage:
         # Uncomment to View ChathistroyPrompt data in terminal 
         # print(st.session_state.chathistoryprompt)
 
+        # systempromptadd = "Your name is Miah, You are named after my son"
+
         res00data = {"role": "user", "parts": [ca]}
         res01data = {"role": "model", "parts": [convo.last.text]}
+        # res03data = {"role": "model", "parts": [systempromptadd]}
         res02data = {"role": "user", "parts": 
                      [convo.last.text+grpcontext+usermessage]
                      }
-
-        chatdata.append(res02data)
+  
         chatdata.append(res00data)
         chatdata.append(res01data)
+        # chatdata.append(res03data)
+        chatdata.append(res02data)
+
         st.write(chatdata)
         # print(f'\n\n Chatdata: {chatdata}\n\n') # Uncomment for Deginfo
 
