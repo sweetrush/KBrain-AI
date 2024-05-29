@@ -60,5 +60,5 @@ cl1, cl2, cl3 = st.columns([1, 4, 1], gap="small")
 strdp("**SweetRush Coder** is the Developer of this AI assistance", "2")
 strdp("**Github:** [Check out his Github](https://github.com/sweetrush)", "2")
 strdp("**Youtube:** [Check out his Youtube](https://youtube.com/@phontric?si=3XPBeam0WfPxL4pY)", "2")
-cl1.image("https://yt3.ggpht.com/ytc/AIdro_lKLTe_g4SRSW8drvCTx5ychkb_vXDRWdMr-4ic7ML6A6s=s600-c-k-c0x00ffffff-no-rj-rp-mo", caption=None, width=None)
+cl1.image("https://www.youtube.com/channel/UC5AZNZRHSUwaqZwPl-zGnRg", caption=None, width=None)
 
