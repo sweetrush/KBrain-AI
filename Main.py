@@ -61,6 +61,13 @@ emj_help = ' 📗 '
 emj_help_ico = '📗'
 
 
+st.set_page_config(
+    page_title="Miah GeminiAI", 
+    page_icon=":tada:", 
+    layout="wide"
+    )
+
+
 # Defining Arrays:
 listofAssistance = []
 
@@ -75,7 +82,6 @@ config = configparser.ConfigParser()
 config.read('config.mcf')
 apivalue = config.get("APIKEYS", "api")
 api11labs = config.get("APIKEYS", "api_11labs")
-
 epcolor_val = config.get("THEMEING", "ep_color")
 
 # Defind Date Tags for Filenaming
@@ -89,13 +95,6 @@ datetag_string = f'{ynm}_{hms}'
 # Definding other Configuration support 
 ai_dont_lie = "Tell me only factual Information and not to lie"
 
-genai.configure(api_key=apivalue)
-
-st.set_page_config(
-    page_title="Miah GeminiAI", 
-    page_icon=":tada:", 
-    layout="wide"
-    )
 
 # #################################################
 #   SETTING THE FONT HACK FOR THE APP
@@ -703,12 +702,28 @@ with st.sidebar:
         dynamic_css(bexpanderColor)
         
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
-        e11labkey = st.text_input("e11labkey:", value="", max_chars=None, type="password")
-        activate_audio_output = st.toggle(
-                                  emj_aaudio+"Audio(1):",
-                                  value=False, 
-                                  help="Active Audio E11L"
-                                  )
+        e11labkey = st.text_input("e11labkey:", 
+                                  value="", 
+                                  max_chars=None, 
+                                  type="password", 
+                                  help="You to place your e11lab key to use Audio (1)")
+
+        if e11labkey:
+            activate_audio_output = st.toggle(
+                                      emj_aaudio+"Audio(1):",
+                                      value=False, 
+                                      help="Active Audio E11L"
+        
+                                      )
+        # Access Code for "SCH"
+        elif e11labkey == "sch2024-code":
+            activate_audio_output = st.toggle(
+                                      emj_aaudio+"Audio(1):",
+                                      value=False, 
+                                      help="Active Audio E11L"
+                                      )
+        else:
+            activate_audio_output = False
 
         activate_audio_output002 = st.toggle(
                                   emj_aaudio+"Audio(2):", 
@@ -827,6 +842,12 @@ with bottom():
     
 # ####################################################################
 # ####################################################################
+
+if GeminiAPIkey:
+    genai.configure(api_key=GeminiAPIkey)
+else:
+    genai.configure(api_key=apivalue)
+
 
 
 # Set up the model
