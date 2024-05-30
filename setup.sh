@@ -1,6 +1,8 @@
 mkdir -p ~/.streamlit/
 mkdir -p ~/output/
 mkdir -p ~/output/gemini_out
+mkdir -p ~/ai_audio
+
 
 
 echo "\
