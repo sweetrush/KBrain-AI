@@ -1,11 +1,3 @@
-# 
-# The Requirements of the Miah's AI Assistances 
-# Run the following command to install the requirements 
-#   > pip install -r requirements.txt
-#
-#   Developed by: sRC-SweetrushCoder
-# 
-
 youtube-transcript-api==0.6.2
 pypdf==4.2.0
 gTTS==2.5.1

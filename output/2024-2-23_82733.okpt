@@ -1,7 +1,0 @@
-To run eSpeak with natural voices, you can use the following command in the terminal:
-
-```bash
-espeak -v [voice_name] "Your text here"
-```
-
-Replace `[voice_name]` with the name of the natural voice you want to use. For example, you can use "en-us" for the American English voice or "en-uk" for the British English voice. After specifying the voice, you can input your desired text.
