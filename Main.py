@@ -72,7 +72,7 @@ audioOD = "ai_audio"
 # ##################################################
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('config.mcf')
 apivalue = config.get("APIKEYS", "api")
 api11labs = config.get("APIKEYS", "api_11labs")
 
@@ -569,6 +569,7 @@ with st.sidebar:
 
     with st.expander(emj_gear+"Prompt Config", expanded=False):
         popup_notifications = st.toggle("Popup Notification", value=False)
+        GeminiAPIkey = st.text_input("Gemini-key:", type="password", value="", max_chars=None)
         tempture_val = st.slider(
                                  "Prompt temperature",  # Label for the slider
                                  min_value=0.0,    # Minimum value
@@ -702,7 +703,7 @@ with st.sidebar:
         dynamic_css(bexpanderColor)
         
     with st.expander(emj_aaudio+"Audio Config", expanded=False):
-
+        e11labkey = st.text_input("e11labkey:", value="", max_chars=None, type="password")
         activate_audio_output = st.toggle(
                                   emj_aaudio+"Audio(1):",
                                   value=False, 
