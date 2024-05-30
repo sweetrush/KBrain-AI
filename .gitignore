@@ -1,7 +1,6 @@
 #[Files]
 *.mp3
 *.dtxt
-config.ini
 
 #[Folders]
 output/
