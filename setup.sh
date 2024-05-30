@@ -1,6 +1,6 @@
 mkdir -p ~/.streamlit/
-mkdir -p ~/.streamlit/output/
-mkdir -p ~/.streamlit/output/gemini_out
+mkdir -p ~/output/
+mkdir -p ~/output/gemini_out
 
 
 echo "\
