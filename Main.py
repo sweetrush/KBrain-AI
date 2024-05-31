@@ -696,7 +696,6 @@ with st.sidebar:
         with open('config.ini', 'w') as configfile:
             config.write(configfile)
 
-
         # set the session color
         st.session_state.exbclor = bexpanderColor
         dynamic_css(bexpanderColor)
