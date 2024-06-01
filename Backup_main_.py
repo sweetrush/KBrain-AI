@@ -431,7 +431,10 @@ def get_video_transcript(video_id):
 def get_video_id(url):
     # Extract the video id from the YouTube URL
     video_id = re.findall(
-        r"(?:v=|v\/|embed\/|youtu\.be\/|\/v\/|\/e\/|watch\?v=|youtube\.com\/user\/[^#]*#([^\/]*\/)*\w+\/|youtube\.com\/v\/|youtube\.com\/embed\/|youtube\.com\/watch\?v=)([^#\&\?]*[^#\&\?\n]*)",
+        r"(?:v=|v\/|embed\/|youtu\.be\/|\/v\/|\/e\/|watch\?v=|)" 
+        r"(youtube\.com\/user\/[^#]*#([^\/]*\/)*\w+\/|)" 
+        r"(youtube\.com\/v\/|youtube\.com\/embed\/|)"
+        r"(youtube\.com\/watch\?v=)([^#\&\?]*[^#\&\?\n]*)",
         url
     )
 
