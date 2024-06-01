@@ -119,13 +119,17 @@ if "authstatus" not in st.session_state:
 # Start of Function Definitions
 # #########################################################################################
 
-# 01
+# #####################################################
+# #  01         REPLACE CHAR FUNCTION                ##
+# #####################################################
 def replace_chars(text, chars_to_replace, replacement):
     pattern = f"[{chars_to_replace}]"  # Create a character class pattern
     return re.sub(pattern, replacement, text)
 
 
-# 02
+# #####################################################
+# #  02         EXTRACT PDF TO TEXT FUNCTION         ##
+# #####################################################
 @st.cache_data
 def openpdf_exttext(pdffile):
 
@@ -147,7 +151,9 @@ def openpdf_exttext(pdffile):
         # on your error handling strategy
 
 
-# 03
+# #####################################################
+# #  03         READ FROM FILE FUNCTION              ##
+# #####################################################
 @st.cache_data
 def read_from_file(filename):
     pathDirAssistanceDef = "assistancedb/"
@@ -158,11 +164,9 @@ def read_from_file(filename):
         return content
 
 
-######
-# 04 #
-######
-
-
+# #####################################################
+# #  04         WRITE TO FILE FUNCTION               ##
+# #####################################################
 def write_to_file(filename, text):
     storedir = dataOPD
     datetag = datetag_string
@@ -177,7 +181,9 @@ def write_to_file(filename, text):
         print(f"Error writing to file: {e}")
 
 
-# 05
+# #####################################################
+# #  05         Q_COMBINDER FUNCTION                 ##
+# #####################################################
 def question_combinder(additional_context, user_question):
 
     """Combines a user question with additional context.
@@ -209,7 +215,9 @@ def question_combinder(additional_context, user_question):
     return combined_question
 
 
-# 06
+# #####################################################
+# #  06         GET ASSISTANCE DETAIL FUNCTION       ##
+# #####################################################
 def get_assistant_details(selection, listofAssistance, assistant):
     """Retrieves assistant details based on selection.
 
@@ -228,7 +236,9 @@ def get_assistant_details(selection, listofAssistance, assistant):
     return None, None, None  # Return None values if no match is found
 
 
-# 07
+# #####################################################
+# #  07      TEXT TO SPEECH FUNCTION [GTTS]          ##
+# #####################################################
 def text_to_speech(text):
     """Converts text to speech using gTTS and returns an audio file."""
     tts = gTTS(text=text, lang="en")  # You can change the language if needed
@@ -237,7 +247,9 @@ def text_to_speech(text):
     return filename
 
 
-# 08
+# #####################################################
+# #  08         GET AUDIO FUNCTION                   ##
+# #####################################################
 def get_audio(texttomp3, prefix, auid):
 
     ellskey = api11labs
@@ -272,7 +284,9 @@ def get_audio(texttomp3, prefix, auid):
     return mp3_path
 
 
-# 09
+# #####################################################
+# #  09         COUNT PROMPT FILES FUNCTION          ##
+# #####################################################
 def count_files(directory_path):
     """Counts the number of files in a directory.
 
@@ -291,8 +305,10 @@ def count_files(directory_path):
 
 
 # Function loads the Agent list from agent list files
-#
-# 10
+
+# #####################################################
+# #  10         LOAD AGENTS FROM DB/FILE FUNCTION    ##
+# #####################################################
 def loadagents():
     pathDirAssistanceConfig = "agentlist/"
     assistance_filename = "agentlisting.als"
@@ -352,16 +368,16 @@ def loadagents():
                     )
 
 
-# Creates are Horizontal Line
-#
-
-
-# 11
+# #####################################################
+# #  11         HORIZONTAL LINE FUNCTION             ##
+# #####################################################
 def horizontal_line():
     st.markdown("---", unsafe_allow_html=True)
 
 
-# 12
+# #####################################################
+# #  12         DISPLAY DEV INFO FUNCTION            ##
+# #####################################################
 @st.experimental_dialog("About the Developer")
 def display_about_dev():
     st.title("About the Developer")
@@ -370,7 +386,9 @@ def display_about_dev():
     st.write("DevYear: 2024")
 
 
-# 13
+# #####################################################
+# #  13         LISTAIN TO MICROPHONE FUNCTION       ##
+# #####################################################
 def listain_to_Microphone():
     lm = sr.Recognizer()
 
@@ -391,14 +409,9 @@ def listain_to_Microphone():
         return spoken
 
 
-##########################################################
-#
-#  Get Video Transcript Function
-#
-##########################################################
-
-
-# 14
+# #####################################################
+# #  14         YOUTUBE VIDEO TRANSCRIPT FUNCTION    ##
+# #####################################################
 @st.cache_data
 def get_video_transcript(video_id):
 
@@ -419,7 +432,9 @@ def get_video_transcript(video_id):
     return None
 
 
-#  15
+# #####################################################
+# #  15         GET YOUTUBE VIDEO ID FUNCTION        ##
+# #####################################################
 def get_video_id(url):
     # Extract the video id from the YouTube URL
     video_id = re.findall(
@@ -431,13 +446,17 @@ def get_video_id(url):
     return video_id[0] if video_id else None
 
 
-# 16
+# #####################################################
+# #  16         ABOUT THE DEVELOPER FUNCTION         ##
+# #####################################################
 def about_the_developer():
     st.write("##### Version:   :orange[" + version + "]")
     st.write("##### Developer:   :green[" + develper + "]")
 
 
-# 17
+# #####################################################
+# #  17         DYNAMIC CSS LOADER FUNCTION          ##
+# #####################################################
 def dynamic_css(color):
     ubuntu = """
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -455,10 +474,13 @@ def dynamic_css(color):
         st.markdown(f"<style>{ubuntu}{newtextcss}</style>", unsafe_allow_html=True)
 
 
+#########################################################################
+#########################################################################
+#########################################################################
 #
 #
-# #######################################################################
-#   END OF FUNCTION DEFINTIONS
+#                  END OF FUNCTION DEFINTIONS
+#########################################################################
 #########################################################################
 #########################################################################
 #########################################################################
@@ -469,6 +491,7 @@ def dynamic_css(color):
 
 # Defining more Variables
 # ##############################################################
+
 dynamic_css(epcolor_val)
 
 fileInStore = count_files(dataOPD)
@@ -503,42 +526,17 @@ safety_options = [
 
 loadagents()
 
-# [ OLD CODE ]
-# Comment out using the agentlist.als file to load the agents
-# The funcation Loadagents will load the agents
-#
-# listofAssistance = [
-#
-#  #  # General Agents
-#  #  [emj_billcap+"Default", "Default Assistance", "Default.atx"],
-#  #  [emj_billcap+"General", "General Assisance", "General.atx"],
-#
-#  #  # Technical Agents
-#  #  [emj_tophat+"Linux", "Linux Assistance", "linux_assistance.atx"],
-#  #  [emj_tophat+"Python", "Python Assistance", "Python_assistance.atx"],
-#  #  [emj_tophat+"Go", "Go Lang Assistance", "Go_Assistance.atx"],
-#  #  [emj_tophat+"Bash", "Bash Assistance", "bashexpert.atx"],
-#  #  [emj_tophat+"Docker", "Docker Assistance", "Dockerassist.atx"],
-#  #  [emj_tophat+"RedTeam", "RedTeam Assistance", "Red_Team_Expert.atx"],
-#  #  # Assistive Professional Agents
-#  #  [emj_gradcap+"ProposalDev", "Proposal Dev Assistant", "proposaldev.atx"],
-#  #  [emj_gradcap+"2Ddotplan", "2D Plot Assistance", "dotplanner.atx"],
-#  #  [emj_gradcap+"Emailhelper", "EmailHelper Assistance", "emailhelper.atx"],
-#  #  [emj_gradcap+"BusniessExpert", "BE Assistance", "BusniessExpert.atx"],
-#  #  # Test Phase Assistance
-#  #  [emj_assistance+"DarkAI", "Dark Assistance", "darkai.atx"]
-#  # ]
-
 
 assistant = []
 for i in range(len(listofAssistance)):
     assistant.append(read_from_file(listofAssistance[i][2]))
 
-
-# ###################################################################################
+##############################################################################
+# ############################################################################
 #  SIDE BAR CODE FOR THE PROGRAM
 #    - This is the start of the Side bar and with all elements
-# ###################################################################################
+# ############################################################################
+##############################################################################
 
 st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance")
 

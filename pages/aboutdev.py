@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 st.markdown(
 	        '''
@@ -60,5 +61,8 @@ cl1, cl2, cl3 = st.columns([1, 4, 1], gap="small")
 strdp("**SweetRush Coder** is the Developer of this AI assistance", "2")
 strdp("**Github:** [Check out his Github](https://github.com/sweetrush)", "2")
 strdp("**Youtube:** [Check out his Youtube](https://youtube.com/@phontric?si=3XPBeam0WfPxL4pY)", "2")
-cl1.image("https://www.youtube.com/channel/UC5AZNZRHSUwaqZwPl-zGnRg", caption=None, width=None)
+
+devLogo = os.path.join("appImages", "devlogo.png")
+
+cl1.image(devLogo, caption=None, width=None)
 
