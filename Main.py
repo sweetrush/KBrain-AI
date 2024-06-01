@@ -41,7 +41,7 @@ develper = "SweetRushCoder"
 ###################################################
 
 # AccessCode for Testing 
-accesscode_miah = "0000999988888"
+accesscode_miah = "0"
 
 
 # Definding Emoji's
@@ -474,6 +474,27 @@ def dynamic_css(color):
         st.markdown(f"<style>{ubuntu}{newtextcss}</style>", unsafe_allow_html=True)
 
 
+# #####################################################
+# #  18         CHECK LOGIN CONDITION                ##
+# #####################################################
+def get_AccessCondition():
+    access = st.sidebar.text_input(
+                "Provide your access Code:",
+                value=st.session_state.accesscode,
+                type="password",
+                max_chars=None,
+             )
+
+    st.session_state.accesscode = access
+    if access == accesscode_miah:
+        grant = True
+        st.session_state.authstatus = True
+    else:
+        grant = False
+        st.session_state.authstatus = False
+    return grant 
+
+
 #########################################################################
 #########################################################################
 #########################################################################
@@ -541,29 +562,18 @@ for i in range(len(listofAssistance)):
 st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance")
 
 
-# st.sidebar.expander("Authentication", expanded=st.session_state.authstatus)
-access = st.sidebar.text_input(
-    "Provide your access Code:",
-    value=st.session_state.accesscode,
-    type="password",
-    max_chars=None,
-)
-st.session_state.accesscode = access
+# Getting the Condition of the Access 
+get_AccessCondition()
 
-if access == accesscode_miah:
-    grant = True
-    st.session_state.authstatus = True
-else:
-    grant = False
-    st.session_state.authstatus = False
-
-
-if grant:
-    with st.sidebar:
+if st.session_state.authstatus or st.session_state.accesscode != "":
+    with st.sidebar:        
         logout = st.button("Logout")
 
         if logout:
             st.session_state.accesscode = ""
+            st.session_state.authstatus = False
+            st.cache_data.clear()
+            st.cache_resource.clear()
 
         global tempture_val, fileloaded, opt1_safe, opt2_safe
         global opt3_safe, opt4_safe, pdftext, getResponsetext
@@ -575,7 +585,8 @@ if grant:
         #
         #
         # with st.expander(emj_tophat+"File Upload", expanded=False):
-        #      uploaded_file = st.file_uploader('Choose your .pdf file', type="pdf")
+        #      uploaded_file = st.file_uploader('Choose your .pdf file', 
+        #                                       type="pdf")
         #      if uploaded_file is not None:
         #          pdftext = openpdf_exttext(uploaded_file)
         #      else:
@@ -589,7 +600,8 @@ if grant:
         #          json_data = ""
 
         #      uploaded_img = st.file_uploader(
-        #                                  "Choose an image...", type=["jpg", "png", "jpeg"]
+        #                                  "Choose an image...", type=["jpg", 
+        #                                  "png", "jpeg"]
         #                                     )
 
         with st.expander(emj_gear + "Prompt Config", expanded=False):
@@ -618,7 +630,8 @@ if grant:
                 "Set Top-K", min_value=None, max_value=None, value=10, step=1
             )
 
-            mot = st.text_input("Max Output Tokens", value=model_tokens, max_chars=None)
+            mot = st.text_input("Max Output Tokens", value=model_tokens, 
+                                max_chars=None)
 
             convert_tpv = float(tempture_val)
 
@@ -673,7 +686,9 @@ if grant:
         # ###############################################
         with st.expander(emj_assistance + "Model & Assistance", expanded=True):
             model_select = st.selectbox(
-                emj_clamper + "Choose Model", (models[0], models[1], models[2]), index=0
+                emj_clamper + "Choose Model", (models[0], 
+                                               models[1],
+                                               models[2]), index=0
             )
 
             # Setting the selected Active Assistance
@@ -683,7 +698,9 @@ if grant:
                 emj_assistance + "Active Assistance:",
                 [
                     item[0]
-                    for item in listofAssistance[: min(20, len(listofAssistance))]
+                    for item in listofAssistance[: min(20, 
+                                                       len(listofAssistance))
+                                                 ]
                 ],
                 index=0,
             )
@@ -1081,7 +1098,6 @@ if grant:
 
                 if popup_notifications:
                     st.toast(":blue[Audio 01] :green[activated]")
-
                 st.write("Audio Generation Completed")
 
             if activate_audio_output002:
@@ -1102,7 +1118,7 @@ if grant:
 
                 if popup_notifications:
                     st.toast(":blue[Audio 02] :green[activated]")
-                st.write("Audio Generation Completed")
+                st.markdown("##### Audio Generation #### :green[Completed]", unsafe_allow_html=False)
 
             status_string = (
                 "<strong style='color:red'>Using: "
@@ -1129,7 +1145,7 @@ if grant:
     #     st.toast(":blue[Audio] :red[deactivated]")
 
 
-if not grant:
+if not st.session_state.authstatus:
     st.header("Welcome to Miah's AI Assistance")
 
 # with bottom():
