@@ -494,12 +494,12 @@ def get_AccessCondition():
         grant = True
         st.session_state.authstatus = True
         if access != "":
-            st.sidebar.success("Authentication Allowed", icon=None)
+            st.sidebar.success("Authenticated & Active", icon="📡")
     else:
         grant = False
         st.session_state.authstatus = False
         if access != "":
-            st.sidebar.warning("Authentication Error: Please check your again!", icon=None)
+            st.sidebar.warning("Authentication Error: Please check your again!", icon="⛑️")
 
     return grant 
 
