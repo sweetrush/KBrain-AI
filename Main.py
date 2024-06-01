@@ -486,12 +486,21 @@ def get_AccessCondition():
              )
 
     st.session_state.accesscode = access
+
+    if access == "":
+        st.sidebar.error("Access Code is Empty", icon="🚨")
+
     if access == accesscode_miah:
         grant = True
         st.session_state.authstatus = True
+        if access != "":
+            st.sidebar.success("Authentication Allowed", icon=None)
     else:
         grant = False
         st.session_state.authstatus = False
+        if access != "":
+            st.sidebar.warning("Authentication Error: Please check your again!", icon=None)
+
     return grant 
 
 
@@ -565,7 +574,7 @@ st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance")
 # Getting the Condition of the Access 
 get_AccessCondition()
 
-if st.session_state.authstatus or st.session_state.accesscode != "":
+if st.session_state.authstatus and st.session_state.accesscode != "":
     with st.sidebar:        
         logout = st.button("Logout")
 
@@ -1118,7 +1127,7 @@ if st.session_state.authstatus or st.session_state.accesscode != "":
 
                 if popup_notifications:
                     st.toast(":blue[Audio 02] :green[activated]")
-                st.markdown("##### Audio Generation #### :green[Completed]", unsafe_allow_html=False)
+                st.markdown("##### Audio Generation :green[Completed]", unsafe_allow_html=False)
 
             status_string = (
                 "<strong style='color:red'>Using: "
@@ -1146,7 +1155,20 @@ if st.session_state.authstatus or st.session_state.accesscode != "":
 
 
 if not st.session_state.authstatus:
+    bodyc1 = """
+
+    Great to have you on the Application, If you have not registred for an 
+    account. 
+      - """+emj_down+""" [Register Now](https://#)
+
+    Or get in contact with the team now for your chance to be a head of your 
+    friends and colleges at work with this very helpful tool. 
+
+    """
     st.header("Welcome to Miah's AI Assistance")
+
+    st.markdown(bodyc1, unsafe_allow_html=False)
+
 
 # with bottom():
 # cl1, cl2 = st.columns(2, gap="small")
