@@ -577,6 +577,54 @@ def calculate_string_hash(input_string, algorithm='sha256'):
     return hash_value
 
 
+def write_registration_to_sheet():
+    with st.form(key="regForm01", clear_on_submit=False):
+            fullname = st.text_input("Full Name", value="", max_chars=None)
+            country = st.text_input("Country")
+            email = st.text_input("Email")
+            password1 = st.text_input("Password one", key="33", type="password")
+            password2 = st.text_input("Password two (retype)", key="34", type="password")
+            specialCode = st.text_input("SpecialCode", type="password")
+
+            st.markdown("##### :red[Required *]")
+            
+            submit = st.form_submit_button(label="Apply Registration")
+
+            keyhash = calculate_string_hash(email+fullname+specialCode)
+
+            registaDataFrame = pd.DataFrame(
+                [
+                    {
+                     "fullname": fullname, 
+                     "country": country,
+                     "email": email,
+                     "password": password1,
+                     "specialcode": specialCode,
+                     "keyhash": keyhash,
+                    }
+                ]
+                )
+
+            if submit:
+                chkName = checkinput(fullname, "Full Name Field")
+                chkCountry = checkinput(country, "Country Field")
+                chkEmail = checkinput(email, "Email")
+                chkPwd1 = checkinput(password1, "Password one")
+                chkPwd2 = checkinput(password2, "Password two (retype)")
+                chkSCode = checkinput(specialCode, "password")
+                chkpwdeq = compare_is_same(password1, password2)
+
+                if chkpwdeq:
+                    if chkName and chkCountry and chkEmail and chkPwd1 and chkPwd2 and chkSCode:
+                        conn = st.connection("gsheets", type=GSheetsConnection)
+                        conn.update(data=registaDataFrame)
+                        # data = conn.read(spreadsheet=url, usecols=list(range(2)), ttl=5, worksheet=SheetID)
+                        # st.dataframe(data)
+                        st.success("Thank you for Registering")
+                else:
+                    st.error("Please the passwords are not the Same")
+
+
 #########################################################################
 #########################################################################
 #########################################################################
@@ -1222,57 +1270,13 @@ if not st.session_state.authstatus:
     st.header("Welcome to Miah's AI Assistance")
 
     st.markdown(bodyc1, unsafe_allow_html=False)
+
 with st.expander("Get Access"):
-    with st.form(key="regForm01", clear_on_submit=False):
-        fullname = st.text_input("Full Name", value="", max_chars=None)
-        country = st.text_input("Country")
-        email = st.text_input("Email")
-        password1 = st.text_input("Password one", key="33", type="password")
-        password2 = st.text_input("Password two (retype)", key="34", type="password")
-        specialCode = st.text_input("SpecialCode", type="password")
+    write_registration_to_sheet()
 
-        st.markdown("##### :red[Required *]")
-        
-        submit = st.form_submit_button(label="Apply Registration")
-
-        keyhash = calculate_string_hash(email+fullname+specialCode)
-
-        registaDataFrame = pd.DataFrame(
-            [
-                {
-                 "fullname": fullname, 
-                 "country": country,
-                 "email": email,
-                 "password": password1,
-                 "specialcode": specialCode,
-                 "keyhash": keyhash,
-                }
-            ]
-            )
-
-        if submit:
-            chkName = checkinput(fullname, "Full Name Field")
-            chkCountry = checkinput(country, "Country Field")
-            chkEmail = checkinput(email, "Email")
-            chkPwd1 = checkinput(password1, "Password one")
-            chkPwd2 = checkinput(password2, "Password two (retype)")
-            chkSCode = checkinput(specialCode, "password")
-            chkpwdeq = compare_is_same(password1, password2)
-
-            if chkpwdeq:
-                if chkName and chkCountry and chkEmail and chkPwd1 and chkPwd2 and chkSCode:
-                    conn = st.connection("gsheets", type=GSheetsConnection)
-                    conn.update(data=registaDataFrame)
-                    # data = conn.read(spreadsheet=url, usecols=list(range(2)), ttl=5, worksheet=SheetID)
-                    # st.dataframe(data)
-                    st.success("Thank you for Registering")
-            else:
-                st.error("Please the passwords are not the Same")
-
-
-        # with bottom():
-        # cl1, cl2 = st.columns(2, gap="small")
-        # cl1.markdown("Using: :red["+model_select+"]")
+    # with bottom():
+    # cl1, cl2 = st.columns(2, gap="small")
+    # cl1.markdown("Using: :red["+model_select+"]")
 
 
 # Endof the Line
