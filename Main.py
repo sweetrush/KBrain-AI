@@ -1290,13 +1290,22 @@ if not st.session_state.authstatus:
     st.header("Welcome to Miah's AI Assistance")
 
     st.markdown(bodyc1, unsafe_allow_html=False)
+    st.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
 
-    with st.expander("Get Access"):
-        write_registration_to_sheet()
-
+    # with st.expander("Get Access"):
+        # # write_registration_to_sheet()
+        # st.markdown(
+        #             "<div><iframe src=\"https://docs.google.com/forms/d/e/1" 
+        #             "FAIpQLSecGZXC1puJAd4VfNYEkh_ZeNmjDIDaThtCd-HQh2cg"
+        #             "d-vQew/viewform?embedded=true\" width=\"400\" hei"
+        #             "ght=\"1091\" frameborder=\"0\" marginheight=\"0\""
+        #             "marginwidth=\"0\">Loading…</iframe></div>",
+        #             unsafe_allow_html=True
+        #             )
+        
     # with bottom():
     # cl1, cl2 = st.columns(2, gap="small")
     # cl1.markdown("Using: :red["+model_select+"]")
-
+    
 
 # Endof the Line
