@@ -508,6 +508,9 @@ def get_AccessCondition():
     return grant
 
 
+# #####################################################
+# #  19         SHOWING THIS ON SIDEBAR  FX          ##
+# #####################################################
 def mapFileUploadOnSideBar():
 
     with st.expander(emj_tophat + "File Upload", expanded=False):
@@ -528,8 +531,9 @@ def mapFileUploadOnSideBar():
 
         return pdftext, json_data, uploaded_img
 
-
-
+# #####################################################
+# #  20         CHECHING INPUT FUNCTION FOR REG FORM ##
+# #####################################################
 def checkinput(input, name): 
     if input != "":
      return True
@@ -551,6 +555,10 @@ def compare_is_same(string1, string2):
     #   st.write("Password not the Same please check")
     return compare
 
+
+# #####################################################
+# #  21         GENERATE KEYHASH FX                  ##
+# #####################################################
 def calculate_string_hash(input_string, algorithm='sha256'):
     """
     Calculates the hash of a string using the specified algorithm.
@@ -577,6 +585,9 @@ def calculate_string_hash(input_string, algorithm='sha256'):
     return hash_value
 
 
+# #####################################################
+# #  22         WRITE TO GOOGLE SHEET FOR REG        ##
+# #####################################################
 def write_registration_to_sheet():
     with st.form(key="regForm01", clear_on_submit=False):
             fullname = st.text_input("Full Name", value="", max_chars=None)
