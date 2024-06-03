@@ -698,6 +698,15 @@ for i in range(len(listofAssistance)):
 # ############################################################################
 ##############################################################################
 
+
+##############################################################################
+##############################################################################
+# #                                                                         ##
+# #             START OF THE MAIN CONTENT BODY                              ##
+# #                                                                         ##
+##############################################################################
+##############################################################################
+
 st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance")
 
 
@@ -1282,8 +1291,8 @@ if not st.session_state.authstatus:
 
     st.markdown(bodyc1, unsafe_allow_html=False)
 
-with st.expander("Get Access"):
-    write_registration_to_sheet()
+    with st.expander("Get Access"):
+        write_registration_to_sheet()
 
     # with bottom():
     # cl1, cl2 = st.columns(2, gap="small")
