@@ -38,7 +38,7 @@ import hashlib
 # of the Miah AI assistance
 # #################################################
 
-version = "2.6.1"
+version = "2.9.1"
 develper = "SweetRushCoder"
 
 ###################################################
@@ -65,7 +65,7 @@ emj_help = " 📗 "
 emj_help_ico = "📗"
 
 
-st.set_page_config(page_title="Miah GeminiAI", page_icon=":tada:", layout="wide")
+st.set_page_config(page_title="Miah's AI Assistance", page_icon=":tada:", layout="wide")
 
 
 # Defining Arrays:
@@ -713,15 +713,12 @@ st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance")
 # Getting the Condition of the Access
 get_AccessCondition()
 
+logout = None
+
 if st.session_state.authstatus and st.session_state.accesscode != "":
     with st.sidebar:
-        logout = st.button("Logout")
 
-        if logout:
-            st.session_state.accesscode = ""
-            st.session_state.authstatus = False
-            st.cache_data.clear()
-            st.cache_resource.clear()
+        logout = st.button("Logout")
 
         global tempture_val, fileloaded, opt1_safe, opt2_safe
         global opt3_safe, opt4_safe, pdftext, getResponsetext
@@ -1273,39 +1270,47 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     #     st.toast(":blue[Audio] :green[activated]")
     # else:
     #     st.toast(":blue[Audio] :red[deactivated]")
+if logout:
+    st.session_state.accesscode = ""
+    st.session_state.authstatus = False
+    st.cache_data.clear()
+    st.cache_resource.clear()
+    st.rerun()
 
 
 if not st.session_state.authstatus:
     bodyc1 = (
         """
+        Great to have you on the Application, If you have not registred for an 
+        account to get you :white[accesscode] you should now. Currently Access 
+        is open at the moment for this :yellow[Beta Release]. 
 
-    Great to have you on the Application, If you have not registred for an 
-    account. 
-    Or get in contact with the team now for your chance to be a head of your 
-    friends and colleges at work with this very helpful tool.
+        Or get in contact with the team now for your chance to be a head of your 
+        friends and colleges at work with this very helpful tool.
 
-    ### Apply now and Get in to the Fun. 
-    """
+        ### Apply now and Get in to the Fun. 
+        """
     )
+    
     st.header("Welcome to Miah's AI Assistance")
 
-    st.markdown(bodyc1, unsafe_allow_html=False)
+    st.markdown(bodyc1, unsafe_allow_html=True)
     st.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
 
     # with st.expander("Get Access"):
-        # # write_registration_to_sheet()
-        # st.markdown(
-        #             "<div><iframe src=\"https://docs.google.com/forms/d/e/1" 
-        #             "FAIpQLSecGZXC1puJAd4VfNYEkh_ZeNmjDIDaThtCd-HQh2cg"
-        #             "d-vQew/viewform?embedded=true\" width=\"400\" hei"
-        #             "ght=\"1091\" frameborder=\"0\" marginheight=\"0\""
-        #             "marginwidth=\"0\">Loading…</iframe></div>",
-        #             unsafe_allow_html=True
-        #             )
+    # # write_registration_to_sheet()
+    # st.markdown(
+    #             "<div><iframe src=\"https://docs.google.com/forms/d/e/1" 
+    #             "FAIpQLSecGZXC1puJAd4VfNYEkh_ZeNmjDIDaThtCd-HQh2cg"
+    #             "d-vQew/viewform?embedded=true\" width=\"400\" hei"
+    #             "ght=\"1091\" frameborder=\"0\" marginheight=\"0\""
+    #             "marginwidth=\"0\">Loading…</iframe></div>",
+    #             unsafe_allow_html=True
+    #             )
         
     # with bottom():
     # cl1, cl2 = st.columns(2, gap="small")
     # cl1.markdown("Using: :red["+model_select+"]")
-    
+
 
 # Endof the Line

@@ -45,3 +45,5 @@ with st.sidebar:
 	st.page_link("pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False)
 
 st.header("Miah's AI Assistance - Help and Guidance")
+
+st.markdown(":yellow[NOTE:Currently this content is been developed and will be avaiable soon.]", unsafe_allow_html=False)
