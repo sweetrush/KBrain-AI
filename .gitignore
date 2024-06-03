@@ -2,8 +2,10 @@
 *.mp3
 *.dtxt
 config.ini
+*.toml
 
 #[Folders]
 output/
 kivy_venv/
 ai_audio/
+.streamlit/

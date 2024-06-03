@@ -1,12 +1,14 @@
-"""
-At the command line, only need to run once to install the package via pip:
-
-$ pip install google-generativeai
-"""
-
+# 
+#  Main File for Miah's AI Assistance 
+#  
+#  Purpose: This has all the code for the Application to Run. 
+#  Developed by: SweetRushCoder(sRC) aka Suetena Faatuuala Loia 
+#   
+#
 # Definding Imported Libaries for the Program
 # #################################################
 from youtube_transcript_api import YouTubeTranscriptApi
+from streamlit_gsheets import GSheetsConnection 
 from pypdf import PdfReader
 from gtts import gTTS
 
@@ -23,13 +25,14 @@ import logging
 import datetime
 import os
 import re
+import hashlib
+
 
 # Uncomment to Use them
 # from io import BytesIO
 # import numpy as np
 # import pyperclip
 # import time
-
 
 # Definding the Current working version
 # of the Miah AI assistance
@@ -40,9 +43,8 @@ develper = "SweetRushCoder"
 
 ###################################################
 
-# AccessCode for Testing 
+# AccessCode for Testing
 accesscode_miah = "0"
-
 
 # Definding Emoji's
 # #################################################
@@ -479,11 +481,11 @@ def dynamic_css(color):
 # #####################################################
 def get_AccessCondition():
     access = st.sidebar.text_input(
-                "Provide your access Code:",
-                value=st.session_state.accesscode,
-                type="password",
-                max_chars=None,
-             )
+        "Provide your access Code:",
+        value=st.session_state.accesscode,
+        type="password",
+        max_chars=None,
+    )
 
     st.session_state.accesscode = access
 
@@ -499,9 +501,80 @@ def get_AccessCondition():
         grant = False
         st.session_state.authstatus = False
         if access != "":
-            st.sidebar.warning("Authentication Error: Please check your again!", icon="⛑️")
+            st.sidebar.warning(
+                "Authentication Error: Please check your again!", icon="⛑️"
+            )
 
-    return grant 
+    return grant
+
+
+def mapFileUploadOnSideBar():
+
+    with st.expander(emj_tophat + "File Upload", expanded=False):
+        uploaded_file = st.file_uploader("Choose your .pdf file", type="pdf")
+        if uploaded_file is not None:
+            pdftext = openpdf_exttext(uploaded_file)
+        else:
+            pdftext = ""
+            uploaded_csv = st.file_uploader("Choose a CSV file", type="csv")
+        if uploaded_csv is not None:
+            df = pd.read_csv(uploaded_csv)
+            json_data = df.to_json(orient="records")
+        else:
+            json_data = ""
+            uploaded_img = st.file_uploader(
+                "Choose an image...", type=["jpg", "png", "jpeg"]
+            )
+
+        return pdftext, json_data, uploaded_img
+
+
+
+def checkinput(input, name): 
+    if input != "":
+     return True
+    else:
+      st.error(name+"Field has a problem, check if not empty")
+    return False
+
+def compare_is_same(string1, string2):
+    if string1 == "":
+        string1 = "er1"
+
+    if string2 == "":
+        string2 = "er2"
+
+    compare = string1==string2
+    # if compare: 
+    #    st.write("Password is the Same")
+    # else:
+    #   st.write("Password not the Same please check")
+    return compare
+
+def calculate_string_hash(input_string, algorithm='sha256'):
+    """
+    Calculates the hash of a string using the specified algorithm.
+    Args:
+        input_string (str): The string to hash.
+        algorithm (str, optional): The hash algorithm to use. 
+                                    Defaults to 'sha256'.
+    Returns:
+        str: The hexadecimal representation of the hash value.
+    """
+    # Encode the string to bytes if necessary
+    if isinstance(input_string, str):
+        input_string = input_string.encode('utf-8')
+
+    # Create a hash object based on the chosen algorithm
+    hash_object = hashlib.new(algorithm)
+
+    # Update the hash object with the input string
+    hash_object.update(input_string)
+
+    # Get the hexadecimal representation of the hash
+    hash_value = hash_object.hexdigest()
+
+    return hash_value
 
 
 #########################################################################
@@ -523,7 +596,6 @@ def get_AccessCondition():
 # ##############################################################
 
 dynamic_css(epcolor_val)
-
 fileInStore = count_files(dataOPD)
 audioInStore = count_files(audioOD)
 
@@ -535,7 +607,6 @@ models = [
     "gemini-1.0-pro",
     "gemini-pro-vision",
 ]
-
 
 # OLD Definition
 # safety_options = [
@@ -553,7 +624,7 @@ safety_options = [
     "BLOCK_ONLY_HIGH",
 ]
 
-
+# Loading in the Agents from File 
 loadagents()
 
 
@@ -571,11 +642,11 @@ for i in range(len(listofAssistance)):
 st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance")
 
 
-# Getting the Condition of the Access 
+# Getting the Condition of the Access
 get_AccessCondition()
 
 if st.session_state.authstatus and st.session_state.accesscode != "":
-    with st.sidebar:        
+    with st.sidebar:
         logout = st.button("Logout")
 
         if logout:
@@ -591,27 +662,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # horizontal_line() # Uncomment to show the Line
 
         # Uncomment this to reflect the file Upload Feature on the Side Bar
-        #
-        #
-        # with st.expander(emj_tophat+"File Upload", expanded=False):
-        #      uploaded_file = st.file_uploader('Choose your .pdf file', 
-        #                                       type="pdf")
-        #      if uploaded_file is not None:
-        #          pdftext = openpdf_exttext(uploaded_file)
-        #      else:
-        #          pdftext = ""
-
-        #      uploaded_csv = st.file_uploader("Choose a CSV file", type="csv")
-        #      if uploaded_csv is not None:
-        #          df = pd.read_csv(uploaded_csv)
-        #          json_data = df.to_json(orient='records')
-        #      else:
-        #          json_data = ""
-
-        #      uploaded_img = st.file_uploader(
-        #                                  "Choose an image...", type=["jpg", 
-        #                                  "png", "jpeg"]
-        #                                     )
+        # mapFileUploadOnSideBar()
 
         with st.expander(emj_gear + "Prompt Config", expanded=False):
             popup_notifications = st.toggle("Popup Notification", value=False)
@@ -639,8 +690,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 "Set Top-K", min_value=None, max_value=None, value=10, step=1
             )
 
-            mot = st.text_input("Max Output Tokens", value=model_tokens, 
-                                max_chars=None)
+            mot = st.text_input("Max Output Tokens", value=model_tokens, max_chars=None)
 
             convert_tpv = float(tempture_val)
 
@@ -695,9 +745,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # ###############################################
         with st.expander(emj_assistance + "Model & Assistance", expanded=True):
             model_select = st.selectbox(
-                emj_clamper + "Choose Model", (models[0], 
-                                               models[1],
-                                               models[2]), index=0
+                emj_clamper + "Choose Model", (models[0], models[1], models[2]), index=0
             )
 
             # Setting the selected Active Assistance
@@ -707,9 +755,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 emj_assistance + "Active Assistance:",
                 [
                     item[0]
-                    for item in listofAssistance[: min(20, 
-                                                       len(listofAssistance))
-                                                 ]
+                    for item in listofAssistance[: min(20, len(listofAssistance))]
                 ],
                 index=0,
             )
@@ -800,7 +846,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     codewrap = ""  # initating the var for the code wrap here
     with bottom():
         with st.expander(emj_pencil + "Extention Context", expanded=False):
-            
+
             tb1, tb2, tb3, tb4, tb5 = st.tabs(["ATC", "ACC", "AYC", "FU", "AB"])
 
             with tb1:
@@ -808,7 +854,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     label="Additional Context", height=100, key="KK09923"
                 )
 
-            # if acp:
             with tb2:
                 code = st.selectbox(
                     "Select Code Type",
@@ -851,22 +896,28 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         "Youtube Video URL", value="", max_chars=None
                     )
 
-                    ac_youtubesc = st.toggle("AYS", value=False, help="Activate Transcript")
-                    youtubesac = st.toggle("LV", value=False, help="LoadVideo Transcript")
-                
+                    ac_youtubesc = st.toggle(
+                        "AYS", value=False, help="Activate Transcript"
+                    )
+                    youtubesac = st.toggle(
+                        "LV", value=False, help="LoadVideo Transcript"
+                    )
+
                 with yytab2:
                     if youtubesac:
                         st.video(youtubeURL)  # #
 
             with tb4:
                 ytb1, ytb2, ytb3 = st.tabs(["PDF", "CSV", "IMG"])
-                
+
                 with ytb1:
-                    uploaded_file = st.file_uploader("Choose your .pdf file", type="pdf")
+                    uploaded_file = st.file_uploader(
+                        "Choose your .pdf file", type="pdf"
+                    )
                     if uploaded_file is not None:
                         pdftext = openpdf_exttext(uploaded_file)
                     else:
-                        pdftext = "" 
+                        pdftext = ""
 
                 with ytb2:
                     uploaded_csv = st.file_uploader("Choose a CSV file", type="csv")
@@ -876,7 +927,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     else:
                         json_data = ""
 
-                with ytb3:        
+                with ytb3:
                     uploaded_img = st.file_uploader(
                         "Choose an image...", type=["jpg", "png", "jpeg"]
                     )
@@ -1127,7 +1178,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 if popup_notifications:
                     st.toast(":blue[Audio 02] :green[activated]")
-                st.markdown("##### Audio Generation :green[Completed]", unsafe_allow_html=False)
+                st.markdown(
+                    "##### Audio Generation :green[Completed]", unsafe_allow_html=False
+                )
 
             status_string = (
                 "<strong style='color:red'>Using: "
@@ -1155,24 +1208,71 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
 
 if not st.session_state.authstatus:
-    bodyc1 = """
+    bodyc1 = (
+        """
 
     Great to have you on the Application, If you have not registred for an 
     account. 
-      - """+emj_down+""" [Register Now](https://#)
-
     Or get in contact with the team now for your chance to be a head of your 
-    friends and colleges at work with this very helpful tool. 
+    friends and colleges at work with this very helpful tool.
 
+    ### Apply now and Get in to the Fun. 
     """
+    )
     st.header("Welcome to Miah's AI Assistance")
 
     st.markdown(bodyc1, unsafe_allow_html=False)
+with st.expander("Get Access"):
+    with st.form(key="regForm01", clear_on_submit=False):
+        fullname = st.text_input("Full Name", value="", max_chars=None)
+        country = st.text_input("Country")
+        email = st.text_input("Email")
+        password1 = st.text_input("Password one", key="33", type="password")
+        password2 = st.text_input("Password two (retype)", key="34", type="password")
+        specialCode = st.text_input("SpecialCode", type="password")
+
+        st.markdown("##### :red[Required *]")
+        
+        submit = st.form_submit_button(label="Apply Registration")
+
+        keyhash = calculate_string_hash(email+fullname+specialCode)
+
+        registaDataFrame = pd.DataFrame(
+            [
+                {
+                 "fullname": fullname, 
+                 "country": country,
+                 "email": email,
+                 "password": password1,
+                 "specialcode": specialCode,
+                 "keyhash": keyhash,
+                }
+            ]
+            )
+
+        if submit:
+            chkName = checkinput(fullname, "Full Name Field")
+            chkCountry = checkinput(country, "Country Field")
+            chkEmail = checkinput(email, "Email")
+            chkPwd1 = checkinput(password1, "Password one")
+            chkPwd2 = checkinput(password2, "Password two (retype)")
+            chkSCode = checkinput(specialCode, "password")
+            chkpwdeq = compare_is_same(password1, password2)
+
+            if chkpwdeq:
+                if chkName and chkCountry and chkEmail and chkPwd1 and chkPwd2 and chkSCode:
+                    conn = st.connection("gsheets", type=GSheetsConnection)
+                    conn.update(data=registaDataFrame)
+                    # data = conn.read(spreadsheet=url, usecols=list(range(2)), ttl=5, worksheet=SheetID)
+                    # st.dataframe(data)
+                    st.success("Thank you for Registering")
+            else:
+                st.error("Please the passwords are not the Same")
 
 
-# with bottom():
-# cl1, cl2 = st.columns(2, gap="small")
-# cl1.markdown("Using: :red["+model_select+"]")
+        # with bottom():
+        # cl1, cl2 = st.columns(2, gap="small")
+        # cl1.markdown("Using: :red["+model_select+"]")
 
 
 # Endof the Line
