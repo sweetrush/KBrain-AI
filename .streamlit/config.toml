@@ -5,7 +5,7 @@ primaryColor="#a5ecaa"
 #secondaryBackgroundColor="#5f6164"
 textColor="#f9f9fb"
 
-[connections.gsheets]
+[connection.gsheets]
 spreadsheet = "https://docs.google.com/spreadsheets/d/1Ibu8-3aMZD9Zp5DXhyXV7udu-8-SMsu6TEiYvGFCXXs"
 worksheet = "<worksheet-gid-or-folder-id>"
 type = "service_account"
