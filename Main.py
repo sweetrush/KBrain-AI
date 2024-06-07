@@ -64,7 +64,7 @@ emj_down = " ⬇ "
 emj_help = " 📗 "
 emj_help_ico = "📗"
 
-devmode = 1
+devmode = 0
 apptile = ""
 
 if devmode == 1:
