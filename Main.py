@@ -8,7 +8,7 @@
 # Definding Imported Libaries for the Program
 # #################################################
 from youtube_transcript_api import YouTubeTranscriptApi
-from streamlit_gsheets import GSheetsConnection 
+# from streamlit_gsheets import GSheetsConnection 
 from pypdf import PdfReader
 from gtts import gTTS
 
