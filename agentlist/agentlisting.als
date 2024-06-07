@@ -28,6 +28,7 @@
 2,Linux Cmd Expt , Linux CMD Assistance   , linux_cew.atx
 2,Python         , Python Assistance      , Python_assistance.atx
 2,Go             , Go Lang Assistance     , Go_Assistance.atx
+2,React JS       , ReactJS                , ReactJS_assistance.atx
 2,Bash           , Bash Assistance        , bashexpert.atx
 2,Docker         , Docker Assistance      , Dockerassist.atx
 2,RedTeam        , RedTeam Assistance     , Red_Team_Expert.atx
@@ -43,7 +44,7 @@
 @@ Agents that are for Testing
 @@ #######################################################
 
-4,DarkAI         , Dark Assistance        , darkai.atx
+4,SpecialAI         , Special Assistance        , specialai.atx
 
 @@ Hugging Face Agents 
 

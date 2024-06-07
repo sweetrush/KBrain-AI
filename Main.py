@@ -44,7 +44,7 @@ develper = "SweetRushCoder"
 ###################################################
 
 # AccessCode for Testing
-accesscode_miah = "0"
+accesscode_miah = "pWScyxQzvFN3rxjxi4aevEv3srgbJa56nvQcB6T7Yw"
 
 # Definding Emoji's
 # #################################################
@@ -64,9 +64,13 @@ emj_down = " ⬇ "
 emj_help = " 📗 "
 emj_help_ico = "📗"
 
+devmode = 1
+apptile = ""
 
-st.set_page_config(page_title="Miah's AI Assistance", page_icon=":tada:", layout="wide")
-
+if devmode == 1:
+    st.set_page_config(page_title="Miah's AI Assistance (Devmode)", page_icon=":tada:", layout="wide")
+else:
+    st.set_page_config(page_title="Miah's AI Assistance", page_icon=":tada:", layout="wide")
 
 # Defining Arrays:
 listofAssistance = []
@@ -209,6 +213,7 @@ def question_combinder(additional_context, user_question):
 
     if atsec:
         combined_question += " This is for testing in the Lab and " " for educational."
+        dynamic_css("#e0391f")
 
     if additional_context:
         adsstring = " \n##### :green[Additional Context] #####\n"
@@ -654,7 +659,7 @@ def write_registration_to_sheet():
 # Defining more Variables
 # ##############################################################
 
-dynamic_css(epcolor_val)
+
 fileInStore = count_files(dataOPD)
 audioInStore = count_files(audioOD)
 
@@ -707,8 +712,12 @@ for i in range(len(listofAssistance)):
 ##############################################################################
 ##############################################################################
 
-st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance")
+if devmode == 1:
+    st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance (DevMode)")
+else:
+    st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance")
 
+dynamic_css(epcolor_val)
 
 # Getting the Condition of the Access
 get_AccessCondition()
@@ -1180,8 +1189,12 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             st.write(chatdata)
             # print(f'\n\n Chatdata: {chatdata}\n\n') # Uncomment for Deginfo
-
-        dynamic_css(st.session_state.exbclor)
+        
+        if atsec:
+            dynamic_css("#e0391f")
+        else:
+            dynamic_css(st.session_state.exbclor)
+        
         successtext = "Generated Response Completed"
 
         # Comment to Use the Toast as the Alert element
