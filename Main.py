@@ -67,6 +67,7 @@ emj_help_ico = "📗"
 
 devmode = 0
 apptile = ""
+debprint = 0
 
 if devmode == 1:
     st.set_page_config(page_title="Miah's AI Assistance (Devmode)", page_icon=":tada:", layout="wide")
@@ -101,19 +102,9 @@ datetag_string = f"{ynm}_{hms}"
 ai_dont_lie = "Tell me only factual Information and not to lie"
 
 
-# #################################################
-#   SETTING THE FONT HACK FOR THE APP
-# #################################################
-
-
-# st.markdown(
-#     f'<style>{ubuntufont}</style>',
-#     unsafe_allow_html=True,
-# )
-
-# ##################################################
-#  END OF FONT HACK
-# ##################################################
+#######################################################
+# SETTING THE SESSION VARABLES                       ##
+#######################################################
 
 if "accesscode" not in st.session_state:
     st.session_state.accesscode = ""
@@ -130,6 +121,8 @@ if "authstatus" not in st.session_state:
 # #  01         REPLACE CHAR FUNCTION                ##
 # #####################################################
 def replace_chars(text, chars_to_replace, replacement):
+    colorful_print("[FX-R] replace chars (F01)", "magenta")
+
     pattern = f"[{chars_to_replace}]"  # Create a character class pattern
     return re.sub(pattern, replacement, text)
 
@@ -139,6 +132,7 @@ def replace_chars(text, chars_to_replace, replacement):
 # #####################################################
 @st.cache_data
 def openpdf_exttext(pdffile):
+    colorful_print("[FX-R] openpdf (F02)", "magenta")
 
     """Extracts text from a PDF file with improved error
     handling and potential optimization."""
@@ -163,6 +157,8 @@ def openpdf_exttext(pdffile):
 # #####################################################
 @st.cache_data
 def read_from_file(filename):
+    colorful_print("[FX-R] read from file (F03)", "magenta")
+
     pathDirAssistanceDef = "assistancedb/"
     assistance_filename = filename
     fullpath = os.path.join(pathDirAssistanceDef, assistance_filename)
@@ -175,6 +171,8 @@ def read_from_file(filename):
 # #  04         WRITE TO FILE FUNCTION               ##
 # #####################################################
 def write_to_file(filename, text):
+    colorful_print("[FX-R] write to file (F04)", "magenta")
+
     storedir = dataOPD
     datetag = datetag_string
     store_path = os.path.join(storedir, datetag + "_" + filename)
@@ -192,6 +190,7 @@ def write_to_file(filename, text):
 # #  05         Q_COMBINDER FUNCTION                 ##
 # #####################################################
 def question_combinder(additional_context, user_question):
+    colorful_print("[FX-R] question combinder (F05)", "magenta")
 
     """Combines a user question with additional context.
 
@@ -227,6 +226,7 @@ def question_combinder(additional_context, user_question):
 # #  06         GET ASSISTANCE DETAIL FUNCTION       ##
 # #####################################################
 def get_assistant_details(selection, listofAssistance, assistant):
+    colorful_print("[FX-R] get assistant details (F06)", "magenta")
     """Retrieves assistant details based on selection.
 
     Args:
@@ -248,6 +248,7 @@ def get_assistant_details(selection, listofAssistance, assistant):
 # #  07      TEXT TO SPEECH FUNCTION [GTTS]          ##
 # #####################################################
 def text_to_speech(text):
+    colorful_print("[FX-R] text to speech (F07)", "magenta")
     """Converts text to speech using gTTS and returns an audio file."""
     tts = gTTS(text=text, lang="en")  # You can change the language if needed
     filename = "response.mp3"
@@ -259,7 +260,7 @@ def text_to_speech(text):
 # #  08         GET AUDIO FUNCTION                   ##
 # #####################################################
 def get_audio(texttomp3, prefix, auid):
-
+    colorful_print("[FX-R] get audio (F08)", "magenta")
     ellskey = api11labs
     voiceid = "21m00Tcm4TlvDq8ikWAM"
     CHUNK_SIZE = 1024
@@ -296,6 +297,7 @@ def get_audio(texttomp3, prefix, auid):
 # #  09         COUNT PROMPT FILES FUNCTION          ##
 # #####################################################
 def count_files(directory_path):
+    colorful_print("[FX-R] count_files (F09)", "magenta")
     """Counts the number of files in a directory.
 
     Args:
@@ -318,6 +320,8 @@ def count_files(directory_path):
 # #  10         LOAD AGENTS FROM DB/FILE FUNCTION    ##
 # #####################################################
 def loadagents():
+    colorful_print("[FX-R] loadagents (F10)", "magenta")
+
     pathDirAssistanceConfig = "agentlist/"
     assistance_filename = "agentlisting.als"
 
@@ -380,6 +384,8 @@ def loadagents():
 # #  11         HORIZONTAL LINE FUNCTION             ##
 # #####################################################
 def horizontal_line():
+    colorful_print("[FX-R] horizontal line (F011)", "magenta")
+
     st.markdown("---", unsafe_allow_html=True)
 
 
@@ -388,6 +394,8 @@ def horizontal_line():
 # #####################################################
 @st.experimental_dialog("About the Developer")
 def display_about_dev():
+    colorful_print("[FX-R] display about dev (F12)", "magenta")
+
     st.title("About the Developer")
     st.write("Name: SweetRushCoder")
     st.write("Project: Miah's AI Assistance")
@@ -398,6 +406,8 @@ def display_about_dev():
 # #  13         LISTAIN TO MICROPHONE FUNCTION       ##
 # #####################################################
 def listain_to_Microphone():
+    colorful_print("[FX-R] listain to Microphone (F13)", "magenta")
+
     lm = sr.Recognizer()
 
     st.toast("Mic-Listing", icon=None)
@@ -422,6 +432,7 @@ def listain_to_Microphone():
 # #####################################################
 @st.cache_data
 def get_video_transcript(video_id):
+    colorful_print("[FX-R] get video transcript (F14)", "magenta")
 
     try:
         # Get the transcript for the video
@@ -444,6 +455,7 @@ def get_video_transcript(video_id):
 # #  15         GET YOUTUBE VIDEO ID FUNCTION        ##
 # #####################################################
 def get_video_id(url):
+    colorful_print("[FX-R] get video id (F15)", "magenta")
     # Extract the video id from the YouTube URL
     video_id = re.findall(
         r"(?:v=|v\/|embed\/|youtu\.be\/|\/v\/|\/e\/|watch\?v=|youtube\.com\/user\/[^#]*#([^\/]*\/)*\w+\/|youtube\.com\/v\/|youtube\.com\/embed\/|youtube\.com\/watch\?v=)([^#\&\?]*[^#\&\?\n]*)",
@@ -458,6 +470,8 @@ def get_video_id(url):
 # #  16         ABOUT THE DEVELOPER FUNCTION         ##
 # #####################################################
 def about_the_developer():
+    colorful_print("[FX-R] about_the_developer (F16)", "magenta")
+
     st.write("##### Version:   :orange[" + version + "]")
     st.write("##### Developer:   :green[" + develper + "]")
 
@@ -466,6 +480,7 @@ def about_the_developer():
 # #  17         DYNAMIC CSS LOADER FUNCTION          ##
 # #####################################################
 def dynamic_css(color):
+    colorful_print("[FX-R] dynamic css (F17)", "magenta")
     ubuntu = """
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -486,6 +501,7 @@ def dynamic_css(color):
 # #  18         CHECK LOGIN CONDITION                ##
 # #####################################################
 def get_AccessCondition():
+    colorful_print("[FX-R] get AccessCondition (F18)", "magenta")
     access = st.sidebar.text_input(
         "Provide your access Code:",
         value=st.session_state.accesscode,
@@ -518,6 +534,7 @@ def get_AccessCondition():
 # #  19         SHOWING THIS ON SIDEBAR  FX          ##
 # #####################################################
 def mapFileUploadOnSideBar():
+    colorful_print("[FX-R] mapFileUpload On SideBar (F19)", "magenta")
 
     with st.expander(emj_tophat + "File Upload", expanded=False):
         uploaded_file = st.file_uploader("Choose your .pdf file", type="pdf")
@@ -537,24 +554,31 @@ def mapFileUploadOnSideBar():
 
         return pdftext, json_data, uploaded_img
 
+
 # #####################################################
 # #  20         CHECHING INPUT FUNCTION FOR REG FORM ##
 # #####################################################
 def checkinput(input, name): 
+    colorful_print("[FX-R] check input (F20)", "magenta")
     if input != "":
-     return True
+        return True
     else:
-      st.error(name+"Field has a problem, check if not empty")
+        st.error(name+"Field has a problem, check if not empty")
     return False
 
+
+# #####################################################
+# #  21         STRING COMPARE FX                    ##
+# #####################################################
 def compare_is_same(string1, string2):
+    colorful_print("[FX-R] compare is same string (F22)", "magenta")
     if string1 == "":
         string1 = "er1"
 
     if string2 == "":
         string2 = "er2"
 
-    compare = string1==string2
+    compare = string1 == string2
     # if compare: 
     #    st.write("Password is the Same")
     # else:
@@ -563,9 +587,10 @@ def compare_is_same(string1, string2):
 
 
 # #####################################################
-# #  21         GENERATE KEYHASH FX                  ##
+# #  22         GENERATE KEYHASH FX                  ##
 # #####################################################
 def calculate_string_hash(input_string, algorithm='sha256'):
+    colorful_print("[FX-R] Calculate string hash (F22)", "magenta")
     """
     Calculates the hash of a string using the specified algorithm.
     Args:
@@ -592,24 +617,26 @@ def calculate_string_hash(input_string, algorithm='sha256'):
 
 
 # #####################################################
-# #  22         WRITE TO GOOGLE SHEET FOR REG        ##
+# #  23         WRITE TO GOOGLE SHEET FOR REG        ##
 # #####################################################
 def write_registration_to_sheet():
+    colorful_print("[FX-R] write registration to sheet (F23)", "magenta")
+
     with st.form(key="regForm01", clear_on_submit=False):
-            fullname = st.text_input("Full Name", value="", max_chars=None)
-            country = st.text_input("Country")
-            email = st.text_input("Email")
-            password1 = st.text_input("Password one", key="33", type="password")
-            password2 = st.text_input("Password two (retype)", key="34", type="password")
-            specialCode = st.text_input("SpecialCode", type="password")
+        fullname = st.text_input("Full Name", value="", max_chars=None)
+        country = st.text_input("Country")
+        email = st.text_input("Email")
+        password1 = st.text_input("Password one", key="33", type="password")
+        password2 = st.text_input("Password two (retype)", key="34", type="password")
+        specialCode = st.text_input("SpecialCode", type="password")
 
-            st.markdown("##### :red[Required *]")
+        st.markdown("##### :red[Required *]")
             
-            submit = st.form_submit_button(label="Apply Registration")
+        submit = st.form_submit_button(label="Apply Registration")
 
-            keyhash = calculate_string_hash(email+fullname+specialCode)
+        keyhash = calculate_string_hash(email+fullname+specialCode)
 
-            registaDataFrame = pd.DataFrame(
+        registaDataFrame = pd.DataFrame(
                 [
                     {
                      "fullname": fullname, 
@@ -622,28 +649,31 @@ def write_registration_to_sheet():
                 ]
                 )
 
-            if submit:
-                chkName = checkinput(fullname, "Full Name Field")
-                chkCountry = checkinput(country, "Country Field")
-                chkEmail = checkinput(email, "Email")
-                chkPwd1 = checkinput(password1, "Password one")
-                chkPwd2 = checkinput(password2, "Password two (retype)")
-                chkSCode = checkinput(specialCode, "password")
-                chkpwdeq = compare_is_same(password1, password2)
+        if submit:
+            chkName = checkinput(fullname, "Full Name Field")
+            chkCountry = checkinput(country, "Country Field")
+            chkEmail = checkinput(email, "Email")
+            chkPwd1 = checkinput(password1, "Password one")
+            chkPwd2 = checkinput(password2, "Password two (retype)")
+            chkSCode = checkinput(specialCode, "password")
+            chkpwdeq = compare_is_same(password1, password2)
 
-                if chkpwdeq:
-                    if chkName and chkCountry and chkEmail and chkPwd1 and chkPwd2 and chkSCode:
-                        conn = st.connection("gsheets", type=GSheetsConnection)
-                        conn.update(data=registaDataFrame)
-                        # data = conn.read(spreadsheet=url, usecols=list(range(2)), ttl=5, worksheet=SheetID)
-                        # st.dataframe(data)
-                        st.success("Thank you for Registering")
-                else:
-                    st.error("Please the passwords are not the Same")
+            if chkpwdeq:
+                if chkName and chkCountry and chkEmail and chkPwd1 and chkPwd2 and chkSCode:
+                    conn = st.connection("gsheets", type=GSheetsConnection)
+                    conn.update(data=registaDataFrame)
+                    # data = conn.read(spreadsheet=url, usecols=list(range(2)), ttl=5, worksheet=SheetID)
+                    # st.dataframe(data)
+                    st.success("Thank you for Registering")
+            else:
+                st.error("Please the passwords are not the Same")
 
 
-# NEED TO DEVELOP THIS COLOR FUNCTION FOR THE TERMINAL MONITORING
+# #####################################################
+# #  24         COLOR PRINTER FOR TEXT               ##
+# #####################################################
 def colorful_print(text, color):
+
     textcombind = ""
 
     if color == "red":
