@@ -12,9 +12,11 @@ from colorama import Fore, Style
 # from streamlit_gsheets import GSheetsConnection 
 from pypdf import PdfReader
 from gtts import gTTS
+from nltk.tokenize import word_tokenize
 
 # From Streamlit Extra Components
 from streamlit_extras.bottom_container import bottom
+
 
 import google.generativeai as genai
 import speech_recognition as sr
@@ -27,6 +29,8 @@ import datetime
 import os
 import re
 import hashlib
+import nltk
+import time
 
 
 # Uncomment to Use them
@@ -707,6 +711,20 @@ def colorful_print(text, color):
     print(textcombind)
 
 
+# #####################################################
+# #  25         TOKENIZER COUNTER                    ##
+# #####################################################
+def tokencounter(text):
+    nltk.download('punkt')
+    return len(word_tokenize(text))
+
+
+def stream_text(text, delay=0.003):
+    """Streams text with a specified delay between characters."""
+    for char in text:
+        yield char
+        time.sleep(delay)    
+
 #########################################################################
 #########################################################################
 #########################################################################
@@ -803,82 +821,88 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
         # Uncomment this to reflect the file Upload Feature on the Side Bar
         # mapFileUploadOnSideBar()
-
+        
         with st.expander(emj_gear + "Prompt Config", expanded=False):
-            popup_notifications = st.toggle("Popup Notification", value=False)
-            GeminiAPIkey = st.text_input(
-                "Gemini-key:", type="password", value="", max_chars=None
-            )
-            tempture_val = st.slider(
-                "Prompt temperature",  # Label for the slider
-                min_value=0.0,  # Minimum value
-                max_value=1.0,  # Maximum value
-                value=0.07,  # Default value
-                step=0.01,  # Increment step
-            )
+            
+            l1_tl1, l1_tl2 = st.tabs([emj_gear + "Main", emj_safety + "Safety"])
+            
+            with l1_tl1:
+                # st.write(emj_gear + "Settings Config")
+                popup_notifications = st.toggle("Popup Notification", value=False)
+                GeminiAPIkey = st.text_input(
+                    "Gemini-key:", type="password", value="", max_chars=None
+                )
+                tempture_val = st.slider(
+                    "Prompt temperature",  # Label for the slider
+                    min_value=0.0,  # Minimum value
+                    max_value=1.0,  # Maximum value
+                    value=0.07,  # Default value
+                    step=0.01,  # Increment step
+                )
 
-            # topp = st.text_input("Set Top P", value="1", max_chars=None)
-            topp = st.slider(
-                "Set Top-P",  # Label for the slider
-                min_value=0.0,  # Minimum value
-                max_value=1.0,  # Maximum value
-                value=0.07,  # Default value
-                step=0.05,  # Increment step
-            )
+                # topp = st.text_input("Set Top P", value="1", max_chars=None)
+                topp = st.slider(
+                    "Set Top-P",  # Label for the slider
+                    min_value=0.0,  # Minimum value
+                    max_value=1.0,  # Maximum value
+                    value=0.07,  # Default value
+                    step=0.05,  # Increment step
+                )
 
-            topk = st.number_input(
-                "Set Top-K", min_value=None, max_value=None, value=10, step=1
-            )
+                topk = st.number_input(
+                    "Set Top-K", min_value=None, max_value=None, value=10, step=1
+                )
 
-            mot = st.text_input("Max Output Tokens", value=model_tokens, max_chars=None)
+                mot = st.text_input("Max Output Tokens", value=model_tokens, max_chars=None)
 
-            convert_tpv = float(tempture_val)
+                convert_tpv = float(tempture_val)
 
-        with st.expander(emj_safety + "Safety Config", expanded=False):
+        # with st.expander(emj_safety + "Safety Config", expanded=False):
+            with l1_tl2:
+                # st.write(emj_safety + "Safety Config")
+                opt1_safe = st.selectbox(
+                    "Harassment",
+                    (
+                        safety_options[0],
+                        safety_options[1],
+                        safety_options[2],
+                        safety_options[3],
+                    ),
+                    index=0,
+                )
 
-            opt1_safe = st.selectbox(
-                "Harassment",
-                (
-                    safety_options[0],
-                    safety_options[1],
-                    safety_options[2],
-                    safety_options[3],
-                ),
-                index=0,
-            )
+                opt2_safe = st.selectbox(
+                    "Hate",
+                    (
+                        safety_options[0],
+                        safety_options[1],
+                        safety_options[2],
+                        safety_options[3],
+                    ),
+                    index=0,
+                )
 
-            opt2_safe = st.selectbox(
-                "Hate",
-                (
-                    safety_options[0],
-                    safety_options[1],
-                    safety_options[2],
-                    safety_options[3],
-                ),
-                index=0,
-            )
+                opt3_safe = st.selectbox(
+                    "Sexually Explicit",
+                    (
+                        safety_options[0],
+                        safety_options[1],
+                        safety_options[2],
+                        safety_options[3],
+                    ),
+                    index=0,
+                )
 
-            opt3_safe = st.selectbox(
-                "Sexually Explicit",
-                (
-                    safety_options[0],
-                    safety_options[1],
-                    safety_options[2],
-                    safety_options[3],
-                ),
-                index=0,
-            )
-
-            opt4_safe = st.selectbox(
-                "Dangerous Content",
-                (
-                    safety_options[0],
-                    safety_options[1],
-                    safety_options[2],
-                    safety_options[3],
-                ),
-                index=0,
-            )
+                opt4_safe = st.selectbox(
+                    "Dangerous Content",
+                    (
+                        safety_options[0],
+                        safety_options[1],
+                        safety_options[2],
+                        safety_options[3],
+                    ),
+                    index=0,
+                )
 
         #
         # Setting the Module Selection for the Assistance
@@ -917,6 +941,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             st.toast(":green[Model:]" + model_select)
 
         with st.expander(emj_safety + "Special Features", expanded=False):
+            attsm = st.toggle("TSM", value=False, help="Active Text Stream Reponses")
+            if attsm:
+                writespeed = st.text_input("Text-Speed:", value="0.1", max_chars=None)
             atsec = st.toggle("ALT", value=False, help="Active Lab Testing")
             bexpanderColor = st.color_picker("Theme:", epcolor_val)
 
@@ -981,9 +1008,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
     # ####################################################################
     # ####################################################################
-    #   Content Below the Chatline input field
+    #   Content Just Above the Chatline input field
 
-    codewrap = ""  # initating the var for the code wrap here
+    codewrap = ""  # initating the var for the code wrap here{adc
     with bottom():
         with st.expander(emj_pencil + "Extention Context", expanded=False):
 
@@ -1218,11 +1245,19 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             cache_history_now = st.session_state.chathistoryprompt
             cxt_n_usermsg = loadassistantcontext + usermessage + ai_dont_lie
 
+            # This Combinds all prompt strings ready for loading to the chat.
+            finalpromptstring = cache_history_now + grpcontext + cxt_n_usermsg
+
             # ######## AREA FOR SEND PROMPT INFOR TO AI
             #
 
             try:
-                convo.send_message(cache_history_now + grpcontext + cxt_n_usermsg)
+                if uploaded_img:
+                    colorful_print("[INCAL] Sending Prompt with Text and Image", "green")
+                    convo.send_message([finalpromptstring, uploaded_img])
+                else:
+                    convo.send_message(finalpromptstring)
+                    colorful_print("[INCAL] Sending Prompt with Text only", "green")
 
                 # Uncomment for Debugging for purpose.
                 #
@@ -1274,6 +1309,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
         # This Gets the Number of Tokens needed.
         tokencount = model.count_tokens(convo.last.text)
+        tokencountsent = model.count_tokens(finalpromptstring)
+        tokensndrecd = model.count_tokens(convo.last.text+finalpromptstring)
 
         with st.chat_message("assistant"):
             botmessage = convo.last.text
@@ -1282,7 +1319,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # @@ Note to implement streaming of Returned information.
             #
 
-            st.write(botmessage)
+            #  checks if the special feature for text Stream is active
+            #  if yes then it will output the responses in a text Stream way 
+            #  else it will just show all the text at Once. 
+            if attsm:
+                st.write_stream(stream_text(botmessage, float(writespeed)))
+            else:
+                st.write(botmessage)
 
             if activate_audio_output:
                 acol1, acol2 = st.columns(2, gap="small")
@@ -1327,14 +1370,16 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 )
 
             status_string = (
-                "<strong style='color:red'>Using: "
-                "" + assistantcontext + " [ "
-                "" + str(tokencount) + " ]</strong>"
+                "**:red[Using "
+                "" + assistantcontext + "] "
+                "" + ":white[Reponse ("+str(tokencount) + ")]"
+                " :blue[Sent ("+str(tokencountsent)+")] :cyan[Overall Tokens ("+str(tokensndrecd)+")]**"
+                ""
             )
 
             status_cache = (
                 "**:red[Using: " + assistantcontext + ""
-                " ( " + str(tokencount) + " )]**"
+                " ( " + "Reponse "+str(tokencount) + "Sent "+str(tokencountsent) + " )]**"
             )
 
             st.markdown(status_string, unsafe_allow_html=True)
@@ -1372,10 +1417,24 @@ if not st.session_state.authstatus:
     )
     
     st.header("Welcome to Miah's AI Assistance")
+    # st.write("Number of test token:"+str(tokencounter(bodyc1)))
 
     st.markdown(bodyc1, unsafe_allow_html=True)
     st.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
 
+# Uncomment the code below to get the list of Models 
+##
+##########################################################
+    # try:
+    # # Assuming 'model' should be an instance of the 'Model' class
+    #   for modeln in genai.list_models():
+    #    print(f"Available model: {modeln}")
+    #    st.write(modeln, key=modeln)
+
+    # except NameError as e:
+    #     print(f"Error: {e}")
+    #     print("Did you forget to create a 'Model' object and assign it to 'model'?")
+        
     # with st.expander("Get Access"):
     # # write_registration_to_sheet()
     # st.markdown(
