@@ -40,6 +40,7 @@
 3,2Ddotplan      , 2D Plot Assistance     , dotplanner.atx
 3,Emailhelper    , EmailHelper Assistance , emailhelper.atx
 3,BusniessExpert , BE Assistance          , BusniessExpert.atx
+3,Youtube SMRY   , Youtube SMRY Assistant , YSummaryExpert.atx
 
 @@ Agents that are for Testing
 @@ #######################################################

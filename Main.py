@@ -8,6 +8,7 @@
 # Definding Imported Libaries for the Program
 # #################################################
 from youtube_transcript_api import YouTubeTranscriptApi
+from colorama import Fore, Style
 # from streamlit_gsheets import GSheetsConnection 
 from pypdf import PdfReader
 from gtts import gTTS
@@ -184,7 +185,7 @@ def write_to_file(filename, text):
         with open(store_path + "_gemin.md", "a", encoding="utf-8") as file:
             file.write(text + "\n")  # Add a newline at the end
     except OSError as e:
-        print(f"Error writing to file: {e}")
+        colorful_print(f"Error writing to file: {e}", "red")
 
 
 # #####################################################
@@ -408,9 +409,9 @@ def listain_to_Microphone():
         try:
             spoken = lm.recognize_google(mic_audio)
             st.toast(spoken, icon=None)
-            print(spoken)
+            colorful_print(spoken, "white")
         except Exception as e:
-            print("Audio Exception:" + str(e))
+            colorful_print("Audio Exception:" + str(e), "red")
 
         st.toast("Mic-Not Listaining", icon=None)
         return spoken
@@ -434,7 +435,7 @@ def get_video_transcript(video_id):
         return text.strip()
 
     except Exception as e:
-        print(f"Error: {str(e)}")
+        colorful_print(f"Error: {str(e)}","red")
 
     return None
 
@@ -639,6 +640,34 @@ def write_registration_to_sheet():
                         st.success("Thank you for Registering")
                 else:
                     st.error("Please the passwords are not the Same")
+
+
+# NEED TO DEVELOP THIS COLOR FUNCTION FOR THE TERMINAL MONITORING
+def colorful_print(text, color):
+    textcombind = ""
+
+    if color == "red":
+        textcombind = Fore.RED+Style.BRIGHT+text+Style.RESET_ALL
+
+    if color == "green":
+        textcombind = Fore.GREEN+Style.BRIGHT+text+Style.RESET_ALL
+
+    if color == "yellow":
+        textcombind = Fore.YELLOW+Style.BRIGHT+text+Style.RESET_ALL
+
+    if color == "white":
+        textcombind = Fore.WHITE+Style.BRIGHT+text+Style.RESET_ALL
+
+    if color == "blue":
+        textcombind = Fore.BLUE+Style.BRIGHT+text+Style.RESET_ALL
+
+    if color == "magenta":
+        textcombind = Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL
+
+    if color == "cyan":
+        textcombind = Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL
+    
+    print(textcombind)
 
 
 #########################################################################
@@ -1117,7 +1146,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         filename = replace_chars(str(inputquestion), chars_tobe_replaced, chars_swap)
 
         filename = filename[:20]
-        print("[info] FileName is: " + filename + "")
+        colorful_print("[info] FileName is: " + filename + "", "white")
 
         convo = model.start_chat(history=chatdata)
 
