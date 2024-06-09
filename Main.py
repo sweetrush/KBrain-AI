@@ -384,7 +384,7 @@ def loadagents():
 # #  11         HORIZONTAL LINE FUNCTION             ##
 # #####################################################
 def horizontal_line():
-    colorful_print("[FX-R] horizontal line (F011)", "magenta")
+    colorful_print("[FX-R] horizontal line (F011)", "yellow")
 
     st.markdown("---", unsafe_allow_html=True)
 
@@ -394,7 +394,7 @@ def horizontal_line():
 # #####################################################
 @st.experimental_dialog("About the Developer")
 def display_about_dev():
-    colorful_print("[FX-R] display about dev (F12)", "magenta")
+    colorful_print("[FX-R] display about dev (F12)", "yellow")
 
     st.title("About the Developer")
     st.write("Name: SweetRushCoder")
@@ -470,7 +470,7 @@ def get_video_id(url):
 # #  16         ABOUT THE DEVELOPER FUNCTION         ##
 # #####################################################
 def about_the_developer():
-    colorful_print("[FX-R] about_the_developer (F16)", "magenta")
+    colorful_print("[FX-R] about_the_developer (F16)", "yellow")
 
     st.write("##### Version:   :orange[" + version + "]")
     st.write("##### Developer:   :green[" + develper + "]")
@@ -480,7 +480,7 @@ def about_the_developer():
 # #  17         DYNAMIC CSS LOADER FUNCTION          ##
 # #####################################################
 def dynamic_css(color):
-    colorful_print("[FX-R] dynamic css (F17)", "magenta")
+    colorful_print("[FX-R] dynamic css (F17)", "yellow")
     ubuntu = """
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
