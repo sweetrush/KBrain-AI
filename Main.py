@@ -132,11 +132,11 @@ def replace_chars(text, chars_to_replace, replacement):
 # #####################################################
 @st.cache_data
 def openpdf_exttext(pdffile):
-    colorful_print("[FX-R] openpdf (F02)", "magenta")
-
+    
     """Extracts text from a PDF file with improved error
     handling and potential optimization."""
 
+    colorful_print("[FX-R] openpdf (F02)", "magenta")
     try:
         pdf_reader = PdfReader(pdffile)
         number_of_pages = len(pdf_reader.pages)
@@ -190,8 +190,7 @@ def write_to_file(filename, text):
 # #  05         Q_COMBINDER FUNCTION                 ##
 # #####################################################
 def question_combinder(additional_context, user_question):
-    colorful_print("[FX-R] question combinder (F05)", "magenta")
-
+    
     """Combines a user question with additional context.
 
     Args:
@@ -202,6 +201,8 @@ def question_combinder(additional_context, user_question):
       A formatted string combining the question and context, or None if
       user_question is None.
     """
+
+    colorful_print("[FX-R] question combinder (F05)", "magenta")
 
     # This if statement is a fix for the No Text when streamlit
     # switchs the Assistance.
@@ -226,7 +227,7 @@ def question_combinder(additional_context, user_question):
 # #  06         GET ASSISTANCE DETAIL FUNCTION       ##
 # #####################################################
 def get_assistant_details(selection, listofAssistance, assistant):
-    colorful_print("[FX-R] get assistant details (F06)", "magenta")
+    
     """Retrieves assistant details based on selection.
 
     Args:
@@ -237,6 +238,7 @@ def get_assistant_details(selection, listofAssistance, assistant):
     Returns:
     A tuple containing loadassistantcontext, assistantcontext, and fileloaded.
     """
+    colorful_print("[FX-R] get assistant details (F06)", "magenta")
     for i, (assistant_id, context, file) in enumerate(listofAssistance):
         if selection == assistant_id:
             return assistant[i], context, file
@@ -248,8 +250,10 @@ def get_assistant_details(selection, listofAssistance, assistant):
 # #  07      TEXT TO SPEECH FUNCTION [GTTS]          ##
 # #####################################################
 def text_to_speech(text):
-    colorful_print("[FX-R] text to speech (F07)", "magenta")
+    
     """Converts text to speech using gTTS and returns an audio file."""
+
+    colorful_print("[FX-R] text to speech (F07)", "magenta")
     tts = gTTS(text=text, lang="en")  # You can change the language if needed
     filename = "response.mp3"
     tts.save(filename)
@@ -297,7 +301,7 @@ def get_audio(texttomp3, prefix, auid):
 # #  09         COUNT PROMPT FILES FUNCTION          ##
 # #####################################################
 def count_files(directory_path):
-    colorful_print("[FX-R] count_files (F09)", "magenta")
+    
     """Counts the number of files in a directory.
 
     Args:
@@ -306,6 +310,7 @@ def count_files(directory_path):
     Returns:
         int: The number of files in the directory.
     """
+    colorful_print("[FX-R] count_files (F09)", "magenta")
     file_count = 0
     for item in os.listdir(directory_path):
         item_path = os.path.join(directory_path, item)
@@ -590,7 +595,7 @@ def compare_is_same(string1, string2):
 # #  22         GENERATE KEYHASH FX                  ##
 # #####################################################
 def calculate_string_hash(input_string, algorithm='sha256'):
-    colorful_print("[FX-R] Calculate string hash (F22)", "magenta")
+    
     """
     Calculates the hash of a string using the specified algorithm.
     Args:
@@ -600,6 +605,8 @@ def calculate_string_hash(input_string, algorithm='sha256'):
     Returns:
         str: The hexadecimal representation of the hash value.
     """
+
+    colorful_print("[FX-R] Calculate string hash (F22)", "magenta")
     # Encode the string to bytes if necessary
     if isinstance(input_string, str):
         input_string = input_string.encode('utf-8')
