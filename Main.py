@@ -12,7 +12,7 @@ from colorama import Fore, Style
 # from streamlit_gsheets import GSheetsConnection 
 from pypdf import PdfReader
 from gtts import gTTS
-from nltk.tokenize import word_tokenize
+# from nltk.tokenize import word_tokenize
 
 # From Streamlit Extra Components
 from streamlit_extras.bottom_container import bottom
@@ -29,7 +29,6 @@ import datetime
 import os
 import re
 import hashlib
-import nltk
 import time
 
 
@@ -38,7 +37,7 @@ import time
 # import numpy as np
 # import pyperclip
 # import time
-
+# import nltk
 # Definding the Current working version
 # of the Miah AI assistance
 # #################################################
