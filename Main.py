@@ -42,7 +42,7 @@ import time
 # of the Miah AI assistance
 # #################################################
 
-version = "2.9.1"
+version = "2.9.3"
 develper = "SweetRushCoder"
 
 ###################################################
@@ -1478,14 +1478,92 @@ if logout:
 if not st.session_state.authstatus or st.session_state.authstatus == "":
     bodyc1 = (
         """
-        Great to have you on the Application, If you have not registred for an 
-        account to get you :white[accesscode] you should now. Currently Access 
-        is open at the moment for this :yellow[Beta Release]. 
+        Great to have you on broad, If you have not registred for an 
+        account, quickly to get you **ACCESS CODE** now. Currently Access 
+        is open at the moment for this Beta Release. 
 
         Or get in contact with the team now for your chance to be a head of your 
-        friends and colleges at work with this very helpful tool.
+        friends and colleges at work with this very helpful tool. 
+        """
+    )
 
-        ### Apply now and Get in to the Fun. 
+    f1 = (
+        """
+        ##### :red[Custom] Prompt Configuration
+
+        allows you to customize the prompt configuration 
+        in terms of the Prompt Temperature , Top-P, Top-K
+        the max output tokens.It also allows you change 
+        the safety options to: Harassment , Hate, Sexually
+        and dangerous content.
+
+
+        ##### :blue[Special] Features
+
+        allows you to control the out of the response 
+        in terms of the typing speed , the theming of 
+        UI to fit your mood by changing the color. 
+
+
+        ##### :red[File Context] Features
+
+        allows you to upload PDF, CSV to chat to or 
+        ask question to the PDF or CSV in terms of the 
+        data it has. In other words chat with PDF and CSV.
+
+
+        ##### :blue[Image Context] Features
+
+        allows you to upload an Image to chat to or 
+        ask question to the JPG, PNG, JPEG in terms of the 
+        what is in the image. In other words chat with an Image.
+
+
+        ##### :red[Youtube] Context Features
+
+        allows you to Youtube Video as a URL Link to chat to or 
+        ask question to the video in terms of the what is in the 
+        video. In other words chat with youtube. This is especially
+        useful if you want to get a summary of the video that you 
+        have time to watch.
+
+
+        """
+    )
+
+    f2 = (
+        """
+
+        ##### :blue[Model Options] and Assistances 
+
+        allows you to select the Gemini Models to use. 
+        also it give users the ability to use many many 
+        different assistance to help with there productivity
+
+
+        ##### :green[Text-To-Speech / Response-to-mp3] 
+
+        allows you to generate the response output to audio
+        or downloadable audio , also supports Elevenlabs Voices
+        with your own API key. 
+
+
+        ##### :blue[Additional] Custom Context
+
+        allows you explain the problem or senerio and then
+        provide detail of how the assistance can aid you to 
+        solve that problem. with chating of providing questions 
+        for it.  
+
+
+        ##### :green[Code Context] Feature
+
+        allows you to provide code from the most common programming 
+        languages and then use this context to chat with the code you 
+        have provided, either to check for problems in your code or to 
+        let the assistance improve your code based on the questions and 
+        comments you provide to the assistance. 
+
         """
     )
     
@@ -1493,7 +1571,21 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
     # st.write("Number of test token:"+str(tokencounter(bodyc1)))
 
     st.markdown(bodyc1, unsafe_allow_html=True)
-    st.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
+    
+    mbcl1, mbcl2, mbcl3 = st.columns([1, 7, 1], gap="small")
+    mmbcl1, mmbcl2 = st.columns([6, 6], gap="small")
+
+    mbcl2.markdown(" ### Apply now and Get in to the Fun.", unsafe_allow_html=False)
+    mbcl2.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
+    mbcl2.markdown("---", unsafe_allow_html=False)
+    mbcl2.markdown(" ### Features of the Application", unsafe_allow_html=False)
+    mbcl2.markdown("    ", unsafe_allow_html=False)
+
+
+    mmbcl1.markdown(f1, unsafe_allow_html=False)
+    mmbcl2.markdown(f2, unsafe_allow_html=False)
+
+    st.markdown("---", unsafe_allow_html=False)
 
 ###########################
 # Endof the Line
