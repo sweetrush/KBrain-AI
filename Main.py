@@ -509,7 +509,12 @@ def dynamic_css(color):
 # #  18         CHECK LOGIN CONDITION                ##
 # #####################################################
 def get_AccessCondition():
+    grant = None
     colorful_print("[FX-R] get AccessCondition (F18)", "magenta")
+
+    # userdata = load_user_data("appuac/uacdb_list.uacl")
+    userdata = "appuac/uacdb_list.uacl"
+
     access = st.sidebar.text_input(
         "Provide your access Code:",
         value=st.session_state.accesscode,
@@ -521,8 +526,15 @@ def get_AccessCondition():
 
     if access == "":
         st.sidebar.error("Access Code is Empty", icon="🚨")
+        st.session_state.authstatus = False
 
-    if access == accesscode_miah:
+    elif authenticate_user2(access, userdata):
+        grant = True
+        st.session_state.authstatus = True
+        if access != "":
+            st.sidebar.success("Authenticated & Active", icon="📡")
+
+    elif access == accesscode_miah:
         grant = True
         st.session_state.authstatus = True
         if access != "":
@@ -718,11 +730,71 @@ def tokencounter(text):
     return len(word_tokenize(text))
 
 
+# #####################################################
+# #  26         STREAM TEXT FX                       ##
+# #####################################################
 def stream_text(text, delay=0.003):
     """Streams text with a specified delay between characters."""
     for char in text:
         yield char
         time.sleep(delay)    
+
+
+def load_user_data(file_path):
+    """Loads user data from a file, ignoring lines starting with '@'."""
+    colorful_print("[FX-R] User access List Loading (F27)", "magenta")
+
+    user_datac = []
+    with open(file_path, 'r') as file:
+        for line in file:
+            line = line.strip()  # Remove leading/trailing whitesp
+            # if "@" not in line and line:
+            if line.startswith('@') or not line.strip():
+                uuudata = line.split(',')
+                user_datac.append(uuudata)
+                colorful_print(str(user_datac)+"\n", "red")
+    return user_datac
+
+
+def authenticate_user(access_code, user_data):
+    
+    """Checks if the provided access code matches any user in the data."""
+    colorful_print("[FX-R] User access Checking (F28)", "magenta")
+    colorful_print(str(user_data), "white")
+    for user in user_data:
+        colorful_print("user:", "green")
+        colorful_print("Data:"+user)
+        if user[2000] == access_code:   # note 2000 is the target users
+            return True
+            
+    return False
+
+
+def authenticate_user2(access_code, file_path):
+    """
+    Checks if the provided access code exists in the user data file.
+
+    Args:
+        access_code (str): The access code to validate.
+        file_path (str): The path to the user data file.
+
+    Returns:
+        bool: True if the access code is found, False otherwise.
+    """
+
+    with open(file_path, 'r') as file:
+        for line in file:
+            if line.startswith('@'):  # Ignore comment lines
+                continue
+            user_id, _, _, stored_access_code = line.strip().split(', ')
+            # print(stored_access_code)
+            if access_code == stored_access_code:
+                colorful_print("[Auth-OK] "+access_code+" => "+stored_access_code, "green")
+                return True
+            else: 
+                colorful_print("[Auth-FL] "+access_code+" => "+stored_access_code, "red")
+    return False  # Access code not found in the file
+
 
 #########################################################################
 #########################################################################
@@ -1116,8 +1188,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     # ####################################################################
 
     if GeminiAPIkey:
+        # API from the UI interface 
         genai.configure(api_key=GeminiAPIkey)
     else:
+        # API from file when holded 
         genai.configure(api_key=apivalue)
 
     # Set up the model
@@ -1284,7 +1358,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             chatdata.append(res00data)
             chatdata.append(res01data)
-            # chatdata.append(res03data)
             chatdata.append(res02data)
 
             st.write(chatdata)
@@ -1322,6 +1395,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             #  if yes then it will output the responses in a text Stream way 
             #  else it will just show all the text at Once. 
             if attsm:
+                st.status("Assistance Typing ..")
                 st.write_stream(stream_text(botmessage, float(writespeed)))
             else:
                 st.write(botmessage)
@@ -1401,7 +1475,7 @@ if logout:
     st.rerun()
 
 
-if not st.session_state.authstatus:
+if not st.session_state.authstatus or st.session_state.authstatus == "":
     bodyc1 = (
         """
         Great to have you on the Application, If you have not registred for an 
@@ -1421,33 +1495,6 @@ if not st.session_state.authstatus:
     st.markdown(bodyc1, unsafe_allow_html=True)
     st.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
 
-# Uncomment the code below to get the list of Models 
-##
-##########################################################
-    # try:
-    # # Assuming 'model' should be an instance of the 'Model' class
-    #   for modeln in genai.list_models():
-    #    print(f"Available model: {modeln}")
-    #    st.write(modeln, key=modeln)
-
-    # except NameError as e:
-    #     print(f"Error: {e}")
-    #     print("Did you forget to create a 'Model' object and assign it to 'model'?")
-        
-    # with st.expander("Get Access"):
-    # # write_registration_to_sheet()
-    # st.markdown(
-    #             "<div><iframe src=\"https://docs.google.com/forms/d/e/1" 
-    #             "FAIpQLSecGZXC1puJAd4VfNYEkh_ZeNmjDIDaThtCd-HQh2cg"
-    #             "d-vQew/viewform?embedded=true\" width=\"400\" hei"
-    #             "ght=\"1091\" frameborder=\"0\" marginheight=\"0\""
-    #             "marginwidth=\"0\">Loading…</iframe></div>",
-    #             unsafe_allow_html=True
-    #             )
-        
-    # with bottom():
-    # cl1, cl2 = st.columns(2, gap="small")
-    # cl1.markdown("Using: :red["+model_select+"]")
-
-
+###########################
 # Endof the Line
+###########################
