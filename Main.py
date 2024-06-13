@@ -687,6 +687,8 @@ def write_registration_to_sheet():
             chkSCode = checkinput(specialCode, "password")
             chkpwdeq = compare_is_same(password1, password2)
 
+            # THIS CODE NEEDS TO BE CHECHED FOR CONTINUIED USE.
+            #
             if chkpwdeq:
                 if chkName and chkCountry and chkEmail and chkPwd1 and chkPwd2 and chkSCode:
                     conn = st.connection("gsheets", type=GSheetsConnection)
@@ -732,6 +734,8 @@ def colorful_print(text, color):
 # #####################################################
 # #  25         TOKENIZER COUNTER                    ##
 # #####################################################
+# Check this function for removal 
+# 
 def tokencounter(text):
     nltk.download('punkt')
     return len(word_tokenize(text))
@@ -1493,14 +1497,16 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     # else:
     #     st.toast(":blue[Audio] :red[deactivated]")
 if logout:
+    colorful_print("[Info] User is loging out", "blue")
     st.session_state.accesscode = ""
     st.session_state.authstatus = False
     st.cache_data.clear()
     st.cache_resource.clear()
     st.rerun()
-
-
+    
 if not st.session_state.authstatus or st.session_state.authstatus == "":
+    colorful_print("[Info] User waiting to login", "blue")
+
     bodyc1 = (
         """
         Great to have you on broad, If you have not registred for an 
