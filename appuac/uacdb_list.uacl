@@ -1,13 +1,28 @@
 @
+@
+@[CAUTION]: when editing this file you must ensure that there are no 
+@           empty lines if you need an empty line use the Comment
+@           symbo "@".
+@
 @ USER ACCESS LIST 
 @ //////////////////////////////////////////////////
+@
 @ Access Code Lengthe is 30 Characters both Number and Alphabet
 @
+@ ID: 1 - Ula                on Websafe Team 
+@ ID: 2 - Eugen              on discord on Samoa Code Hub
+@ ID: 3 - Adrew Westerland   on discord on Samoa Code Hub
+@ ID: 4 - Bruce              on discord Pacific Net
+@ ID: 5 - Terava             on Family
+@@@@@@@@@
 1, user1  , email1@email , xnEAHwjL1q8KXWfRMtgesR4FXG7u2cQAs
 2, user2  , email2@email , xEcJf1gq1in68U60pPUFf7voadaQkKUUf
-3, user2  , email2@email , MrYF5psrvPUxUkpYCgVZ0AhppmN4GwYUq
-4, user2  , email2@email , 6ddNM49d2xXWAPdzYYFHoFRNCD2Yxv9mP
-5, user2  , email2@email , dXH1vf7WbN6Zxz4w4VzcVt2f0z6dE7CA6
+3, user3  , email3@email , MrYF5psrvPUxUkpYCgVZ0AhppmN4GwYUq
+4, user4  , email4@email , 6ddNM49d2xXWAPdzYYFHoFRNCD2Yxv9mP
+5, user5  , email5@email , dXH1vf7WbN6Zxz4w4VzcVt2f0z6dE7CA6
+@@@@@@@@
+@ ACCESS BELOW NOT YET ASSIGNED.
+@@@@@@@@
 6, user2  , email2@email , VABUjMhLV54KK8DB3yVHwrXrtBqE6xgJ8
 7, user2  , email2@email , pVsuiKqx4MDfXnNdE3E5X5WBeerWgrEAN
 8, user2  , email2@email , KNN7vEFZXn8m9B2fxTYgNWuAD1Y3nc8uL

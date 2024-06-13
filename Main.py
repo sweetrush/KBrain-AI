@@ -48,7 +48,7 @@ develper = "SweetRushCoder"
 ###################################################
 
 # AccessCode for Testing
-accesscode_miah = "pWScyxQzvFN3rxjxi4aevEv3srgbJa56nvQcB6T7Yw"
+accesscode_miah = "1"
 
 # Definding Emoji's
 # #################################################
@@ -68,7 +68,7 @@ emj_down = " ⬇ "
 emj_help = " 📗 "
 emj_help_ico = "📗"
 
-devmode = 0
+devmode = 1
 apptile = ""
 debprint = 0
 
@@ -524,6 +524,12 @@ def get_AccessCondition():
 
     st.session_state.accesscode = access
 
+    # if devmode == 1:    # Allows Devloper user to bypass the login screen
+    #     grant = True
+    #     st.session_state.authstatus = True
+    #     if access != "":
+    #         st.sidebar.success("Authenticated & Active", icon="📡")
+    
     if access == "":
         st.sidebar.error("Access Code is Empty", icon="🚨")
         st.session_state.authstatus = False
@@ -539,6 +545,7 @@ def get_AccessCondition():
         st.session_state.authstatus = True
         if access != "":
             st.sidebar.success("Authenticated & Active", icon="📡")
+
     else:
         grant = False
         st.session_state.authstatus = False
@@ -1046,6 +1053,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 activate_audio_output = st.toggle(
                     emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
                 )
+            elif devmode == 1:   # IF ONE this will show the audio in dev Enviroment
+                activate_audio_output = st.toggle(
+                    emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
+                )
             else:
                 activate_audio_output = False
 
@@ -1058,6 +1069,12 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             st.write("##### Number of SAF: " + str(audioInStore))
             st.write("##### Number of AN: " + str(len(listofAssistance)))
 
+
+        # #####################################################################
+        # #####################################################################
+        #             PAGE MENU ON THE SIDE BAR FOR OTHER FEATURES
+        # 
+        # #####################################################################
         horizontal_line()
         st.page_link(
             "pages/help.py", label="Help Guide", icon=emj_help_ico, disabled=False
@@ -1065,6 +1082,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         st.page_link(
             "pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False
         )
+        # st.page_link(
+        #     "pages/agentdev.py", label="Edit Agents", icon=emj_help_ico, disabled=False
+        # )
         horizontal_line()
     # about_the_developer()
 
@@ -1318,8 +1338,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             cache_history_now = st.session_state.chathistoryprompt
             cxt_n_usermsg = loadassistantcontext + usermessage + ai_dont_lie
 
+            # Debugging calls 
+            # Comment to use for Debugging
+            # 
+            # colorful_print(loadassistantcontext, "red")
+
             # This Combinds all prompt strings ready for loading to the chat.
-            finalpromptstring = cache_history_now + grpcontext + cxt_n_usermsg
+            finalpromptstring = cxt_n_usermsg + grpcontext + ", " + cache_history_now 
 
             # ######## AREA FOR SEND PROMPT INFOR TO AI
             #
@@ -1353,7 +1378,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # res03data = {"role": "model", "parts": [systempromptadd]}
             res02data = {
                 "role": "user",
-                "parts": [convo.last.text + grpcontext + usermessage],
+                "parts": [loadassistantcontext],
             }
 
             chatdata.append(res00data)
