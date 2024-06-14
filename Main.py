@@ -708,25 +708,25 @@ def colorful_print(text, color):
     textcombind = ""
 
     if color == "red":
-        textcombind = Fore.RED+Style.BRIGHT+text+Style.RESET_ALL
+        textcombind = " * "+Fore.RED+Style.BRIGHT+text+Style.RESET_ALL
 
     if color == "green":
-        textcombind = Fore.GREEN+Style.BRIGHT+text+Style.RESET_ALL
+        textcombind = " * "+Fore.GREEN+Style.BRIGHT+text+Style.RESET_ALL
 
     if color == "yellow":
-        textcombind = Fore.YELLOW+Style.BRIGHT+text+Style.RESET_ALL
+        textcombind = " * "+Fore.YELLOW+Style.BRIGHT+text+Style.RESET_ALL
 
     if color == "white":
-        textcombind = Fore.WHITE+Style.BRIGHT+text+Style.RESET_ALL
+        textcombind = " * "+Fore.WHITE+Style.BRIGHT+text+Style.RESET_ALL
 
     if color == "blue":
-        textcombind = Fore.BLUE+Style.BRIGHT+text+Style.RESET_ALL
+        textcombind = " * "+Fore.BLUE+Style.BRIGHT+text+Style.RESET_ALL
 
     if color == "magenta":
-        textcombind = Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL
+        textcombind = " * "+Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL
 
     if color == "cyan":
-        textcombind = Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL
+        textcombind = " * "+Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL
     
     print(textcombind)
 
