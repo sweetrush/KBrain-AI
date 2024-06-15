@@ -21,22 +21,27 @@
 1,General        , General Assisance      , General.atx
 
 @@ Technical Agents - This help with Technical System 
-@@ and Programming
-@@ ################################################################################ 
+@@ ################################################################################
 
 2,Linux          , Linux Assistance       , linux_assistance.atx
 2,Linux Cmd Expt , Linux CMD Assistance   , linux_cew.atx
+2,Docker         , Docker Assistance      , Dockerassist.atx
+
+@@ Programming Prompts 
+@@ ################################################################################
+
 2,Python         , Python Assistance      , Python_assistance.atx
 2,Go             , Go Lang Assistance     , Go_Assistance.atx
 2,React JS       , ReactJS                , ReactJS_assistance.atx
 2,Bash           , Bash Assistance        , bashexpert.atx
 2,SVnCL          , SVnCL Assistance       , sc_programmer.atx
-2,Docker         , Docker Assistance      , Dockerassist.atx
 
 @@ Cybersecurity Prompts 
 @@ ################################################################################
+
 2,RedTeam        , RedTeam Assistance     , Red_Team_Expert.atx
 2,Nmap           , Nmap Assistance        , Nmap_expert.atx
+2,Rust-Scan      , Rust Scan Assistance        , rustscan.atx
 
 @@ Busniess Agents - These Help with Busniess Tasks 
 @@ ################################################################################

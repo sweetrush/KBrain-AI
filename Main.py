@@ -124,7 +124,9 @@ if "authstatus" not in st.session_state:
 # #  01         REPLACE CHAR FUNCTION                ##
 # #####################################################
 def replace_chars(text, chars_to_replace, replacement):
-    colorful_print("[FX-R] replace chars (F01)", "magenta")
+    # Uncomment for debugging or monitoring process
+    #
+    #colorful_print("[FX-R] replace chars (F01)", "magenta")
 
     pattern = f"[{chars_to_replace}]"  # Create a character class pattern
     return re.sub(pattern, replacement, text)
@@ -160,7 +162,9 @@ def openpdf_exttext(pdffile):
 # #####################################################
 @st.cache_data
 def read_from_file(filename):
-    colorful_print("[FX-R] read from file (F03)", "magenta")
+    # Uncomment for debugginging or monitoring process
+    #
+    #colorful_print("[FX-R] read from file (F03)", "magenta")
 
     pathDirAssistanceDef = "assistancedb/"
     assistance_filename = filename
@@ -1393,7 +1397,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # print(f'\n\n Chatdata: {chatdata}\n\n') # Uncomment for Deginfo
         
         if atsec:
-            dynamic_css("#e0391f")
+            dynamic_css("#e0391f")    # Activate the Red Broaders000000000000..
         else:
             dynamic_css(st.session_state.exbclor)
         
