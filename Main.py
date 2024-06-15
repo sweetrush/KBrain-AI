@@ -1027,50 +1027,55 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             st.toast(":green[Model:]" + model_select)
 
         with st.expander(emj_safety + "Special Features", expanded=False):
-            attsm = st.toggle("TSM", value=False, help="Active Text Stream Reponses")
-            if attsm:
-                writespeed = st.text_input("Text-Speed:", value="0.1", max_chars=None)
-            atsec = st.toggle("ALT", value=False, help="Active Lab Testing")
-            bexpanderColor = st.color_picker("Theme:", epcolor_val)
 
-            # save new color to Config
-            config["THEMEING"]["ep_color"] = bexpanderColor
-            with open("config.ini", "w") as configfile:
-                config.write(configfile)
+            spclm1, spclm2 = st.tabs([emj_safety + "UI", emj_aaudio + "Audio"])
+            with spclm1:
+                st.write(emj_safety + "UI Config")
+                attsm = st.toggle("TSM", value=False, help="Active Text Stream Reponses")
+                if attsm:
+                    writespeed = st.text_input("Text-Speed:", value="0.1", max_chars=None)
+                atsec = st.toggle("ALT", value=False, help="Active Lab Testing")
+                bexpanderColor = st.color_picker("Theme:", epcolor_val)
 
-            # set the session color
-            st.session_state.exbclor = bexpanderColor
-            dynamic_css(bexpanderColor)
+                # save new color to Config
+                config["THEMEING"]["ep_color"] = bexpanderColor
+                with open("config.ini", "w") as configfile:
+                    config.write(configfile)
 
-        with st.expander(emj_aaudio + "Audio Config", expanded=False):
-            e11labkey = st.text_input(
-                "e11labkey:",
-                value="",
-                max_chars=None,
-                type="password",
-                help="You to place your e11lab key to use Audio (1)",
-            )
+                # set the session color
+                st.session_state.exbclor = bexpanderColor
+                dynamic_css(bexpanderColor)
 
-            if e11labkey:
-                activate_audio_output = st.toggle(
-                    emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
+        # with st.expander(emj_aaudio + "Audio Config", expanded=False):
+            with spclm2:
+                st.write(emj_aaudio + "Audio Config")
+                e11labkey = st.text_input(
+                    "e11labkey:",
+                    value="",
+                    max_chars=None,
+                    type="password",
+                    help="You to place your e11lab key to use Audio (1)",
                 )
 
-            # Access Code for "SCH"
-            elif e11labkey == "sch2024-code":
-                activate_audio_output = st.toggle(
-                    emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
-                )
-            elif devmode == 1:   # IF ONE this will show the audio in dev Enviroment
-                activate_audio_output = st.toggle(
-                    emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
-                )
-            else:
-                activate_audio_output = False
+                if e11labkey:
+                    activate_audio_output = st.toggle(
+                        emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
+                    )
+                # Access Code for "SCH"
+                elif e11labkey == "sch2024-code":
+                    activate_audio_output = st.toggle(
+                        emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
+                    )
+                elif devmode == 1:   # IF ONE this will show the audio in dev Enviroment
+                    activate_audio_output = st.toggle(
+                        emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
+                    )
+                else:
+                    activate_audio_output = False
 
-            activate_audio_output002 = st.toggle(
-                emj_aaudio + "Audio(2):", value=False, help="Active Audio GTTs"
-            )
+                activate_audio_output002 = st.toggle(
+                    emj_aaudio + "Audio(2):", value=False, help="Active Audio GTTs"
+                )
 
         with st.expander(emj_stats + "Status", expanded=False):
             st.write("##### Number of SAR: " + str(fileInStore))
