@@ -48,7 +48,7 @@ develper = "SweetRushCoder"
 ###################################################
 
 # AccessCode for Testing
-accesscode_miah = "1"
+accesscode_miah = "sodiuldfoiousdfj2o34lkj0o2134jolk2j4[p0o3i4234j;oiu234lk;345ljk345]"
 
 # Definding Emoji's
 # #################################################
@@ -69,7 +69,7 @@ emj_help = " 📗 "
 emj_help_ico = "📗"
 emj_door = " 🚪 "
 
-devmode = 1
+devmode = 0
 apptile = ""
 debprint = 0
 
