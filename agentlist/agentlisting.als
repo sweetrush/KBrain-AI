@@ -31,6 +31,7 @@
 @@ ################################################################################
 
 2,Python         , Python Assistance      , Python_assistance.atx
+2,Prolog         , Prolog Assistance      , prolog.atx
 2,Go             , Go Lang Assistance     , Go_Assistance.atx
 2,React JS       , ReactJS                , ReactJS_assistance.atx
 2,Bash           , Bash Assistance        , bashexpert.atx
@@ -50,11 +51,12 @@
 3,2Ddotplan      , 2D Plot Assistance     , dotplanner.atx
 3,Emailhelper    , EmailHelper Assistance , emailhelper.atx
 3,BusniessExpert , BE Assistance          , BusniessExpert.atx
-3,Youtube SMRY   , Youtube SMRY Assistant , YSummaryExpert.atx
+3,BusniessLawyer , BL Assistance          , BN_Lawer.atx
 
 @@ Agents that are for Testing
 @@ ################################################################################
 
+3,Youtube SMRY   , Youtube SMRY Assistant , YSummaryExpert.atx
 4,SpecialAI         , Special Assistance        , specialai.atx
 
 @@ Hugging Face Agents 

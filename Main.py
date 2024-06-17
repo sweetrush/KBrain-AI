@@ -67,6 +67,7 @@ emj_stats = " 📊 "
 emj_down = " ⬇ "
 emj_help = " 📗 "
 emj_help_ico = "📗"
+emj_door = " 🚪 "
 
 devmode = 1
 apptile = ""
@@ -186,11 +187,12 @@ def write_to_file(filename, text):
 
     if not os.path.exists(storedir):
         os.makedirs(storedir)
+
     try:
         with open(store_path + "_gemin.md", "a", encoding="utf-8") as file:
             file.write(text + "\n")  # Add a newline at the end
     except OSError as e:
-        colorful_print(f"Error writing to file: {e}", "red")
+        colorful_print(f"[Error] Error writing to file: {e}", "red")
 
 
 # #####################################################
@@ -288,18 +290,22 @@ def get_audio(texttomp3, prefix, auid):
         "voice_settings": {"stability": 0.5, "similarity_boost": 0.5},
     }
 
-    response = requests.post(url, json=data, headers=headers)
-    mp3fileName = prefix + "_" + auid + ".mp3"
+    try:
+        response = requests.post(url, json=data, headers=headers)
+        mp3fileName = prefix + "_" + auid + ".mp3"
 
-    folder_path = audioOD
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    mp3_path = os.path.join(folder_path, mp3fileName)
+        folder_path = audioOD
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        mp3_path = os.path.join(folder_path, mp3fileName)
 
-    with open(mp3_path, "wb") as f:
-        for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
-            if chunk:
-                f.write(chunk)
+        with open(mp3_path, "wb") as f:
+            for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
+                if chunk:
+                    f.write(chunk)
+
+    except requests.exceptions.RequestException as e:
+        colorful_print(f"[ERROR] ElevenLabs API request failed: {e}", "red")
 
     return mp3_path
 
@@ -340,56 +346,62 @@ def loadagents():
     fullpath = os.path.join(pathDirAssistanceConfig, assistance_filename)
     file_path = fullpath
 
-    with open(file_path, "r") as file:
-        for line in file:
-            line = line.strip()  # Remove leading/trailing whitespace
-            if "@@" not in line and line:  # Check for "@@" and empty lines
-                emjtag, name, label, file = line.strip().split(",")
+    try:
+        with open(file_path, "r") as file:
+            for line in file:
+                line = line.strip()  # Remove leading/trailing whitespace
+                if "@@" not in line and line:  # Check for "@@" and empty lines
+                    emjtag, name, label, file = line.strip().split(",")
 
-                if emjtag == "1":
-                    listofAssistance.append(
-                        [
-                            emj_billcap + str(name),
-                            str(label),
-                            replace_chars(str(file), " ", ""),
-                        ]
-                    )
+                    if emjtag == "1":
+                        listofAssistance.append(
+                            [
+                                emj_billcap + str(name),
+                                str(label),
+                                replace_chars(str(file), " ", ""),
+                            ]
+                        )
 
-                elif emjtag == "2":
-                    listofAssistance.append(
-                        [
-                            emj_tophat + str(name),
-                            str(label),
-                            replace_chars(str(file), " ", ""),
-                        ]
-                    )
+                    elif emjtag == "2":
+                        listofAssistance.append(
+                            [
+                                emj_tophat + str(name),
+                                str(label),
+                                replace_chars(str(file), " ", ""),
+                            ]
+                        )
 
-                elif emjtag == "3":
-                    listofAssistance.append(
-                        [
-                            emj_gradcap + str(name),
-                            str(label),
-                            replace_chars(str(file), " ", ""),
-                        ]
-                    )
+                    elif emjtag == "3":
+                        listofAssistance.append(
+                            [
+                                emj_gradcap + str(name),
+                                str(label),
+                                replace_chars(str(file), " ", ""),
+                            ]
+                        )
 
-                elif emjtag == "4":
-                    listofAssistance.append(
-                        [
-                            emj_assistance + str(name),
-                            str(label),
-                            replace_chars(str(file), " ", ""),
-                        ]
-                    )
+                    elif emjtag == "4":
+                        listofAssistance.append(
+                            [
+                                emj_assistance + str(name),
+                                str(label),
+                                replace_chars(str(file), " ", ""),
+                            ]
+                        )
 
-                else:
-                    listofAssistance.append(
-                        [
-                            emj_billcap + str(name),
-                            str(label),
-                            replace_chars(str(file), " ", ""),
-                        ]
-                    )
+                    else:
+                        listofAssistance.append(
+                            [
+                                emj_billcap + str(name),
+                                str(label),
+                                replace_chars(str(file), " ", ""),
+                            ]
+                        )
+    except FileNotFoundError:
+        colorful_print(f"[ERROR] Agent list file not found: {file_path}", "red")
+        # Handle the error gracefully, e.g., create a default agent list
+    except IOError as e:
+        colorful_print(f"[ERROR] Error reading agent list: {e}", "red")
 
 
 # #####################################################
@@ -458,7 +470,7 @@ def get_video_transcript(video_id):
         return text.strip()
 
     except Exception as e:
-        colorful_print(f"Error: {str(e)}","red")
+        colorful_print(f"[Error] Youtube API Request Failed: {str(e)}", "red")
 
     return None
 
@@ -519,7 +531,7 @@ def get_AccessCondition():
     # userdata = load_user_data("appuac/uacdb_list.uacl")
     userdata = "appuac/uacdb_list.uacl"
 
-    access = st.sidebar.text_input(
+    access = st.text_input(
         "Provide your access Code:",
         value=st.session_state.accesscode,
         type="password",
@@ -535,26 +547,28 @@ def get_AccessCondition():
     #         st.sidebar.success("Authenticated & Active", icon="📡")
     
     if access == "":
-        st.sidebar.error("Access Code is Empty", icon="🚨")
+        st.error("Access Code is Empty", icon="🚨")
         st.session_state.authstatus = False
 
     elif authenticate_user2(access, userdata):
         grant = True
         st.session_state.authstatus = True
+
         if access != "":
-            st.sidebar.success("Authenticated & Active", icon="📡")
+            st.success("Authenticated & Active", icon="📡")
+            # logout = st.button("Logout")
 
     elif access == accesscode_miah:
         grant = True
         st.session_state.authstatus = True
         if access != "":
-            st.sidebar.success("Authenticated & Active", icon="📡")
+            st.success("Authenticated & Active", icon="📡")
 
     else:
         grant = False
         st.session_state.authstatus = False
         if access != "":
-            st.sidebar.warning(
+            st.warning(
                 "Authentication Error: Please check your again!", icon="⛑️"
             )
 
@@ -806,8 +820,10 @@ def authenticate_user2(access_code, file_path):
             if access_code == stored_access_code:
                 colorful_print("[Auth-OK] "+access_code+" => "+stored_access_code, "green")
                 return True
-            else: 
-                colorful_print("[Auth-FL] "+access_code+" => "+stored_access_code, "red")
+            #Uncomment to show the Faled Auths
+            # else: 
+            #     colorful_print("[Auth-FL] "+access_code+" => "+stored_access_code, "red")
+
     return False  # Access code not found in the file
 
 
@@ -890,21 +906,27 @@ else:
 dynamic_css(epcolor_val)
 
 # Getting the Condition of the Access
-get_AccessCondition()
+with st.sidebar:
+    with st.expander(emj_door+" Auth Panel "):
+        get_AccessCondition()
+        
 
-logout = None
+# Initiating the Logout State:
+logout = restdata = None
 
+# Checking Authentication State
 if st.session_state.authstatus and st.session_state.accesscode != "":
     with st.sidebar:
-
-        logout = st.button("Logout")
 
         global tempture_val, fileloaded, opt1_safe, opt2_safe
         global opt3_safe, opt4_safe, pdftext, getResponsetext
         global loadassistantcontext, assistantcontext, adcn
 
         # horizontal_line() # Uncomment to show the Line
+        btt1, btt2 = st.columns(2, gap="small") 
 
+        logout = btt1.button(" 🕡 "+"Logout")
+        restdata = btt2.button(" ♻ "+"Datarest")
         # Uncomment this to reflect the file Upload Feature on the Side Bar
         # mapFileUploadOnSideBar()
         
@@ -938,6 +960,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 topk = st.number_input(
                     "Set Top-K", min_value=None, max_value=None, value=10, step=1
                 )
+
+                if not isinstance(topk, int) or topk < 1 or topk > 100:
+                    st.error("Invalid Top-K value. Please enter an integer between 1 and 100.")
 
                 mot = st.text_input("Max Output Tokens", value=model_tokens, max_chars=None)
 
@@ -1031,10 +1056,11 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             spclm1, spclm2 = st.tabs([emj_safety + "UI", emj_aaudio + "Audio"])
             with spclm1:
                 st.write(emj_safety + "UI Config")
-                attsm = st.toggle("TSM", value=False, help="Active Text Stream Reponses")
+                attsm = st.toggle("TSM", value=False, help="Activate Text Stream Reponses")
+                atpts = st.toggle("PTS", value=False, help="Activate Prompt Token Status")
                 if attsm:
                     writespeed = st.text_input("Text-Speed:", value="0.1", max_chars=None)
-                atsec = st.toggle("ALT", value=False, help="Active Lab Testing")
+                atsec = st.toggle("ALT", value=False, help="Activate Lab Testing")
                 bexpanderColor = st.color_picker("Theme:", epcolor_val)
 
                 # save new color to Config
@@ -1186,7 +1212,11 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         "Choose your .pdf file", type="pdf"
                     )
                     if uploaded_file is not None:
-                        pdftext = openpdf_exttext(uploaded_file)
+                        try:
+                            pdftext = openpdf_exttext(uploaded_file)
+                        except Exception as e:
+                            st.error(f"Error processing PDF: {e}")
+                            pdftext = ""  # Ensure pdftext is initialized
                     else:
                         pdftext = ""
 
@@ -1493,13 +1523,17 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 " ( " + "Reponse "+str(tokencount) + "Sent "+str(tokencountsent) + " )]**"
             )
 
-            st.markdown(status_string, unsafe_allow_html=True)
+            if atpts:
+                st.markdown(status_string, unsafe_allow_html=True)
+
+                st.session_state.chathistory.append(
+                  {"role": "status", "content": status_cache}
+                        )
+
             st.session_state.chathistory.append(
                 {"role": "assistant", "content": botmessage}
             )
-            st.session_state.chathistory.append(
-                {"role": "status", "content": status_cache}
-            )
+
 
     # if activate_audio_output:
     #     st.toast(":blue[Audio] :green[activated]")
@@ -1512,7 +1546,16 @@ if logout:
     st.cache_data.clear()
     st.cache_resource.clear()
     st.rerun()
-    
+
+if restdata:
+    colorful_print("[Info] User is resting Prompt", "blue")
+    st.toast(":blue[Data Rest] :green[resting Session prompt]")
+    st.cache_data.clear()
+    st.cache_resource.clear()
+    st.session_state.chathistoryprompt = ""
+    # st.session_state.chathistory = {"role": "User", "content": ""}
+    st.session_state.lastchatoutput = ""
+
 if not st.session_state.authstatus or st.session_state.authstatus == "":
     colorful_print("[Info] User waiting to login", "blue")
 
@@ -1620,7 +1663,6 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
     mbcl2.markdown("---", unsafe_allow_html=False)
     mbcl2.markdown(" ### Features of the Application", unsafe_allow_html=False)
     mbcl2.markdown("    ", unsafe_allow_html=False)
-
 
     mmbcl1.markdown(f1, unsafe_allow_html=False)
     mmbcl2.markdown(f2, unsafe_allow_html=False)
