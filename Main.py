@@ -48,7 +48,8 @@ develper = "SweetRushCoder"
 ###################################################
 
 # AccessCode for Testing
-accesscode_miah = "sodiuldfoiousdfj2o34lkj0o2134jolk2j4[p0o3i4234j;oiu234lk;345ljk345]"
+# accesscode_miah = "sodiuldfoiousdfj2o34lkj0o2134jolk2j4[p0o3i4234j;oiu234lk;345ljk345]"
+accesscode_miah = "1"
 
 # Definding Emoji's
 # #################################################
@@ -72,6 +73,11 @@ emj_door = " 🚪 "
 devmode = 0
 apptile = ""
 debprint = 0
+
+# This Defines how many Agents can be loaded from the 
+# Agent list
+numagentload = 100
+
 
 if devmode == 1:
     st.set_page_config(page_title="Miah's AI Assistance (Devmode)", page_icon=":tada:", layout="wide")
@@ -813,6 +819,7 @@ def authenticate_user2(access_code, file_path):
 
     with open(file_path, 'r') as file:
         for line in file:
+            line = line.strip()
             if line.startswith('@'):  # Ignore comment lines
                 continue
             user_id, _, _, stored_access_code = line.strip().split(', ')
@@ -1030,7 +1037,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 emj_assistance + "Active Assistance:",
                 [
                     item[0]
-                    for item in listofAssistance[: min(20, len(listofAssistance))]
+                    for item in listofAssistance[: min(numagentload, len(listofAssistance))]
                 ],
                 index=0,
             )
@@ -1534,7 +1541,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 {"role": "assistant", "content": botmessage}
             )
 
-
     # if activate_audio_output:
     #     st.toast(":blue[Audio] :green[activated]")
     # else:
@@ -1547,14 +1553,15 @@ if logout:
     st.cache_resource.clear()
     st.rerun()
 
+
 if restdata:
     colorful_print("[Info] User is resting Prompt", "blue")
     st.toast(":blue[Data Rest] :green[resting Session prompt]")
     st.cache_data.clear()
     st.cache_resource.clear()
-    st.session_state.chathistoryprompt = ""
-    # st.session_state.chathistory = {"role": "User", "content": ""}
-    st.session_state.lastchatoutput = ""
+    st.session_state.chathistoryprompt = None
+    # st.session_state.chathistory = None
+    st.session_state.lastchatoutput = None
 
 if not st.session_state.authstatus or st.session_state.authstatus == "":
     colorful_print("[Info] User waiting to login", "blue")

@@ -42,12 +42,14 @@
 
 2,RedTeam        , RedTeam Assistance     , Red_Team_Expert.atx
 2,Nmap           , Nmap Assistance        , Nmap_expert.atx
-2,Rust-Scan      , Rust Scan Assistance        , rustscan.atx
+2,Rust-Scan      , Rust Scan Assistance   , rustscan.atx
 
 @@ Busniess Agents - These Help with Busniess Tasks 
 @@ ################################################################################
 
 3,ProposalDev    , Proposal Dev Assistant , proposaldev.atx
+3,Report Writer  , Report Writer          , Report_Writer.atx
+3,Preso Expert   , Preso Expert           , PresentationSlide.atx
 3,2Ddotplan      , 2D Plot Assistance     , dotplanner.atx
 3,Emailhelper    , EmailHelper Assistance , emailhelper.atx
 3,BusniessExpert , BE Assistance          , BusniessExpert.atx
@@ -56,8 +58,9 @@
 @@ Agents that are for Testing
 @@ ################################################################################
 
-3,Youtube SMRY   , Youtube SMRY Assistant , YSummaryExpert.atx
-4,SpecialAI         , Special Assistance        , specialai.atx
+3,Youtube SMRY      , Youtube SMRY Assistant   , YSummaryExpert.atx
+4,Subject Experts   , Subject Experts          , SubjectModeratorTeam.atx
+4,SpecialAI         , Special Assistance       , specialai.atx
 
 @@ Hugging Face Agents 
 @@ ################################################################################
