@@ -23,6 +23,7 @@ import speech_recognition as sr
 import streamlit as st
 import pandas as pd
 import configparser
+import PIL.Image
 import requests
 import logging
 import datetime
@@ -774,7 +775,9 @@ def stream_text(text, delay=0.003):
         yield char
         time.sleep(delay)    
 
-
+# #####################################################
+# #  27         LOAD USER DATA FX                  ##
+# #####################################################
 def load_user_data(file_path):
     """Loads user data from a file, ignoring lines starting with '@'."""
     colorful_print("[FX-R] User access List Loading (F27)", "magenta")
@@ -791,6 +794,9 @@ def load_user_data(file_path):
     return user_datac
 
 
+# #####################################################
+# #  28         AUTHENTICATION USER FX               ##
+# #####################################################
 def authenticate_user(access_code, user_data):
     
     """Checks if the provided access code matches any user in the data."""
@@ -804,7 +810,9 @@ def authenticate_user(access_code, user_data):
             
     return False
 
-
+# #####################################################
+# #  29         AUTHENTICATE USER FX 2               ##
+# #####################################################
 def authenticate_user2(access_code, file_path):
     """
     Checks if the provided access code exists in the user data file.
@@ -861,8 +869,6 @@ model_tokens = "8024"
 models = [
     "gemini-1.5-pro-latest",
     "gemini-1.5-flash-latest",
-    "gemini-1.0-pro",
-    "gemini-pro-vision",
 ]
 
 # OLD Definition
@@ -957,15 +963,19 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 # topp = st.text_input("Set Top P", value="1", max_chars=None)
                 topp = st.slider(
-                    "Set Top-P",  # Label for the slider
+                    "Set Top-P",    # Label for the slider
                     min_value=0.0,  # Minimum value
                     max_value=1.0,  # Maximum value
-                    value=0.07,  # Default value
-                    step=0.05,  # Increment step
+                    value=0.07,     # Default value
+                    step=0.05,      # Increment step
                 )
 
                 topk = st.number_input(
-                    "Set Top-K", min_value=None, max_value=None, value=10, step=1
+                    "Set Top-K", 
+                    min_value=None, 
+                    max_value=None, 
+                    value=10, 
+                    step=1
                 )
 
                 if not isinstance(topk, int) or topk < 1 or topk > 100:
@@ -1027,7 +1037,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # ###############################################
         with st.expander(emj_assistance + "Model & Assistance", expanded=True):
             model_select = st.selectbox(
-                emj_clamper + "Choose Model", (models[0], models[1], models[2]), index=0
+                emj_clamper + "Choose Model", (models[0], models[1]), index=0
             )
 
             # Setting the selected Active Assistance
@@ -1066,7 +1076,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 attsm = st.toggle("TSM", value=False, help="Activate Text Stream Reponses")
                 atpts = st.toggle("PTS", value=False, help="Activate Prompt Token Status")
                 if attsm:
-                    writespeed = st.text_input("Text-Speed:", value="0.1", max_chars=None)
+                    writespeed = st.text_input("Text-Speed:", value="0.007", max_chars=None)
                 atsec = st.toggle("ALT", value=False, help="Activate Lab Testing")
                 bexpanderColor = st.color_picker("Theme:", epcolor_val)
 
@@ -1146,6 +1156,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     # ####################################################################
     # ####################################################################
     #   Content Just Above the Chatline input field
+    # ####################################################################
+    # ####################################################################
 
     codewrap = ""  # initating the var for the code wrap here{adc
     with bottom():
@@ -1256,6 +1268,16 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
     # ####################################################################
     # ####################################################################
+    # ###################### END OF ABOVE CHAT AREA   ####################
+    # ####################################################################
+    # ####################################################################
+
+
+    # ####################################################################
+    # ####################################################################
+    # ########### IMPLEMENTING SETTINGS FOR THE MODEL  ###################
+    # ####################################################################
+    # ####################################################################
 
     if GeminiAPIkey:
         # API from the UI interface 
@@ -1288,7 +1310,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         safety_settings=safety_settings,
     )
 
-    # For Session Storing Information [ Caching ]
+    # ##################################################################
+    # ##################################################################
+    # #####  For Session Storing Information [ Caching ]     ###########
     # ##################################################################
     # ##################################################################
 
@@ -1336,11 +1360,14 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
     # if dialogpop:
     #     display_about_dev()
-
+    
     # Runs What the User has input
     if usermessage:
         with st.chat_message("User"):
             st.write(usermessage)
+
+            if uploaded_img:
+                st.image(uploaded_img, caption=None, width=None)
 
             # Storing User Information to the Session Variable
             st.session_state.chathistory.append(
@@ -1401,8 +1428,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             try:
                 if uploaded_img:
+                    img = PIL.Image.open(uploaded_img)
                     colorful_print("[INCAL] Sending Prompt with Text and Image", "green")
-                    convo.send_message([finalpromptstring, uploaded_img])
+                    convo.send_message([finalpromptstring, img])
                 else:
                     convo.send_message(finalpromptstring)
                     colorful_print("[INCAL] Sending Prompt with Text only", "green")
@@ -1412,28 +1440,132 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 # print("[Debuging]:[1] "+groupcontext+usermessage)
 
             except Exception as e:
-                st.toast(":red[Error:] on call", icon=None)
+                st.toast(":red[Error:] Problem sending Prompt on call", icon=None)
                 st.error(e, icon=None)
 
-            ca = cache_history_now + usermessage
+            ca = usermessage + cache_history_now
             st.session_state.chathistoryprompt = ca
             # print(f"\n\n Current CACHE BP:{cache_history_now}") # Debuging Perpose
             # Uncomment to View ChathistroyPrompt data in terminal
             # print(st.session_state.chathistoryprompt)
 
             # systempromptadd = "Your name is Miah, You are named after my son"
+            res04data = {
+                         "role": "user", 
+                         "parts": "What is 2"
+            }
 
-            res00data = {"role": "user", "parts": [ca]}
-            res01data = {"role": "model", "parts": [convo.last.text]}
+            res05data = {
+                         "role": "model", 
+                         "parts": "1"
+            }
+
+            res06data = {
+                         "role": "user", 
+                         "parts": "What is 3"
+            }
+            res07data = {
+                         "role": "model", 
+                         "parts": "5"
+            }
+
+            res08data = {
+                         "role": "user", 
+                         "parts": "What is 2"
+            }
+
+            res09data = {
+                         "role": "model", 
+                         "parts": "1"
+            }
+
+            res10data = {
+                         "role": "user", 
+                         "parts": "What is 3"
+            }
+            res11data = {
+                         "role": "model", 
+                         "parts": "5"
+            }
+
+
+            res12data = {
+                         "role": "user", 
+                         "parts": "What is 2"
+            }
+
+            res13data = {
+                         "role": "model", 
+                         "parts": "1"
+            }
+
+            res14data = {
+                         "role": "user", 
+                         "parts": "What is 3"
+            }
+            res15data = {
+                         "role": "model", 
+                         "parts": "5"
+            }
+
+            res16data = {
+                         "role": "user", 
+                         "parts": "What is 2"
+            }
+
+            res17data = {
+                         "role": "model", 
+                         "parts": "1"
+            }
+
+            res18data = {
+                         "role": "user", 
+                         "parts": "What is 3"
+            }
+            res19data = {
+                         "role": "model", 
+                         "parts": "5"
+            }
+
+
+
+
+            res00data = {
+                         "role": "user", 
+                         "parts": [ca]
+            }
+
+            res01data = {
+                         "role": "model", 
+                         "parts": [convo.last.text]
+            }
+
             # res03data = {"role": "model", "parts": [systempromptadd]}
             res02data = {
                 "role": "user",
                 "parts": [loadassistantcontext],
             }
 
-            chatdata.append(res00data)
-            chatdata.append(res01data)
             chatdata.append(res02data)
+            chatdata.append(res01data)
+            chatdata.append(res00data)
+
+            chatdata.append(res19data)
+            chatdata.append(res18data)
+            chatdata.append(res17data)
+            chatdata.append(res16data)
+            chatdata.append(res15data)
+            chatdata.append(res14data)
+            chatdata.append(res13data)
+            chatdata.append(res12data)
+            chatdata.append(res11data)
+            chatdata.append(res10data)
+            chatdata.append(res09data)
+            chatdata.append(res08data)
+            chatdata.append(res07data)
+            chatdata.append(res06data)
+            chatdata.append(res05data)
+            chatdata.append(res04data)
 
             st.write(chatdata)
             # print(f'\n\n Chatdata: {chatdata}\n\n') # Uncomment for Deginfo
@@ -1470,7 +1602,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             #  if yes then it will output the responses in a text Stream way 
             #  else it will just show all the text at Once. 
             if attsm:
-                st.status("Assistance Typing ..")
+                # st.status("Assistance Typing ..")
                 st.write_stream(stream_text(botmessage, float(writespeed)))
             else:
                 st.write(botmessage)
@@ -1559,9 +1691,10 @@ if restdata:
     st.toast(":blue[Data Rest] :green[resting Session prompt]")
     st.cache_data.clear()
     st.cache_resource.clear()
-    st.session_state.chathistoryprompt = None
-    # st.session_state.chathistory = None
-    st.session_state.lastchatoutput = None
+    st.session_state.chathistoryprompt = ""
+    st.session_state.chathistory = []
+    st.session_state.lastchatoutput = ""
+    st.warning("Prompt Memory has been reset", icon='⚠')
 
 if not st.session_state.authstatus or st.session_state.authstatus == "":
     colorful_print("[Info] User waiting to login", "blue")
