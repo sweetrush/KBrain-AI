@@ -922,7 +922,6 @@ dynamic_css(epcolor_val)
 with st.sidebar:
     with st.expander(emj_door+" Auth Panel "):
         get_AccessCondition()
-        
 
 # Initiating the Logout State:
 logout = restdata = None
