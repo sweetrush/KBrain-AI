@@ -50,10 +50,12 @@
 3,ProposalDev    , Proposal Dev Assistant , proposaldev.atx
 3,Report Writer  , Report Writer          , Report_Writer.atx
 3,Preso Expert   , Preso Expert           , PresentationSlide.atx
-3,2Ddotplan      , 2D Plot Assistance     , dotplanner.atx
+@@ 3,2Ddotplan      , 2D Plot Assistance     , dotplanner.atx
 3,Emailhelper    , EmailHelper Assistance , emailhelper.atx
 3,BusniessExpert , BE Assistance          , BusniessExpert.atx
-3,BusniessLawyer , BL Assistance          , BN_Lawer.atx
+
+@@ Commented Agents 
+@@ 3,BusniessLawyer , BL Assistance          , BN_Lawer.atx
 
 @@ Agents that are for Testing
 @@ ################################################################################
@@ -65,5 +67,7 @@
 @@ Hugging Face Agents 
 @@ ################################################################################
 
-4,hf_HacXGpt     , Hacker Gpt Advance Level, hf_HacXGpt.atx 
-4,hf_CoderWriter , CodeWriter              , hf_codewriter.atx 
+@@ Uncomment the following to allow them to be used
+@@
+@@ 4,hf_HacXGpt     , Hacker Gpt Advance Level, hf_HacXGpt.atx 
+@@ 4,hf_CoderWriter , CodeWriter              , hf_codewriter.atx 
