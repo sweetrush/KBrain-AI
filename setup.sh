@@ -1,7 +1,18 @@
-mkdir -p ~/.streamlit/
-mkdir -p ~/output/
-mkdir -p ~/output/gemini_out
-mkdir -p ~/ai_audio
+# Comment when deploying on Heroku 
+# -------------------------------------------
+
+# mkdir -p ~/.streamlit/
+# mkdir -p ~/output/
+# mkdir -p ~/output/gemini_out
+# mkdir -p ~/ai_audio
+
+# Uncomment for Deploying for Render 
+# -------------------------------------------
+
+mkdir -p .streamlit/
+mkdir -p output/
+mkdir -p output/gemini_out
+mkdir -p ai_audio
 
 
 
