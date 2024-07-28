@@ -36,6 +36,7 @@
 2,React JS       , ReactJS                , ReactJS_assistance.atx
 2,Bash           , Bash Assistance        , bashexpert.atx
 2,SVnCL          , SVnCL Assistance       , sc_programmer.atx
+2,WebDev          , WebDev Assistance     , webprogrammer.atx
 
 @@ Cybersecurity Prompts 
 @@ ################################################################################
