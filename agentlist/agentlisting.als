@@ -31,6 +31,7 @@
 @@ ################################################################################
 
 2,Python         , Python Assistance      , Python_assistance.atx
+2,Python Mobile  , PyMobile Assistance    , kivy.atx 
 2,Prolog         , Prolog Assistance      , prolog.atx
 2,Go             , Go Lang Assistance     , Go_Assistance.atx
 2,React JS       , ReactJS                , ReactJS_assistance.atx
