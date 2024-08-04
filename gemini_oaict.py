@@ -132,6 +132,3 @@ while True:
       rtext = rtext.replace("#####", ":**"+txtRESET+txtYELLOW)
 
       print(txtRED+aiprompttag+txtRESET+rtext+'\n\n'+tokencount)
-
-
-
