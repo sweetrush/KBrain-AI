@@ -81,9 +81,9 @@ numagentload = 100
 
 
 if devmode == 1:
-    st.set_page_config(page_title="Miah's AI Assistance (Devmode)", page_icon=":tada:", layout="wide")
+    st.set_page_config(page_title="Miah AI (Devmode)", page_icon=":tada:", layout="wide")
 else:
-    st.set_page_config(page_title="Miah's AI Assistance", page_icon=":tada:", layout="wide")
+    st.set_page_config(page_title="Miah AI ", page_icon=":tada:", layout="wide")
 
 # Defining Arrays:
 listofAssistance = []
@@ -913,9 +913,9 @@ for i in range(len(listofAssistance)):
 ##############################################################################
 
 if devmode == 1:
-    st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance (DevMode)")
+    st.sidebar.title(emj_clamper + "Miah's AI (DevMode)")
 else:
-    st.sidebar.title(emj_clamper + "Miah's AI Gemini Assistance")
+    st.sidebar.title(emj_clamper + "Miah's AI")
 
 dynamic_css(epcolor_val)
 
