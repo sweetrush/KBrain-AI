@@ -1808,8 +1808,15 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
 
     st.markdown(ltnewsapp, unsafe_allow_html=False)
     st.markdown("---", unsafe_allow_html=False)
-    st.markdown(" ### Apply now and Get in to the Fun.", unsafe_allow_html=False)
-    st.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
+
+    btncl1, btncl2 = st.columns(2, gap="small")
+
+    btncl1.markdown(" ### Apply now and Get in to the Fun.", unsafe_allow_html=False)
+    btncl1.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
+
+    btncl2.markdown(" ### Share your feed and make Miah AI Great.", unsafe_allow_html=False)
+    btncl2.link_button(emj_down+"Share your feedback", "https://forms.gle/WmX8LEvwhVEvRCAPA")
+    
     st.markdown("---", unsafe_allow_html=False)
     
     st.markdown(" ### Features of the Application", unsafe_allow_html=False)
@@ -1820,8 +1827,8 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
 
     mmbcl1.markdown(f1, unsafe_allow_html=False)
     mmbcl2.markdown(f2, unsafe_allow_html=False)
-    about_the_developer()
     st.markdown("---", unsafe_allow_html=False)
+    about_the_developer()
 
 ###########################
 # Endof the Line
