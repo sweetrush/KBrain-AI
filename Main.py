@@ -43,8 +43,8 @@ import time
 # of the Miah AI assistance
 # #################################################
 
-version = "2.9.3"
-develper = "SweetRushCoder"
+version = "2.9.4"
+develper = "SRCoder"
 
 ###################################################
 
@@ -1144,7 +1144,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         #     "pages/agentdev.py", label="Edit Agents", icon=emj_help_ico, disabled=False
         # )
         horizontal_line()
-    # about_the_developer()
+        about_the_developer()
 
     if "exbclor" not in st.session_state:
         st.session_state.exbclor = ""
@@ -1704,13 +1704,22 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
     bodyc1 = (
         """
         Great to have you on broad, If you have not registred for an 
-        account, quickly to get you **ACCESS CODE** now. Currently Access 
-        is open at the moment for this Beta Release. 
+        account, quickly do it now and get your **ACCESS CODE** now. Currently Access 
+        is open at the moment for this beta Release """+version+""". 
 
         Or get in contact with the team now for your chance to be a head of your 
-        friends and colleges at work with this very helpful tool. 
+        friends and colleges at work with this very helpful tool.
+
+
+
         """
     )
+
+    ltnewsapp = ("""
+         ##### :white[Lastest Update: New Models Now available]
+            - :green[New Model from Google : Gemini 1.5 Pro Experiment 0801]
+        """
+        )
 
     f1 = (
         """
@@ -1796,19 +1805,22 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
     # st.write("Number of test token:"+str(tokencounter(bodyc1)))
 
     st.markdown(bodyc1, unsafe_allow_html=True)
+
+    st.markdown(ltnewsapp, unsafe_allow_html=False)
+    st.markdown("---", unsafe_allow_html=False)
+    st.markdown(" ### Apply now and Get in to the Fun.", unsafe_allow_html=False)
+    st.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
+    st.markdown("---", unsafe_allow_html=False)
     
+    st.markdown(" ### Features of the Application", unsafe_allow_html=False)
+    st.markdown("    ", unsafe_allow_html=False)
+
     mbcl1, mbcl2, mbcl3 = st.columns([1, 7, 1], gap="small")
     mmbcl1, mmbcl2 = st.columns([6, 6], gap="small")
 
-    mbcl2.markdown(" ### Apply now and Get in to the Fun.", unsafe_allow_html=False)
-    mbcl2.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
-    mbcl2.markdown("---", unsafe_allow_html=False)
-    mbcl2.markdown(" ### Features of the Application", unsafe_allow_html=False)
-    mbcl2.markdown("    ", unsafe_allow_html=False)
-
     mmbcl1.markdown(f1, unsafe_allow_html=False)
     mmbcl2.markdown(f2, unsafe_allow_html=False)
-
+    about_the_developer()
     st.markdown("---", unsafe_allow_html=False)
 
 ###########################
