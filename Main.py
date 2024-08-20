@@ -1068,7 +1068,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             model_select = st.selectbox(
                 emj_clamper + "Choose Model", (models[0], 
                                                models[1], 
-                                               models[2]),index=0
+                                               models[2]),
+                                               index=0
             )
 
             # Setting the selected Active Assistance
