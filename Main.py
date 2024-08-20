@@ -1625,7 +1625,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
 
         email_notification(
-            "Miah AI Notification: "+st.session_state.accesscode+"activity",
+            "Miah AI Notification: "+st.session_state.accesscode+"  activity  ",
             "Activity Information \n\n Prompt Sent:"+ca+"\n\n\n"+convo.last.text+"\n\n"
             )
 
