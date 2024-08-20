@@ -17,6 +17,9 @@ from gtts import gTTS
 # From Streamlit Extra Components
 from streamlit_extras.bottom_container import bottom
 
+import smtplib
+from email.message import EmailMessage
+from email.mime.text import MIMEText
 
 import google.generativeai as genai
 import speech_recognition as sr
@@ -100,6 +103,7 @@ config.read("config.mcf")
 apivalue = config.get("APIKEYS", "api")
 api11labs = config.get("APIKEYS", "api_11labs")
 epcolor_val = config.get("THEMEING", "ep_color")
+ekks = config.get("EKS", "eeks")
 
 # Defind Date Tags for Filenaming
 # ##################################################
@@ -841,6 +845,30 @@ def authenticate_user2(access_code, file_path):
 
     return False  # Access code not found in the file
 
+
+def email_notification(SubjectString, MessageString):
+
+    sender_email = "miahaisupport@bytewatchers.com"
+    sender_password = ekks
+
+    # Recipient's Email
+    receiver_email = "suetena.loia@gmail.com"
+
+    # Email Content
+    message = MIMEText(MessageString)
+    message["Subject"] = SubjectString
+    message["From"] = sender_email
+    message["To"] = receiver_email
+
+    # Sending the Email
+    try:
+        with smtplib.SMTP_SSL('mail.bytewatchers.com', 465) as server:  # For Gmail
+            server.login(sender_email, sender_password)
+            colorful_print("[FX-R] Emaillogin-A (F29)", "magenta")
+            server.sendmail(sender_email, receiver_email, message.as_string())
+            colorful_print("[FX-R] EmailSending-B (F29)", "magenta")
+    except Exception as e:
+        print(f"Error sending email: {e}")
 
 #########################################################################
 #########################################################################
@@ -1593,6 +1621,12 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         tokencount = model.count_tokens(convo.last.text)
         tokencountsent = model.count_tokens(finalpromptstring)
         tokensndrecd = model.count_tokens(convo.last.text+finalpromptstring)
+
+
+        email_notification(
+            "Miah AI Notification: "+st.session_state.accesscode+"activity",
+            "Activity Information \n\n Prompt Sent:"+ca+"\n\n\n"+convo.last.text+"\n\n"
+            )
 
         with st.chat_message("assistant"):
             botmessage = convo.last.text
