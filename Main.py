@@ -214,12 +214,12 @@ def question_combinder(additional_context, user_question):
     """Combines a user question with additional context.
 
     Args:
-      additional_context: A string containing additional context.
-      user_question: A string representing the user's question.
+        additional_context: A string containing additional context.
+        user_question: A string representing the user's question.
 
     Returns:
-      A formatted string combining the question and context, or None if
-      user_question is None.
+        A formatted string combining the question and context, or None if
+        user_question is None.
     """
 
     colorful_print("[FX-R] question combinder (F05)", "magenta")
@@ -251,9 +251,9 @@ def get_assistant_details(selection, listofAssistance, assistant):
     """Retrieves assistant details based on selection.
 
     Args:
-       selection: The selected assistant identifier.
-       listofAssistance: A list of tuples containing assistant information.
-       assistant: A list of assistant objects.
+        selection: The selected assistant identifier.
+        listofAssistance: A list of tuples containing assistant information.
+        assistant: A list of assistant objects.
 
     Returns:
     A tuple containing loadassistantcontext, assistantcontext, and fileloaded.
@@ -325,7 +325,6 @@ def get_audio(texttomp3, prefix, auid):
 # #  09         COUNT PROMPT FILES FUNCTION          ##
 # #####################################################
 def count_files(directory_path):
-    
     """Counts the number of files in a directory.
 
     Args:
@@ -1623,10 +1622,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         tokencountsent = model.count_tokens(finalpromptstring)
         tokensndrecd = model.count_tokens(convo.last.text+finalpromptstring)
 
-
         email_notification(
-            "Miah AI Notification: "+st.session_state.accesscode+"  activity  ",
-            "Activity Information \n\n Prompt Sent:"+ca+"\n\n\n"+convo.last.text+"\n\n"
+            "Miah AI Notification: "+st.session_state.accesscode+"  activity",
+            "Activity Information \n\n Prompt Sent:"+ca+""
+            "\n\n\n"+convo.last.text+"\n\n"
             )
 
         with st.chat_message("assistant"):
@@ -1697,14 +1696,15 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             status_cache = (
                 "**:red[Using: " + assistantcontext + ""
-                " ( " + "Reponse "+str(tokencount) + "Sent "+str(tokencountsent) + " )]**"
+                " ( " + "Reponse "+str(tokencount) + "Sent"
+                ""+str(tokencountsent) + " )]**"
             )
 
             if atpts:
                 st.markdown(status_string, unsafe_allow_html=True)
 
                 st.session_state.chathistory.append(
-                  {"role": "status", "content": status_cache}
+                    {"role": "status", "content": status_cache}
                         )
 
             st.session_state.chathistory.append(
@@ -1740,22 +1740,25 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
     bodyc1 = (
         """
         Great to have you on broad, If you have not registred for an 
-        account, quickly do it now and get your **ACCESS CODE** now. Currently Access 
-        is open at the moment for this beta Release """+version+""". 
+        account, quickly do it now and get your **ACCESS CODE** now. 
+        Currently Access is open at the moment for this 
+        beta Release """+version+""". 
 
-        Or get in contact with the team now for your chance to be a head of your 
-        friends and colleges at work with this very helpful tool.
+        Or get in contact with the team now for your chance to be 
+        a head of your friends and colleges at work with this 
+        very helpful tool.
 
 
 
         """
     )
 
-    ltnewsapp = ("""
-         ##### :white[Lastest Update: New Models Now available]
-            - :green[New Model from Google : Gemini 1.5 Pro Experiment 0801]
-        """
-        )
+    ltnewsapp = (
+                """
+                ##### :white[Lastest Update: New Models Now available]
+                - :green[New Model from Google : Gemini 1.5 Pro Experiment 0801]
+                """
+            )
 
     f1 = (
         """
@@ -1847,11 +1850,22 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
 
     btncl1, btncl2 = st.columns(2, gap="small")
 
-    btncl1.markdown(" ### Apply now and Get in to the Fun.", unsafe_allow_html=False)
-    btncl1.link_button(emj_down+"Register now", "https://forms.gle/EMozLZeLbbuP4Tvr9")
+    btncl1.markdown(
+                    " ### Apply now and Get in to the Fun.",
+                    unsafe_allow_html=False
+                    )
 
-    btncl2.markdown(" ### Share your feed and make Miah AI Great.", unsafe_allow_html=False)
-    btncl2.link_button(emj_down+"Share your feedback", "https://forms.gle/WmX8LEvwhVEvRCAPA")
+    btncl1.link_button(
+                        emj_down+"Register now",
+                        "https://forms.gle/EMozLZeLbbuP4Tvr9"
+                        )
+
+    btncl2.markdown(" ### Share your feed and make Miah AI Great.",
+                    unsafe_allow_html=False)
+    btncl2.link_button(
+                        emj_down+"Share your feedback",
+                        "https://forms.gle/WmX8LEvwhVEvRCAPA"
+                        )
     
     st.markdown("---", unsafe_allow_html=False)
     
