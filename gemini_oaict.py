@@ -77,36 +77,38 @@ chatdata = []
 def write_to_file(filename, text):
     now = datetime.datetime.now()
     storedir = "output/gemini_out"
-    datetag = f'{now.year}{now.month}{now.day}{now.hour}{now.minute}{now.second}'
-    # store_path = os.path.join(storedir, datetag+'_'+filename)
+    datetag = f"""{now.year}{now.month}{now.day}{now.hour}
+                {now.minute}{now.second}"""
+    store_path = os.path.join(storedir, datetag+'_'+filename)
 
-if not os.path.exists(storedir):
+    if not os.path.exists(storedir):
         os.makedirs(storedir)
 
-try:
-  with open(store_path+"_gemin.md", "a", encoding="utf-8") as file:
+    try:
+        with open(store_path+"_gemin.md", "a", encoding="utf-8") as file:
             file.write(text + "\n")  # Add a newline at the end
-except OSError as e:
+    except OSError as e:
         print(f"Error writing to file: {e}")
 
 
 # Displaying the Program Banner
 print(txtBLUE+Banner)
 
-while True: 
+while True:
     usermessage = input(txtGREEN+userprompttag+txtRESET)
-  
     filename = usermessage.replace(" ", "")
     filename = filename.replace(',', "")
     filename = filename.replace('.', "")
 
     if usermessage.lower() == "exit":
-        print(txtYELLOW+"\n\n\n\n\nThank you for using Miah Gemini AI\n\n"+txtRESET)
+        print(txtYELLOW+"\n\n\n\n\n"
+              "Thank you for using Miah Gemini AI\n\n"
+              ""+txtRESET)
     else:
         convo = model.start_chat(history=chatdata)
         convo.send_message(usermessage)
         res01data = {
-                "role": "model", 
+                "role": "model",
                 "parts": [convo.last.text]
                 }
         res02data = {
