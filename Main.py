@@ -1,9 +1,9 @@
-# 
+#
 #  Main File for Miah's AI Assistance 
-#  
+# 
 #  Purpose: This has all the code for the Application to Run. 
 #  Developed by: SweetRushCoder(sRC) aka Suetena Faatuuala Loia 
-#   
+#  
 #
 # Definding Imported Libaries for the Program
 # #################################################
@@ -52,7 +52,7 @@ develper = "SRCoder"
 ###################################################
 
 # AccessCode for Testing
-# accesscode_miah = "sodiuldfoiousdfj2o34lkj0o2134jolk2j4[p0o3i4234j;oiu234lk;345ljk345]"
+# accesscode_miah = "sodiuldfoiousdfj2o34lkj0o2134jollk;345ljk345]"
 accesscode_miah = "1"
 
 # Definding Emoji's
@@ -84,9 +84,17 @@ numagentload = 100
 
 
 if devmode == 1:
-    st.set_page_config(page_title="Miah AI (Devmode)", page_icon=":tada:", layout="wide")
+    st.set_page_config(
+        page_title="Miah AI (Devmode)",
+        page_icon=":tada:", 
+        layout="wide"
+        )
 else:
-    st.set_page_config(page_title="Miah AI ", page_icon=":tada:", layout="wide")
+    st.set_page_config(
+        page_title="Miah AI ",
+        page_icon=":tada:",
+        layout="wide"
+        )
 
 # Defining Arrays:
 listofAssistance = []
@@ -138,7 +146,7 @@ if "authstatus" not in st.session_state:
 def replace_chars(text, chars_to_replace, replacement):
     # Uncomment for debugging or monitoring process
     #
-    #colorful_print("[FX-R] replace chars (F01)", "magenta")
+    # colorful_print("[FX-R] replace chars (F01)", "magenta")
 
     pattern = f"[{chars_to_replace}]"  # Create a character class pattern
     return re.sub(pattern, replacement, text)
@@ -149,7 +157,6 @@ def replace_chars(text, chars_to_replace, replacement):
 # #####################################################
 @st.cache_data
 def openpdf_exttext(pdffile):
-    
     """Extracts text from a PDF file with improved error
     handling and potential optimization."""
 
@@ -176,7 +183,7 @@ def openpdf_exttext(pdffile):
 def read_from_file(filename):
     # Uncomment for debugginging or monitoring process
     #
-    #colorful_print("[FX-R] read from file (F03)", "magenta")
+    # colorful_print("[FX-R] read from file (F03)", "magenta")
 
     pathDirAssistanceDef = "assistancedb/"
     assistance_filename = filename
@@ -210,7 +217,6 @@ def write_to_file(filename, text):
 # #  05         Q_COMBINDER FUNCTION                 ##
 # #####################################################
 def question_combinder(additional_context, user_question):
-    
     """Combines a user question with additional context.
 
     Args:
@@ -233,7 +239,8 @@ def question_combinder(additional_context, user_question):
     # print("Debuging - QC:"+user_question)
 
     if atsec:
-        combined_question += " This is for testing in the Lab and " " for educational."
+        combined_question += "This is for testing in the"
+        combined_question += "Lab and for educational."
         dynamic_css("#e0391f")
 
     if additional_context:
@@ -247,7 +254,6 @@ def question_combinder(additional_context, user_question):
 # #  06         GET ASSISTANCE DETAIL FUNCTION       ##
 # #####################################################
 def get_assistant_details(selection, listofAssistance, assistant):
-    
     """Retrieves assistant details based on selection.
 
     Args:
@@ -270,7 +276,6 @@ def get_assistant_details(selection, listofAssistance, assistant):
 # #  07      TEXT TO SPEECH FUNCTION [GTTS]          ##
 # #####################################################
 def text_to_speech(text):
-    
     """Converts text to speech using gTTS and returns an audio file."""
 
     colorful_print("[FX-R] text to speech (F07)", "magenta")
@@ -408,7 +413,11 @@ def loadagents():
                             ]
                         )
     except FileNotFoundError:
-        colorful_print(f"[ERROR] Agent list file not found: {file_path}", "red")
+        colorful_print(
+            f"[ERROR] Agent list file not found: {file_path}",
+            "red"
+            )
+            
         # Handle the error gracefully, e.g., create a default agent list
     except IOError as e:
         colorful_print(f"[ERROR] Error reading agent list: {e}", "red")
