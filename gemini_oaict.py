@@ -9,7 +9,6 @@ $ pip install google-generativeai
 import google.generativeai as genai
 import datetime
 import os
-import io
 import colorama
 import configparser
 
@@ -22,12 +21,9 @@ apivalue = config.get("APIKEYS", "api")
 genai.configure(api_key=apivalue)
 
 
-
-Banner = '\n\n           Welcome to the Gemini Miah AI     \n'
-Banner = Banner+'           by SweetRushC0d3r             \n'
-Banner = Banner+'            v.1.0.1 @ 2024               \n\n'
-
-
+Banner = '\n\nWelcome to the Gemini Miah AI\n'
+Banner = Banner+'by SweetRushC0d3r\n'
+Banner = Banner+'v.1.0.1 @ 2024\n\n'
 
 
 txtRED = colorama.Fore.RED
@@ -42,7 +38,7 @@ txtRESET = colorama.Fore.RESET
 
 
 userprompttag = "\n\nMe : ************************************** \n\n"
-aiprompttag   = "\n\nAI : ************************************** \n\n"
+aiprompttag = "\n\nAI : ************************************** \n\n"
 
 
 # Set up the model
@@ -78,57 +74,53 @@ model = genai.GenerativeModel(model_name="gemini-1.5-pro",
 chatdata = []
 
 
-
 def write_to_file(filename, text):
-   now = datetime.datetime.now()
-   storedir = "output/gemini_out"
-   datetag = f'{now.year}{now.month}{now.day}{now.hour}{now.minute}{now.second}'
-   store_path = os.path.join(storedir, datetag+'_'+filename)
+    now = datetime.datetime.now()
+    storedir = "output/gemini_out"
+    datetag = f'{now.year}{now.month}{now.day}{now.hour}{now.minute}{now.second}'
+    # store_path = os.path.join(storedir, datetag+'_'+filename)
 
-   if not os.path.exists(storedir):
+if not os.path.exists(storedir):
         os.makedirs(storedir)
 
-
-   try:
-        with open(store_path+"_gemin.md", "a", encoding="utf-8") as file:
+try:
+  with open(store_path+"_gemin.md", "a", encoding="utf-8") as file:
             file.write(text + "\n")  # Add a newline at the end
-   except OSError as e:
+except OSError as e:
         print(f"Error writing to file: {e}")
-
 
 
 # Displaying the Program Banner
 print(txtBLUE+Banner)
 
 while True: 
-   usermessage = input(txtGREEN+userprompttag+txtRESET)
-   
-   filename = usermessage.replace(" ", "")
-   filename = filename.replace(',', "")
-   filename = filename.replace('.', "")
+    usermessage = input(txtGREEN+userprompttag+txtRESET)
+  
+    filename = usermessage.replace(" ", "")
+    filename = filename.replace(',', "")
+    filename = filename.replace('.', "")
 
-   if usermessage.lower() == "exit":
-     print(txtYELLOW+"\n\n\n\n\nThank you for using Miah Gemini AI\n\n"+txtRESET)
-     break
-   else:
-      convo = model.start_chat(history=chatdata)
-      convo.send_message(usermessage)
-      res01data = {
-                 "role": "model", 
-                 "parts": [convo.last.text]
-                 }
-      res02data = {
-                 "role": "user",
-                 "parts": [usermessage]
-                 }
+    if usermessage.lower() == "exit":
+        print(txtYELLOW+"\n\n\n\n\nThank you for using Miah Gemini AI\n\n"+txtRESET)
+    else:
+        convo = model.start_chat(history=chatdata)
+        convo.send_message(usermessage)
+        res01data = {
+                "role": "model", 
+                "parts": [convo.last.text]
+                }
+        res02data = {
+                "role": "user",
+                "parts": [usermessage]
+                }
 
-      chatdata.append(res02data)
-      chatdata.append(res01data)
-      write_to_file(filename, convo.last.text)
-      tokencount = txtRED+str(model.count_tokens(convo.last.text))+txtRESET
-      rtext = convo.last.text
-      rtext = rtext.replace(":**", "#####")
-      rtext = rtext.replace("**", txtMAGENTA+"**")
-      rtext = rtext.replace("#####", ":**"+txtRESET+txtYELLOW)
+    chatdata.append(res02data)
+    chatdata.append(res01data)
+    write_to_file(filename, convo.last.text)
+    tokencount = txtRED+str(model.count_tokens(convo.last.text))+txtRESET
+    rtext = convo.last.text
+    rtext = rtext.replace(":**", "#####")
+    rtext = rtext.replace("**", txtMAGENTA+"**")
+    rtext = rtext.replace("#####", ":**"+txtRESET+txtYELLOW)
 
-      print(txtRED+aiprompttag+txtRESET+rtext+'\n\n'+tokencount)
+    print(txtRED+aiprompttag+txtRESET+rtext+'\n\n'+tokencount)
