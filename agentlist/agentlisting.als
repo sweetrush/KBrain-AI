@@ -52,7 +52,7 @@
 3,ProposalDev         , Proposal Dev Assistant    , proposaldev.atx
 3,Report Writer       , Report Writer             , Report_Writer.atx
 3,Preso Expert        , Preso Expert              , PresentationSlide.atx
-@@ 3,2Ddotplan        , 2D Plot Assistance     , dotplanner.atx
+@@ 3,2Ddotplan        , 2D Plot Assistance        , dotplanner.atx
 3,Emailhelper         , EmailHelper Assistance    , emailhelper.atx
 3,BusniessExpert      , BE Assistance             , BusniessExpert.atx
 

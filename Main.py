@@ -906,6 +906,7 @@ model_tokens = "8024"
 models = [
     "gemini-1.5-pro-latest",
     "gemini-1.5-pro-exp-0801",
+    "gemma-2-2b-it",
     "gemini-1.5-flash-latest",
 ]
 
@@ -1074,10 +1075,11 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # ###############################################
         with st.expander(emj_assistance + "Model & Assistance", expanded=True):
             model_select = st.selectbox(
-                emj_clamper + "Choose Model", (models[0], 
-                                               models[1], 
-                                               models[2]),
-                                               index=0
+                emj_clamper + "Choose Model", (
+                    models[0], 
+                    models[1], 
+                    models[2],
+                    models[3]),index=0
             )
 
             # Setting the selected Active Assistance
@@ -1491,8 +1493,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             # systempromptadd = "Your name is Miah, You are named after my son"
             res04data = {
-                         "role": "user", 
-                         "parts": "What is 2"
+                            "role": "user", 
+                            "parts": "What is 2"
             }
 
             res05data = {
