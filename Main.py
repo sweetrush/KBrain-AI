@@ -366,7 +366,7 @@ def loadagents():
             for line in file:
                 line = line.strip()  # Remove leading/trailing whitespace
                 if "@@" not in line and line:  # Check for "@@" and empty lines
-                    emjtag, name, label, file = line.strip().split(",")
+                    emjtag, name, label, file, aimage, adps = line.strip().split(",")
 
                     if emjtag == "1":
                         listofAssistance.append(
@@ -374,6 +374,8 @@ def loadagents():
                                 emj_billcap + str(name),
                                 str(label),
                                 replace_chars(str(file), " ", ""),
+                                aimage,
+                                adps,
                             ]
                         )
 
@@ -383,6 +385,8 @@ def loadagents():
                                 emj_tophat + str(name),
                                 str(label),
                                 replace_chars(str(file), " ", ""),
+                                aimage,
+                                adps,
                             ]
                         )
 
@@ -392,6 +396,8 @@ def loadagents():
                                 emj_gradcap + str(name),
                                 str(label),
                                 replace_chars(str(file), " ", ""),
+                                aimage,
+                                adps,
                             ]
                         )
 
@@ -401,6 +407,8 @@ def loadagents():
                                 emj_assistance + str(name),
                                 str(label),
                                 replace_chars(str(file), " ", ""),
+                                aimage,
+                                adps,
                             ]
                         )
 
@@ -410,6 +418,8 @@ def loadagents():
                                 emj_billcap + str(name),
                                 str(label),
                                 replace_chars(str(file), " ", ""),
+                                aimage,
+                                adps,
                             ]
                         )
     except FileNotFoundError:
@@ -495,7 +505,11 @@ def get_video_id(url):
     colorful_print("[FX-R] get video id (F15)", "magenta")
     # Extract the video id from the YouTube URL
     video_id = re.findall(
-        r"(?:v=|v\/|embed\/|youtu\.be\/|\/v\/|\/e\/|watch\?v=|youtube\.com\/user\/[^#]*#([^\/]*\/)*\w+\/|youtube\.com\/v\/|youtube\.com\/embed\/|youtube\.com\/watch\?v=)([^#\&\?]*[^#\&\?\n]*)",
+        r"(?:v=|v\/|embed\/|youtu\.be\/|\/v\/|\/e\/|watch\?v=|"
+        r"youtube\.com\/user\/[^#]*#([^\/]*\/)*\w+\/|"
+        r"youtube\.com\/v\/|youtube\.com\/embed\/|"
+        r"youtube\.com\/watch\?v=)([^#\&\?]*[^#\&\?\n]*)",
+        # This is a Continues Line
         url,
     )
 
@@ -531,7 +545,8 @@ def dynamic_css(color):
         newtextcss = styleconfig.read().replace(
             "ST_CSS_CODE001", expanderable_bordercolor
         )
-        st.markdown(f"<style>{ubuntu}{newtextcss}</style>", unsafe_allow_html=True)
+        st.markdown(f"<style>{ubuntu}{newtextcss}</style>",
+                    unsafe_allow_html=True)
 
 
 # #####################################################
@@ -568,21 +583,28 @@ def get_AccessCondition():
         st.session_state.authstatus = True
 
         if access != "":
-            st.success("Authenticated & Active", icon="📡")
+            st.success(
+                "Authenticated & Active",
+                icon="📡"
+            )
             # logout = st.button("Logout")
 
     elif access == accesscode_miah:
         grant = True
         st.session_state.authstatus = True
         if access != "":
-            st.success("Authenticated & Active", icon="📡")
+            st.success(
+                "Authenticated & Active",
+                icon="📡"
+                )
 
     else:
         grant = False
         st.session_state.authstatus = False
         if access != "":
             st.warning(
-                "Authentication Error: Please check your again!", icon="⛑️"
+                "Authentication Error: Please check your again!",
+                icon="⛑️"
             )
 
     return grant
@@ -699,12 +721,12 @@ def write_registration_to_sheet():
         registaDataFrame = pd.DataFrame(
                 [
                     {
-                     "fullname": fullname, 
-                     "country": country,
-                     "email": email,
-                     "password": password1,
-                     "specialcode": specialCode,
-                     "keyhash": keyhash,
+                        "fullname": fullname, 
+                        "country": country,
+                        "email": email,
+                        "password": password1,
+                        "specialcode": specialCode,
+                        "keyhash": keyhash,
                     }
                 ]
                 )
@@ -841,15 +863,16 @@ def authenticate_user2(access_code, file_path):
             if access_code == stored_access_code:
                 colorful_print("[Auth-OK] "+access_code+" => "+stored_access_code, "green")
                 return True
-            #Uncomment to show the Faled Auths
-            # else: 
+            # Uncomment to show the Faled Auths
+            # else:
             #     colorful_print("[Auth-FL] "+access_code+" => "+stored_access_code, "red")
 
     return False  # Access code not found in the file
 
-
+# #####################################################
+# #  30         Email Notifcation FX 30              ##
+# #####################################################
 def email_notification(SubjectString, MessageString):
-
     sender_email = "miahaisupport@bytewatchers.com"
     sender_password = ekks
 
@@ -864,7 +887,7 @@ def email_notification(SubjectString, MessageString):
 
     # Sending the Email
     try:
-        with smtplib.SMTP_SSL('mail.bytewatchers.com', 465) as server:  # For Gmail
+        with smtplib.SMTP_SSL('mail.bytewatchers.com', 465) as server:
             server.login(sender_email, sender_password)
             colorful_print("[FX-R] Emaillogin-A (F29)", "magenta")
             server.sendmail(sender_email, receiver_email, message.as_string())
@@ -900,8 +923,8 @@ model_tokens = "8024"
 models = [
     "gemini-1.5-pro-latest",
     "gemini-1.5-pro-exp-0801",
-    "gemma-2-2b-it",
     "gemini-1.5-flash-latest",
+    "Model Slot Empty",
 ]
 
 # OLD Definition
@@ -922,8 +945,6 @@ safety_options = [
 
 # Loading in the Agents from File 
 loadagents()
-
-
 assistant = []
 for i in range(len(listofAssistance)):
     assistant.append(read_from_file(listofAssistance[i][2]))
@@ -1003,10 +1024,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 )
 
                 topk = st.number_input(
-                    "Set Top-K", 
-                    min_value=None, 
-                    max_value=None, 
-                    value=10, 
+                    "Set Top-K",
+                    min_value=None,
+                    max_value=None,
+                    value=10,
                     step=1
                 )
 
@@ -1070,10 +1091,12 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         with st.expander(emj_assistance + "Model & Assistance", expanded=True):
             model_select = st.selectbox(
                 emj_clamper + "Choose Model", (
-                    models[0], 
-                    models[1], 
+                    models[0],
+                    models[1],
                     models[2],
-                    models[3]),index=0
+                    models[3]
+                    ), index=0
+
             )
 
             # Setting the selected Active Assistance
@@ -1083,7 +1106,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 emj_assistance + "Active Assistance:",
                 [
                     item[0]
-                    for item in listofAssistance[: min(numagentload, len(listofAssistance))]
+                    for item in listofAssistance[: min(
+                        numagentload, 
+                        len(listofAssistance))]
                 ],
                 index=0,
             )
