@@ -13,7 +13,6 @@
 @@  All Agent Context Files have the extension .atx
 @@
 
-
 @@ General Agents - Help with General Task
 @@ ################################################################################
 
@@ -32,9 +31,9 @@
 
 2,Python         , Python Assistance        , Python_assistance.atx
 2,Python Mobile  , PyMobile Assistance      , kivy.atx 
-2,Php            , Php Code Assistance      , PhpAssistance.atx
-2,Prolog         , Prolog Assistance        , prolog.atx
-2,Go             , Go Lang Assistance       , Go_Assistance.atx
+2,Php Coder      , Php Code Assistance      , PhpAssistance.atx
+2,Prolog coder   , Prolog Assistance        , prolog.atx
+2,Go Coder       , Go Lang Assistance       , Go_Assistance.atx
 2,React JS       , ReactJS                  , ReactJS_assistance.atx
 2,Bash           , Bash Assistance          , bashexpert.atx
 2,SVnCL          , SVnCL Assistance         , sc_programmer.atx
