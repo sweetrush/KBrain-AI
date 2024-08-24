@@ -428,7 +428,6 @@ def loadagents():
 # #####################################################
 def horizontal_line():
     colorful_print("[FX-R] horizontal line (F011)", "yellow")
-
     st.markdown("---", unsafe_allow_html=True)
 
 
@@ -438,7 +437,6 @@ def horizontal_line():
 @st.experimental_dialog("About the Developer")
 def display_about_dev():
     colorful_print("[FX-R] display about dev (F12)", "yellow")
-
     st.title("About the Developer")
     st.write("Name: SweetRushCoder")
     st.write("Project: Miah's AI Assistance")
@@ -450,11 +448,8 @@ def display_about_dev():
 # #####################################################
 def listain_to_Microphone():
     colorful_print("[FX-R] listain to Microphone (F13)", "magenta")
-
     lm = sr.Recognizer()
-
     st.toast("Mic-Listing", icon=None)
-
     with sr.Microphone() as source:
         mic_audio = lm.listen(source)
         spoken = ""
@@ -481,7 +476,6 @@ def get_video_transcript(video_id):
         # Get the transcript for the video
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         text = ""
-
         # Concatenate the text from each transcript segment
         for segment in transcript:
             text += segment["text"] + " "
