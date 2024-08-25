@@ -1,9 +1,9 @@
 #
 #  Main File for Miah's AI Assistance 
-# 
+#
 #  Purpose: This has all the code for the Application to Run. 
 #  Developed by: SweetRushCoder(sRC) aka Suetena Faatuuala Loia 
-#  
+#
 #
 # Definding Imported Libaries for the Program
 # #################################################
@@ -265,9 +265,9 @@ def get_assistant_details(selection, listofAssistance, assistant):
     A tuple containing loadassistantcontext, assistantcontext, and fileloaded.
     """
     colorful_print("[FX-R] get assistant details (F06)", "magenta")
-    for i, (assistant_id, context, file) in enumerate(listofAssistance):
+    for i, (assistant_id, context, file, assistant_image, agentdiscription) in enumerate(listofAssistance):
         if selection == assistant_id:
-            return assistant[i], context, file
+            return assistant[i], context, file, assistant_image, agentdiscription
 
     return None, None, None  # Return None values if no match is found
 
@@ -987,6 +987,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         global tempture_val, fileloaded, opt1_safe, opt2_safe
         global opt3_safe, opt4_safe, pdftext, getResponsetext
         global loadassistantcontext, assistantcontext, adcn
+        global agentimagelement, agdiscription
 
         # horizontal_line() # Uncomment to show the Line
         btt1, btt2 = st.columns(2, gap="small") 
@@ -1116,7 +1117,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # Checking and setting the Selected Assistance
         # ##############################################
 
-        loadassistantcontext, assistantcontext, fileloaded = get_assistant_details(
+        loadassistantcontext, assistantcontext, fileloaded, agentimagelement, agdiscription = get_assistant_details(
             selection, listofAssistance, assistant
         )
 
@@ -1128,6 +1129,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             st.toast("**:blue[Using AI:]**\n :red[" + assistantcontext + "]")
             st.toast(":green[File:]" + fileloaded)
             st.toast(":green[Model:]" + model_select)
+            st.toast(":green[Image:]" + agentimagelement)
+            st.toast(":green[Discription:]" + agdiscription)
 
         with st.expander(emj_safety + "Special Features", expanded=False):
 

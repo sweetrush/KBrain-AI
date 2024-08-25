@@ -31,3 +31,8 @@ primaryColor=\"#a5ecaa\"\n\
 textColor=\"#f9f9fb\"
 
 " > ~/.streamlit/config.toml
+
+mkdir -p ~/.streamlit/
+mkdir -p output/
+mkdir -p output/gemini_out
+mkdir -p ai_audio
