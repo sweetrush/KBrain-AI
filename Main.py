@@ -35,6 +35,37 @@ import re
 import hashlib
 import time
 
+import streamlit.components.v1 as components
+
+# JavaScript code to retrieve IP address
+js_code = """
+<script>
+async function getIP() {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip;
+}
+
+async function displayIP() {
+    const ip = await getIP();
+    document.getElementById('ip-address').textContent = ip;
+}
+
+displayIP();
+</script>
+"""
+
+# HTML element to display the IP address
+html_code = """
+<div>
+    Your IP Address: <span id="ip-address"></span>
+</div>
+"""
+
+# Display the HTML and JavaScript in Streamlit
+components.html(html_code + js_code)
+
+
 
 # Uncomment to Use them
 # from io import BytesIO
@@ -74,7 +105,7 @@ emj_help = " 📗 "
 emj_help_ico = "📗"
 emj_door = " 🚪 "
 
-devmode = 0
+# devmode = 0
 apptile = ""
 debprint = 0
 
@@ -83,18 +114,18 @@ debprint = 0
 numagentload = 100
 
 
-if devmode == 1:
-    st.set_page_config(
-        page_title="Miah AI (Devmode)",
-        page_icon=":tada:", 
-        layout="wide"
-        )
-else:
-    st.set_page_config(
-        page_title="Miah AI ",
-        page_icon=":tada:",
-        layout="wide"
-        )
+# if devmode == 1:
+#     st.set_page_config(
+#         page_title="Miah AI (Devmode)",
+#         page_icon=":tada:", 
+#         layout="wide"
+#         )
+# else:
+st.set_page_config(
+    page_title="Miah AI ",
+    page_icon=":tada:",
+    layout="wide"
+    )
 
 # Defining Arrays:
 listofAssistance = []
