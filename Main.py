@@ -46,7 +46,7 @@ import time
 # of the Miah AI assistance
 # #################################################
 
-version = "2.9.4"
+version = "2.9.5"
 develper = "SRCoder"
 
 ###################################################
@@ -974,7 +974,7 @@ dynamic_css(epcolor_val)
 
 # Getting the Condition of the Access
 with st.sidebar:
-    with st.expander(emj_door+" Auth Panel "):
+    with st.expander(emj_door+" Authenticaton Panel "):
         get_AccessCondition()
 
 # Initiating the Logout State:
