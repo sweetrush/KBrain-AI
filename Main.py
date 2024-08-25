@@ -34,36 +34,7 @@ import os
 import re
 import hashlib
 import time
-
 import streamlit.components.v1 as components
-
-# JavaScript code to retrieve IP address
-js_code = """
-<script>
-async function getIP() {
-    const response = await fetch('https://api.ipify.org?format=json');
-    const data = await response.json();
-    return data.ip;
-}
-
-async function displayIP() {
-    const ip = await getIP();
-    document.getElementById('ip-address').textContent = ip;
-}
-
-displayIP();
-</script>
-"""
-
-# HTML element to display the IP address
-html_code = """
-<div>
-    Your IP Address: <span id="ip-address"></span>
-</div>
-"""
-
-# Display the HTML and JavaScript in Streamlit
-components.html(html_code + js_code)
 
 
 
@@ -105,7 +76,7 @@ emj_help = " 📗 "
 emj_help_ico = "📗"
 emj_door = " 🚪 "
 
-# devmode = 0
+devmode = 0
 apptile = ""
 debprint = 0
 
@@ -114,18 +85,51 @@ debprint = 0
 numagentload = 100
 
 
-# if devmode == 1:
-#     st.set_page_config(
-#         page_title="Miah AI (Devmode)",
-#         page_icon=":tada:", 
-#         layout="wide"
-#         )
-# else:
-st.set_page_config(
-    page_title="Miah AI ",
-    page_icon=":tada:",
-    layout="wide"
-    )
+if devmode == 1:
+    st.set_page_config(
+        page_title="Miah AI (Devmode)",
+        page_icon=":tada:", 
+        layout="wide"
+        )
+else:
+    st.set_page_config(
+        page_title="Miah AI ",
+        page_icon=":tada:",
+        layout="wide"
+        )
+
+
+# JavaScript code to retrieve IP address
+js_code = """
+<script>
+async function getIP() {
+    const response = await fetch('https://api.ipify.org?format=json');
+    const data = await response.json();
+    return data.ip;
+}
+
+async function displayIP() {
+    const ip = await getIP();
+    document.getElementById('ip-address').textContent = ip;
+}
+
+displayIP();
+</script>
+"""
+
+# HTML element to display the IP address
+html_code = """
+<div>
+    Your IP Address: <p id="ip-address"></p>
+</div>
+"""
+html_code2 = """
+    <span id="ip-address"></span>
+"""
+
+
+# Display the HTML and JavaScript in Streamlit
+
 
 # Defining Arrays:
 listofAssistance = []
@@ -933,6 +937,7 @@ def email_notification(SubjectString, MessageString):
 #
 #
 #                  END OF FUNCTION DEFINTIONS
+#
 #########################################################################
 #########################################################################
 #########################################################################
@@ -941,11 +946,12 @@ def email_notification(SubjectString, MessageString):
 #########################################################################
 #########################################################################
 #########################################################################
+
+
+# colorful_print("[IPInfo]"+html_code2+js_code, "magenta")
 
 # Defining more Variables
 # ##############################################################
-
-
 fileInStore = count_files(dataOPD)
 audioInStore = count_files(audioOD)
 
@@ -1219,6 +1225,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             st.write("##### Number of SAR: " + str(fileInStore))
             st.write("##### Number of SAF: " + str(audioInStore))
             st.write("##### Number of AN: " + str(len(listofAssistance)))
+            components.html(html_code+js_code)
 
 
         # #####################################################################
