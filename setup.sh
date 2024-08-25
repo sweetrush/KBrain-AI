@@ -12,7 +12,7 @@
 # Creating the directors for the program outputs
 #
 echo "Creating the streamlit Directory "
-mkdir -p ~/.streamlit/
+mkdir -p .streamlit/
 echo "Creating the output files directory for outputs"
 mkdir -p output/
 echo "Creating the Audio Output files "
