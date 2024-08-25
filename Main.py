@@ -120,7 +120,7 @@ displayIP();
 # HTML element to display the IP address
 html_code = """
 <div>
-    Your IP Address: <p id="ip-address"></p>
+    Your IP Address: <p style="color: white;" id="ip-address"></p>
 </div>
 """
 html_code2 = """
