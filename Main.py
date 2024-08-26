@@ -897,11 +897,11 @@ def authenticate_user2(access_code, file_path):
             line = line.strip()
             if line.startswith('@'):  # Ignore comment lines
                 continue
-            user_id, _, _, stored_access_code = line.strip().split(', ')
+            user_id, UNAME, _, stored_access_code = line.strip().split(', ')
             # print(stored_access_code)
             if access_code == stored_access_code:
                 colorful_print("[Auth-OK] "+access_code+" => "+stored_access_code, "green")
-                st.session_state.uaccount = user_id
+                st.session_state.uaccount = UNAME
                 return True
             # Uncomment to show the Faled Auths
             # else:
