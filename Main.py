@@ -168,6 +168,9 @@ ai_dont_lie = "Tell me only factual Information and not to lie"
 if "accesscode" not in st.session_state:
     st.session_state.accesscode = ""
 
+if "uaccount" not in st.session_state:
+    st.session_state.uaccount = ""
+
 if "authstatus" not in st.session_state:
     st.session_state.authstatus = True
 
@@ -894,10 +897,11 @@ def authenticate_user2(access_code, file_path):
             line = line.strip()
             if line.startswith('@'):  # Ignore comment lines
                 continue
-            user_id, _, _, stored_access_code = line.strip().split(', ')
+            user_id, _, _, stored_access_code, uac = line.strip().split(', ')
             # print(stored_access_code)
             if access_code == stored_access_code:
                 colorful_print("[Auth-OK] "+access_code+" => "+stored_access_code, "green")
+                st.session_state.uaccount = uac
                 return True
             # Uncomment to show the Faled Auths
             # else:
@@ -917,7 +921,7 @@ def email_notification(SubjectString, MessageString):
 
     # Email Content
     message = MIMEText(MessageString)
-    message["Subject"] = SubjectString
+    message["Subject"] = SubjectString+st.session_state.uaccount
     message["From"] = sender_email
     message["To"] = receiver_email
 
@@ -1695,7 +1699,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         tokensndrecd = model.count_tokens(convo.last.text+finalpromptstring)
 
         email_notification(
-            "Miah AI Notification: "+st.session_state.accesscode+"  activity",
+            "Miah AI info: "+st.session_state.accesscode+"  activity",
             "Activity Information \n\n Prompt Sent:"+ca+""
             "\n\n\n"+convo.last.text+"\n\n"
             )
