@@ -55,7 +55,7 @@ develper = "SRCoder"
 
 # AccessCode for Testing
 # accesscode_miah = "sodiuldfoiousdfj2o34lkj0o2134jollk;345ljk345]"
-accesscode_miah = "1"
+accesscode_miah = "1!!!!2@@@@3####4$$$$"
 
 # Definding Emoji's
 # #################################################
@@ -120,7 +120,8 @@ displayIP();
 # HTML element to display the IP address
 html_code = """
 <div>
-    Your IP Address: <p style="color: white;" id="ip-address"></p>
+    <p style="color: green;">Your IP Address: </p>
+    <p style="color: white;" id="ip-address"></p>
 </div>
 """
 html_code2 = """
@@ -1950,6 +1951,7 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
     mmbcl2.markdown(f2, unsafe_allow_html=False)
     st.markdown("---", unsafe_allow_html=False)
     about_the_developer()
+    
 
 ###########################
 # Endof the Line
