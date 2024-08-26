@@ -921,7 +921,7 @@ def email_notification(SubjectString, MessageString):
 
     # Email Content
     message = MIMEText(MessageString)
-    message["Subject"] = SubjectString+st.session_state.uaccount
+    message["Subject"] = SubjectString
     message["From"] = sender_email
     message["To"] = receiver_email
 
@@ -1699,7 +1699,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         tokensndrecd = model.count_tokens(convo.last.text+finalpromptstring)
 
         email_notification(
-            "Miah AI info: "+st.session_state.accesscode+"  activity",
+            "Miah AI info: "+st.session_state.uaccount+"  activity",
             "Activity Information \n\n Prompt Sent:"+ca+""
             "\n\n\n"+convo.last.text+"\n\n"
             )
