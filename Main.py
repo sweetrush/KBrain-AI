@@ -80,7 +80,7 @@ devmode = 0
 apptile = ""
 debprint = 0
 
-# This Defines how many Agents can be loaded from the 
+# This Defines how many Agents can be loaded from the
 # Agent list
 numagentload = 100
 
@@ -88,7 +88,7 @@ numagentload = 100
 if devmode == 1:
     st.set_page_config(
         page_title="Miah AI (Devmode)",
-        page_icon=":tada:", 
+        page_icon=":tada:",
         layout="wide"
         )
 else:
@@ -818,8 +818,8 @@ def colorful_print(text, color):
         textcombind = " * "+Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL
 
     if color == "cyan":
-        textcombind = " * "+Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL
-    
+        textcombind = " * "+Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL 
+        
     print(textcombind)
 
 
@@ -842,13 +842,13 @@ def stream_text(text, delay=0.003):
         yield char
         time.sleep(delay)    
 
+
 # #####################################################
 # #  27         LOAD USER DATA FX                  ##
 # #####################################################
 def load_user_data(file_path):
     """Loads user data from a file, ignoring lines starting with '@'."""
     colorful_print("[FX-R] User access List Loading (F27)", "magenta")
-
     user_datac = []
     with open(file_path, 'r') as file:
         for line in file:
