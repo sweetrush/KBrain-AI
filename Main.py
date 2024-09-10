@@ -55,7 +55,7 @@ develper = "SRCoder"
 
 # AccessCode for Testing
 # accesscode_miah = "sodiuldfoiousdfj2o34lkj0o2134jollk;345ljk345]"
-accesscode_miah = "1!!!!2@@@@3####4$$$$"
+accesscode_miah = "samoa@samoa@samoa"
 
 # Definding Emoji's
 # #################################################
