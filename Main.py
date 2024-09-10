@@ -543,14 +543,16 @@ def get_video_transcript(video_id):
 def get_video_id(url):
     colorful_print("[FX-R] get video id (F15)", "magenta")
     # Extract the video id from the YouTube URL
-    video_id = re.findall(
-        r"(?:v=|v\/|embed\/|youtu\.be\/|\/v\/|\/e\/|watch\?v=|"
-        r"youtube\.com\/user\/[^#]*#([^\/]*\/)*\w+\/|"
-        r"youtube\.com\/v\/|youtube\.com\/embed\/|"
-        r"youtube\.com\/watch\?v=)([^#\&\?]*[^#\&\?\n]*)",
-        # This is a Continues Line
-        url,
-    )
+    # video_id = re.findall(
+    #     r"(?:v=|v\/|embed\/|youtu\.be\/|\/v\/|\/e\/|watch\?v=|"
+    #     r"youtube\.com\/user\/[^#]*#([^\/]*\/)*\w+\/|"
+    #     r"youtube\.com\/v\/|youtube\.com\/embed\/|"
+    #     r"youtube\.com\/watch\?v=)([^#\&\?]*[^#\&\?\n]*)",
+    #     # This is a Continues Line
+    #     url,
+    # )
+
+    video_id = url.split("?v=")[1]
 
     # Return the video id
     return video_id[0] if video_id else None
