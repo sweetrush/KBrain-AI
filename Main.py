@@ -1040,7 +1040,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         restdata = btt2.button(" ♻ "+"Datarest")
         # Uncomment this to reflect the file Upload Feature on the Side Bar
         # mapFileUploadOnSideBar()
-        
+
+        # ########################################################################
+        # Gemini Configurations Area 
+        # ########################################################################
         with st.expander(emj_gear + "Prompt Config", expanded=False):
             
             l1_tl1, l1_tl2 = st.tabs([emj_gear + "Main", emj_safety + "Safety"])
@@ -1133,7 +1136,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         #
         # Setting the Module Selection for the Assistance
         # ###############################################
-        with st.expander(emj_assistance + "Model & Assistance", expanded=True):
+        with st.expander(emj_assistance + "Models", expanded=True):
             model_select = st.selectbox(
                 emj_clamper + "Choose Model", (
                     models[0],
@@ -1146,7 +1149,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             # Setting the selected Active Assistance
             # ################################################
-
+        
+        with st.expander(emj_assistance + "Assistances", expanded=True):
             selection = st.selectbox(
                 emj_assistance + "Active Assistance:",
                 [
