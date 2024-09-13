@@ -522,7 +522,7 @@ def get_video_transcript(video_id):
     colorful_print("[FX-R] get video transcript (F14)", "magenta")
 
     try:
-        # Get the transcript for the video
+        # Get the transcript for the video     
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         text = ""
         # Concatenate the text from each transcript segment
@@ -1563,94 +1563,19 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # print(st.session_state.chathistoryprompt)
 
             # systempromptadd = "Your name is Miah, You are named after my son"
-            res04data = {
-                            "role": "user", 
-                            "parts": "What is 2"
-            }
 
-            res05data = {
-                         "role": "model", 
-                         "parts": "1"
-            }
-
-            res06data = {
-                         "role": "user", 
-                         "parts": "What is 3"
-            }
-            res07data = {
-                         "role": "model", 
-                         "parts": "5"
-            }
-
-            res08data = {
-                         "role": "user", 
-                         "parts": "What is 2"
-            }
-
-            res09data = {
-                         "role": "model", 
-                         "parts": "1"
-            }
-
-            res10data = {
-                         "role": "user", 
-                         "parts": "What is 3"
-            }
-            res11data = {
-                         "role": "model", 
-                         "parts": "5"
-            }
-
-
-            res12data = {
-                         "role": "user", 
-                         "parts": "What is 2"
-            }
-
-            res13data = {
-                         "role": "model", 
-                         "parts": "1"
-            }
-
-            res14data = {
-                         "role": "user", 
-                         "parts": "What is 3"
-            }
-            res15data = {
-                         "role": "model", 
-                         "parts": "5"
-            }
-
-            res16data = {
-                         "role": "user", 
-                         "parts": "What is 2"
-            }
-
-            res17data = {
-                         "role": "model", 
-                         "parts": "1"
-            }
-
-            res18data = {
-                         "role": "user", 
-                         "parts": "What is 3"
-            }
-            res19data = {
-                         "role": "model", 
-                         "parts": "5"
-            }
 
 
 
 
             res00data = {
-                         "role": "user", 
-                         "parts": [ca]
+                        "role": "user", 
+                        "parts": [ca]
             }
 
             res01data = {
-                         "role": "model", 
-                         "parts": [convo.last.text]
+                        "role": "model", 
+                        "parts": [convo.last.text]
             }
 
             # res03data = {"role": "model", "parts": [systempromptadd]}
@@ -1663,23 +1588,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             chatdata.append(res01data)
             chatdata.append(res00data)
 
-            chatdata.append(res19data)
-            chatdata.append(res18data)
-            chatdata.append(res17data)
-            chatdata.append(res16data)
-            chatdata.append(res15data)
-            chatdata.append(res14data)
-            chatdata.append(res13data)
-            chatdata.append(res12data)
-            chatdata.append(res11data)
-            chatdata.append(res10data)
-            chatdata.append(res09data)
-            chatdata.append(res08data)
-            chatdata.append(res07data)
-            chatdata.append(res06data)
-            chatdata.append(res05data)
-            chatdata.append(res04data)
-
+            
             st.write(chatdata)
             # print(f'\n\n Chatdata: {chatdata}\n\n') # Uncomment for Deginfo
         
