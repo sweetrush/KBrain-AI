@@ -39,6 +39,7 @@
 2,React JS       , ReactJS                  , ReactJS_assistance.atx    , defaut.png , For Working with ReactJS Coding 
 2,Bash           , Bash Assistance          , bashexpert.atx            , defaut.png , For all your Bash Scripting Needs 
 2,SVnCL          , SVnCL Assistance         , sc_programmer.atx         , defaut.png , For your Server Client Programming
+2,firefoxdev     , firefox Dev Assistance   , firefoxplugindev.atx      , defaut.png , For developing Firefox Plugins
 2,WebDev         , WebDev Assistance        , webprogrammer.atx         , defaut.png , For all your Web Development Coding Needs
 
 @@ Cybersecurity Prompts 
