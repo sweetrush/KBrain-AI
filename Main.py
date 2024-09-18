@@ -966,9 +966,9 @@ model_tokens = "8024"
 
 models = [
     "gemini-1.5-pro-latest",
+    "gemini-1.5-pro-001",
     "gemini-1.5-pro-exp-0801",
     "gemini-1.5-flash-latest",
-    "Model Slot Empty",
 ]
 
 # OLD Definition
