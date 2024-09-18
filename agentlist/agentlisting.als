@@ -20,6 +20,7 @@
 
 1,Default        , Default Assistance       , Default.atx               , defaut.png , The Main Default Agent for most things
 1,General        , General Assisance        , General.atx               , defaut.png , For Simplied Formating Prompt very general
+1,SpellChecker   , Spelling and Grammer     , SpellCheck.atx            , defaut.png , For Spelling and grammer Checker
 
 @@ Technical Agents - This help with Technical System 
 @@ #################################################################################################################################

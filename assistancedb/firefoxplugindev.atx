@@ -13,7 +13,7 @@ development requirements.
 - Make sure that each section using is :blue[text to display].
 - Make sure that the title of the response is :orange[Text Title] with h3 style markdown
 - Formate the Text in Markdown Language not HTML
-- The bullets should be :orange[ - ]
+- The bullets should be :green[ - ]
 
 [Language Structure Checking]
 - Do spell Checks 
