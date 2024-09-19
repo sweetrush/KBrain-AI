@@ -63,11 +63,14 @@
 @@ Commented Agents 
 @@ 3,BusniessLawyer   , BL Assistance          , BN_Lawer.atx             , defaut.png  , Your Busniess Lawyer support 
 
+@@ Language Supported Agents 
+1, Chinese Translator , Chinese Trans_Interpt     , ChineseInterpiter.atx , defaut.png , For Chinese Translation and Interpretation
+
 @@ Agents that are for Testing
 @@ ################################################################################################################################
 
 3,Youtube SMRY        , Youtube SMRY Assistant   , YSummaryExpert.atx        , defaut.png , For Summarising Youtube Videos
-4,Subject Experts     , Subject Experts          , SubjectModeratorTeam.atx  , defaut.png , For Subject Matter Experts 
+3,Subject Experts     , Subject Experts          , SubjectModeratorTeam.atx  , defaut.png , For Subject Matter Experts 
 3,Social Media Poster , Social Media Post        , SocialMediaPost.atx       , defaut.png , For Social Media Posting Needs 
 4,SpecialAI           , Special Assistance       , specialai.atx             , defaut.png , A special AI assistance for Labing Ideas
 
