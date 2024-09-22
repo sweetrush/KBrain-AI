@@ -10,3 +10,4 @@ configparser==7.0.0
 requests==2.31.0
 pyperclip==1.8.2
 colorama
+streamlit-audiorec

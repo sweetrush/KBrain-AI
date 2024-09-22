@@ -20,6 +20,7 @@ from streamlit_extras.bottom_container import bottom
 import smtplib
 from email.message import EmailMessage
 from email.mime.text import MIMEText
+from st_audiorec import st_audiorec
 
 import google.generativeai as genai
 import speech_recognition as sr
@@ -48,7 +49,7 @@ import streamlit.components.v1 as components
 # of the Miah AI assistance
 # #################################################
 
-version = "2.9.5"
+version = "2.9.6"
 develper = "SRCoder"
 
 ###################################################
@@ -937,6 +938,14 @@ def email_notification(SubjectString, MessageString):
     except Exception as e:
         print(f"Error sending email: {e}")
 
+
+def audioin_record():
+    wav_audio_data = st_audiorec()
+    colorful_print("INFO: "+wav_audio_data, "magenta")
+    
+    if wav_audio_data is not None: 
+        st.audio(wav_audio_data, format='audio/wav')
+
 #########################################################################
 #########################################################################
 #########################################################################
@@ -1282,6 +1291,11 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 adcn = st.text_area(
                     label="Additional Context", height=100, key="KK09923"
                 )
+
+                audio_cx_context = st.toggle("AAR")
+
+                if audio_cx_context:
+                    audioin_record()
 
             with tb2:
                 code = st.selectbox(
