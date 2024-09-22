@@ -46,6 +46,7 @@
 @@ Cybersecurity Prompts 
 @@ ################################################################################################################################
 
+2,CS-Expert      , Cybersecurity Expert      , CSExpert.atx            , defaut.png , For Cybersecurity Expert and Cybersecurity
 2,RedTeam        , RedTeam Assistance        , Red_Team_Expert.atx     , defaut.png , For Cybersecurity Red Teaming Support 
 2,Nmap           , Nmap Assistance           , Nmap_expert.atx         , defaut.png , For All your Nmap Scanning Questions
 2,Rust-Scan      , Rust Scan Assistance      , rustscan.atx            , defaut.png , For All your Rust-Scan Needs 
