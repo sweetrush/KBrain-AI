@@ -42,6 +42,7 @@
 2,SVnCL          , SVnCL Assistance         , sc_programmer.atx         , defaut.png , For your Server Client Programming
 2,firefoxdev     , firefox Dev Assistance   , firefoxplugindev.atx      , defaut.png , For developing Firefox Plugins
 2,WebDev         , WebDev Assistance        , webprogrammer.atx         , defaut.png , For all your Web Development Coding Needs
+2,Powershell Expt , Powershell Assistance   , pswinexpert.atx           , defaut.png , For powershell scripting and windows powerusers
 
 @@ Cybersecurity Prompts 
 @@ ################################################################################################################################

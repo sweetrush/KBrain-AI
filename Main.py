@@ -941,9 +941,8 @@ def email_notification(SubjectString, MessageString):
 
 def audioin_record():
     wav_audio_data = st_audiorec()
-    colorful_print("INFO: "+wav_audio_data, "magenta")
-    
-    if wav_audio_data is not None: 
+
+    if wav_audio_data is not None:
         st.audio(wav_audio_data, format='audio/wav')
 
 #########################################################################
