@@ -1301,10 +1301,12 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     label="Additional Context", height=100, key="KK09923"
                 )
 
-                audio_cx_context = st.toggle("AAR")
+                # Audio Recording is Disabled and will be reviewed 
+                # Later in new changes that need to be added. 
+                # audio_cx_context = st.toggle("AAR")
 
-                if audio_cx_context:
-                    audioin_record()
+                # if audio_cx_context:
+                #     audioin_record()
 
             with tb2:
                 code = st.selectbox(
