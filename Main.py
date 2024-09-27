@@ -49,7 +49,7 @@ import streamlit.components.v1 as components
 # of the Miah AI assistance
 # #################################################
 
-version = "2.9.6"
+version = "3.0.2"
 develper = "SRCoder"
 
 ###################################################
@@ -1782,8 +1782,9 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
 
     ltnewsapp = (
                 """
-                ##### :white[Lastest Update: New Models Now available]
-                - :green[New Model from Google : Gemini 1.5 Pro Experiment 0801]
+                ### :white[Lastest Update: New Models Now available]
+                - ###### :green[New Model from Google : Gemini 1.5 Pro Experiment 0827]
+                - ###### :green[New Model from Google : Gemini 1.5 Pro Experiment 0801]
                 """
             )
 
