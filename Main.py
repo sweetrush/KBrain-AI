@@ -972,10 +972,16 @@ audioInStore = count_files(audioOD)
 
 model_tokens = "8024"
 
+
+#Older Models 
+# gemini-1.5-pro-002
+# gemini-1.5-pro-exp-0801
+
+
 models = [
     "gemini-1.5-pro-latest",
-    "gemini-1.5-pro-001",
-    "gemini-1.5-pro-exp-0801",
+    "gemini-1.5-pro-002",
+    "gemini-1.5-pro-exp-0827",
     "gemini-1.5-flash-latest",
 ]
 
