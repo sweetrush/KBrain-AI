@@ -973,7 +973,7 @@ audioInStore = count_files(audioOD)
 model_tokens = "8024"
 
 
-#Older Models 
+# Older Models 
 # gemini-1.5-pro-002
 # gemini-1.5-pro-exp-0801
 
@@ -1402,7 +1402,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 GAM = col1.button("Get-Models", help="this will print the google models")
                 if GAM:
-                    col1.text_area()
+                    modelarry = []
+                    for m in genai.list_models():
+                        modelarry.append(m.name)
+                    col1.text_area("Models", value=modelarry)
 
                 # dialogpop = col2.button(
                 #                    "AD",
