@@ -1034,6 +1034,10 @@ logout = restdata = None
 
 # Checking Authentication State
 if st.session_state.authstatus and st.session_state.accesscode != "":
+
+    # ##########################################################################
+    #   SIDEBAR IMPLEMENTATION START 
+    # ##########################################################################
     with st.sidebar:
 
         global tempture_val, fileloaded, opt1_safe, opt2_safe
@@ -1144,7 +1148,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         #
         # Setting the Module Selection for the Assistance
         # ###############################################
-        with st.expander(emj_assistance + "Models", expanded=True):
+        with st.expander(emj_assistance + "Models & Assistance", expanded=True):
             model_select = st.selectbox(
                 emj_clamper + "Choose Model", (
                     models[0],
@@ -1158,7 +1162,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # Setting the selected Active Assistance
             # ################################################
         
-        with st.expander(emj_assistance + "Assistances", expanded=True):
+        # with st.expander(emj_assistance + "Assistances", expanded=True):
             selection = st.selectbox(
                 emj_assistance + "Active Assistance:",
                 [
@@ -1225,7 +1229,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
                     )
                 # Access Code for "SCH"
-                elif e11labkey == "sch2024-code":
+                elif e11labkey == "audioaccess":
                     activate_audio_output = st.toggle(
                         emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
                     )
@@ -1244,7 +1248,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             st.write("##### Number of SAR: " + str(fileInStore))
             st.write("##### Number of SAF: " + str(audioInStore))
             st.write("##### Number of AN: " + str(len(listofAssistance)))
-            components.html(html_code+js_code)
+            components.html(html_code+js_code)   #obtain IP Address of Client
 
 
         # #####################################################################
@@ -1311,7 +1315,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         "sh",
                         "batch",
                         "php",
+                        "CSS",
+                        "XML",
                         "perl",
+                        "Java",
                         "javascript",
                     ),
                     index=0,
