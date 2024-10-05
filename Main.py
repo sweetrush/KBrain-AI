@@ -220,7 +220,7 @@ def replace_chars(text, chars_to_replace, replacement):
 # #  02         EXTRACT PDF TO TEXT FUNCTION         ##
 # #####################################################
 @st.cache_data
-def open_pdf_extract_text(pdf_file: str) -> str:
+def openpdf_exttext(pdf_file: str) -> str:
     """Extracts text from a PDF file with improved error handling and potential optimization.
 
     Args:
