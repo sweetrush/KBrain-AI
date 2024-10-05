@@ -220,40 +220,20 @@ def replace_chars(text, chars_to_replace, replacement):
 # #  02         EXTRACT PDF TO TEXT FUNCTION         ##
 # #####################################################
 @st.cache_data
-def openpdf_exttext(pdf_file: str) -> str:
-    """Extracts text from a PDF file with improved error handling and potential optimization.
+def openpdf_exttext(pdffile):
+    """Extracts text from a PDF file with improved error
+    handling and potential optimization."""
 
-    Args:
-        pdf_file (str): Path to the PDF file.
-
-    Returns:
-        str: Extracted text from the PDF, or an empty string if an error occurs.
-    """
     colorful_print("[FX-R] openpdf (F02)", "magenta")
     try:
-        pdf_reader = PdfReader(pdf_file)
+        pdf_reader = PdfReader(pdffile)
         number_of_pages = len(pdf_reader.pages)
-        
-        if number_of_pages == 0:
-            logging.warning(f"No pages found in PDF: {pdf_file}")
-            return ""
-
-        extracted_text_list = []
+        extracted_text = ""
         for page_num in range(number_of_pages):
-            text = pdf_reader.pages[page_num].extract_text(layout=True)
-            if text:
-                extracted_text_list.append(text)
-
-        return ''.join(extracted_text_list)
-        
-    except FileNotFoundError:
-        logging.error(f"File not found: {pdf_file}")
-        return ""
-    except IOError as e:
-        logging.error(f"I/O error occurred while accessing PDF: {pdf_file} - {e}")
-        return ""
+            extracted_text += pdf_reader.pages[page_num].extract_text(layout=True)
+        return extracted_text
     except Exception as e:
-        logging.error(f"Unexpected error extracting text from PDF: {pdf_file} - {e}")
+        logging.error(f"Error extracting text from PDF: {e}")
         return ""
 
         # Or raise an exception depending
@@ -1286,7 +1266,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     emj_aaudio + "Audio(2):", value=False, help="Active Audio GTTs"
                 )
         
-        # DISABLE FOR NOW: Still in developement
+        # DISABLED FOR LATER DEVELOPMENT
+        #  - THis is the History Feature that needs to be fix. 
+    
         # with st.expander(emj_filebox + "History", expanded=False):
         #     st.button("Session 1", type="primary")
         #     st.button("Session 2", type="primary")
