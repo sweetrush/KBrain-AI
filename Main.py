@@ -49,8 +49,8 @@ import streamlit.components.v1 as components
 # of the Miah AI assistance
 # #################################################
 
-version = "3.0.2"
-develper = "SRCoder"
+version = "3.0.3"
+develper = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
 
@@ -76,6 +76,30 @@ emj_down = " ⬇ "
 emj_help = " 📗 "
 emj_help_ico = "📗"
 emj_door = " 🚪 "
+emj_star = " ⭐ "
+emj_heart = " ❤️ "
+emj_checkmark = " ✔️ "
+emj_cross = " ❌ "
+emj_warning = " ⚠️ "
+emj_clock = " 🕰 "
+emj_lightbulb = " 💡 "
+emj_musical_note = " 🎵 "
+emj_fire = " 🔥 "
+emj_sparkles = " ✨ "
+emj_camera = " 📷 "
+emj_party_popper = " 🎉 "
+emj_fist = " ✊ "
+emj_hand_wave = " 👋 "
+emj_rocket = " 🚀 "
+emj_notebook_with_decorative_cover = " 📔 "
+emj_spiral_notebook = " 📝 "
+emj_notebook = " 📒 "
+emj_code = " 💻 "              # Represents code/computers
+emj_video = " 📹 "            # Represents video recording
+emj_file = " 📄 "             # Represents a generic file
+emj_file_folder = " 📁 "      # Represents a folder containing files
+emj_clapper = " 🎬 "          # Represents video production
+
 
 devmode = 0
 apptile = ""
@@ -196,20 +220,40 @@ def replace_chars(text, chars_to_replace, replacement):
 # #  02         EXTRACT PDF TO TEXT FUNCTION         ##
 # #####################################################
 @st.cache_data
-def openpdf_exttext(pdffile):
-    """Extracts text from a PDF file with improved error
-    handling and potential optimization."""
+def open_pdf_extract_text(pdf_file: str) -> str:
+    """Extracts text from a PDF file with improved error handling and potential optimization.
 
+    Args:
+        pdf_file (str): Path to the PDF file.
+
+    Returns:
+        str: Extracted text from the PDF, or an empty string if an error occurs.
+    """
     colorful_print("[FX-R] openpdf (F02)", "magenta")
     try:
-        pdf_reader = PdfReader(pdffile)
+        pdf_reader = PdfReader(pdf_file)
         number_of_pages = len(pdf_reader.pages)
-        extracted_text = ""
+        
+        if number_of_pages == 0:
+            logging.warning(f"No pages found in PDF: {pdf_file}")
+            return ""
+
+        extracted_text_list = []
         for page_num in range(number_of_pages):
-            extracted_text += pdf_reader.pages[page_num].extract_text(layout=True)
-        return extracted_text
+            text = pdf_reader.pages[page_num].extract_text(layout=True)
+            if text:
+                extracted_text_list.append(text)
+
+        return ''.join(extracted_text_list)
+        
+    except FileNotFoundError:
+        logging.error(f"File not found: {pdf_file}")
+        return ""
+    except IOError as e:
+        logging.error(f"I/O error occurred while accessing PDF: {pdf_file} - {e}")
+        return ""
     except Exception as e:
-        logging.error(f"Error extracting text from PDF: {e}")
+        logging.error(f"Unexpected error extracting text from PDF: {pdf_file} - {e}")
         return ""
 
         # Or raise an exception depending
@@ -253,9 +297,12 @@ def write_to_file(filename, text):
         colorful_print(f"[Error] Error writing to file: {e}", "red")
 
 
+
 # #####################################################
 # #  05         Q_COMBINDER FUNCTION                 ##
 # #####################################################
+
+
 def question_combinder(additional_context, user_question):
     """Combines a user question with additional context.
 
@@ -393,84 +440,54 @@ def count_files(directory_path):
 # #  10         LOAD AGENTS FROM DB/FILE FUNCTION    ##
 # #####################################################
 def loadagents():
+    """
+    Load agents from a specified file and populate the list of assistance.
+
+    This function reads from the 'agentlisting.als' file located in the 'agentlist/'
+    directory and populates the global list 'listofAssistance' with agent details.
+    """
+
     colorful_print("[FX-R] loadagents (F10)", "magenta")
 
     pathDirAssistanceConfig = "agentlist/"
     assistance_filename = "agentlisting.als"
-
     fullpath = os.path.join(pathDirAssistanceConfig, assistance_filename)
-    file_path = fullpath
+
+    emj_tags = {
+        "1": emj_billcap,
+        "2": emj_tophat,
+        "3": emj_gradcap,
+        "4": emj_assistance,
+    }
 
     try:
-        with open(file_path, "r") as file:
+        with open(fullpath, "r") as file:
             for line in file:
                 line = line.strip()  # Remove leading/trailing whitespace
                 if "@@" not in line and line:  # Check for "@@" and empty lines
-                    emjtag, name, label, file, aimage, adps = line.strip().split(",")
+                    emjtag, name, label, file, aimage, adps = line.split(",")
 
-                    if emjtag == "1":
-                        listofAssistance.append(
-                            [
-                                emj_billcap + str(name),
-                                str(label),
-                                replace_chars(str(file), " ", ""),
-                                aimage,
-                                adps,
-                            ]
-                        )
+                    # Use the emj_tags dictionary to get the appropriate prefix
+                    prefix = emj_tags.get(emjtag, emj_billcap)
+                    listofAssistance.append(
+                        [
+                            prefix + str(name),
+                            str(label),
+                            replace_chars(str(file), " ", ""),
+                            aimage,
+                            adps,
+                        ]
+                    )
 
-                    elif emjtag == "2":
-                        listofAssistance.append(
-                            [
-                                emj_tophat + str(name),
-                                str(label),
-                                replace_chars(str(file), " ", ""),
-                                aimage,
-                                adps,
-                            ]
-                        )
-
-                    elif emjtag == "3":
-                        listofAssistance.append(
-                            [
-                                emj_gradcap + str(name),
-                                str(label),
-                                replace_chars(str(file), " ", ""),
-                                aimage,
-                                adps,
-                            ]
-                        )
-
-                    elif emjtag == "4":
-                        listofAssistance.append(
-                            [
-                                emj_assistance + str(name),
-                                str(label),
-                                replace_chars(str(file), " ", ""),
-                                aimage,
-                                adps,
-                            ]
-                        )
-
-                    else:
-                        listofAssistance.append(
-                            [
-                                emj_billcap + str(name),
-                                str(label),
-                                replace_chars(str(file), " ", ""),
-                                aimage,
-                                adps,
-                            ]
-                        )
     except FileNotFoundError:
         colorful_print(
-            f"[ERROR] Agent list file not found: {file_path}",
+            f"[ERROR] Agent list file not found: {fullpath}",
             "red"
-            )
-            
+        )
         # Handle the error gracefully, e.g., create a default agent list
     except IOError as e:
         colorful_print(f"[ERROR] Error reading agent list: {e}", "red")
+
 
 
 # #####################################################
@@ -795,35 +812,31 @@ def write_registration_to_sheet():
                 st.error("Please the passwords are not the Same")
 
 
-# #####################################################
-# #  24         COLOR PRINTER FOR TEXT               ##
-# #####################################################
-def colorful_print(text, color):
+def colorful_print(text: str, color: str) -> None:
+    """
+    Print text in the specified color with a prefix.
 
-    textcombind = ""
+    Args:
+    - text: The message to be printed.
+    - color: The color to print the message in. Supported colors: 
+            "red", "green", "yellow", "white", "blue", "magenta", "cyan".
+    """
+    
+    color_map = {
+        "red": Fore.RED,
+        "green": Fore.GREEN,
+        "yellow": Fore.YELLOW,
+        "white": Fore.WHITE,
+        "blue": Fore.BLUE,
+        "magenta": Fore.MAGENTA,
+        "cyan": Fore.CYAN,
+    }
 
-    if color == "red":
-        textcombind = " * "+Fore.RED+Style.BRIGHT+text+Style.RESET_ALL
-
-    if color == "green":
-        textcombind = " * "+Fore.GREEN+Style.BRIGHT+text+Style.RESET_ALL
-
-    if color == "yellow":
-        textcombind = " * "+Fore.YELLOW+Style.BRIGHT+text+Style.RESET_ALL
-
-    if color == "white":
-        textcombind = " * "+Fore.WHITE+Style.BRIGHT+text+Style.RESET_ALL
-
-    if color == "blue":
-        textcombind = " * "+Fore.BLUE+Style.BRIGHT+text+Style.RESET_ALL
-
-    if color == "magenta":
-        textcombind = " * "+Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL
-
-    if color == "cyan":
-        textcombind = " * "+Fore.MAGENTA+Style.BRIGHT+text+Style.RESET_ALL 
-        
-    print(textcombind)
+    # Get the color or default to white if the color is unsupported
+    chosen_color = color_map.get(color, Fore.WHITE)
+    
+    text_combined = f" * {chosen_color}{Style.BRIGHT}{text}{Style.RESET_ALL}"
+    print(text_combined)
 
 
 # #####################################################
@@ -939,11 +952,34 @@ def email_notification(SubjectString, MessageString):
         print(f"Error sending email: {e}")
 
 
+# #####################################################
+# #  31         Audio FX 31              ##
+# #####################################################
 def audioin_record():
     wav_audio_data = st_audiorec()
 
     if wav_audio_data is not None:
         st.audio(wav_audio_data, format='audio/wav')
+
+
+# #####################################################
+# #  32         Audio Recording FX 32              ##
+# #####################################################
+def write_to_historyfile(filename, text, chatID, chatTag, UserID):
+    colorful_print("[FX-R] write to History (F04)", "magenta")
+
+    storedir = "output/history/"
+    datetag = datetag_string
+    store_path = os.path.join(storedir, datetag+"_"+chatID+chatTag+UserID+"_"+filename)
+
+    if not os.path.exists(storedir):
+        os.makedirs(storedir)
+
+    try:
+        with open(store_path + "_miahchat.hry", "a", encoding="utf-8") as file:
+            file.write(text + "\n")  # Add a newline at the end
+    except OSError as e:
+        colorful_print(f"[Error] Error writing to file: {e}", "red")
 
 #########################################################################
 #########################################################################
@@ -1249,6 +1285,11 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 activate_audio_output002 = st.toggle(
                     emj_aaudio + "Audio(2):", value=False, help="Active Audio GTTs"
                 )
+        
+        # DISABLE FOR NOW: Still in developement
+        # with st.expander(emj_filebox + "History", expanded=False):
+        #     st.button("Session 1", type="primary")
+        #     st.button("Session 2", type="primary")
 
         with st.expander(emj_stats + "Status", expanded=False):
             st.write("##### Number of SAR: " + str(fileInStore))
@@ -1294,7 +1335,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     with bottom():
         with st.expander(emj_pencil + "Extention Context", expanded=False):
 
-            tb1, tb2, tb3, tb4, tb5 = st.tabs(["ATC", "ACC", "AYC", "FU", "AB"])
+            tb1, tb2, tb3, tb4, tb5 = st.tabs([emj_notebook, emj_code, emj_clapper, emj_file, emj_down])
 
             with tb1:
                 adcn = st.text_area(
@@ -1514,6 +1555,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     if usermessage:
         with st.chat_message("User"):
             st.write(usermessage)
+            write_to_historyfile("CH_", usermessage, datetime.date.today().strftime("%A"), "_Human_", st.session_state.uaccount)
 
             if uploaded_img:
                 st.image(uploaded_img, caption=None, width=None)
@@ -1563,6 +1605,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             cache_history_now = st.session_state.chathistoryprompt
             cxt_n_usermsg = loadassistantcontext + usermessage + ai_dont_lie
+
+            # Writting to History for Human Content
+            write_to_historyfile("CH_", cxt_n_usermsg, datetime.date.today().strftime("%A"), "_Human_", st.session_state.uaccount)
+
 
             # Debugging calls 
             # Comment to use for Debugging
@@ -1643,6 +1689,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
         write_to_file(filename, convo.last.text)
         st.session_state.lastchatoutput = convo.last.text
+
+        write_to_historyfile("CH_", st.session_state.lastchatoutput, datetime.date.today().strftime("%A"), "_AI_", st.session_state.uaccount)
 
         # This Gets the Number of Tokens needed.
         tokencount = model.count_tokens(convo.last.text)
