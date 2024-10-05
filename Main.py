@@ -49,7 +49,7 @@ import streamlit.components.v1 as components
 # of the Miah AI assistance
 # #################################################
 
-version = "3.0.3"
+version = "3.0.4"
 develper = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
