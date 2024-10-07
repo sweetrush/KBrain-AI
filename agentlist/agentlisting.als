@@ -51,6 +51,7 @@
 2,RedTeam        , RedTeam Assistance        , Red_Team_Expert.atx     , defaut.png , For Cybersecurity Red Teaming Support 
 2,Nmap           , Nmap Assistance           , Nmap_expert.atx         , defaut.png , For All your Nmap Scanning Questions
 2,Rust-Scan      , Rust Scan Assistance      , rustscan.atx            , defaut.png , For All your Rust-Scan Needs 
+2,SM_PosterCS    , Cybersecurity SM Poster   , SocialMediaPost002.atx  , defaut.png , For Posting Cybersecurity Post 
 
 @@ Busniess Agents - These Help with Busniess Tasks 
 @@ ################################################################################################################################
