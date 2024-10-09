@@ -56,6 +56,7 @@
 @@ Busniess Agents - These Help with Busniess Tasks 
 @@ ################################################################################################################################
 
+3,MarketingExp        , Marketing Expert          , marketingExpert.atx   , defaut.png  , For all your Marketing Needs 
 3,ProposalDev         , Proposal Dev Assistant    , proposaldev.atx       , defaut.png  , For all your Proposal Needs 
 3,Report Writer       , Report Writer             , Report_Writer.atx     , defaut.png  , For all your Report Development Needs
 3,Preso Expert        , Preso Expert              , PresentationSlide.atx , defaut.png  , For Developmeing Slides and Presentations
