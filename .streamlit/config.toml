@@ -1,9 +1,9 @@
 [theme]
-base="light"
-primaryColor="#a5ecaa"
-#backgroundColor="#1a1919"
+#base="light"
+#primaryColor="#a5ecaa"
+backgroundColor="white"
 #secondaryBackgroundColor="#5f6164"
-textColor="#f9f9fb"
+textColor="black"
 
 [connection.gsheets]
 spreadsheet = "https://docs.google.com/spreadsheets/d/1Ibu8-3aMZD9Zp5DXhyXV7udu-8-SMsu6TEiYvGFCXXs"
