@@ -33,13 +33,14 @@
 @@ #################################################################################################################################
 
 2,Python         , Python Assistance        , Python_assistance.atx     , defaut.png , For Assisting with Python Coding 
-2,Python Mobile  , PyMobile Assistance      , kivy.atx                  , defaut.png , For Assisting with Python Mobile Developments  
+2,Python Mobile  , PyMobile Assistance      , kivy.atx                  , defaut.png , For Assisting with Python Mobile Developments
+2,JavaSwing      , JavaSwing Assistance     , JSwingExpert.atx          , defaut.png , For Assisting with Java Swing Developments
 2,Php Coder      , Php Code Assistance      , PhpAssistance.atx         , defaut.png , Your Php Code assistance for all things Php
 2,Prolog coder   , Prolog Assistance        , prolog.atx                , defaut.png , Your Prolog Code Assistance for Prolog 
 2,Go Coder       , Go Lang Assistance       , Go_Assistance.atx         , defaut.png , Your Go Code Assistance for all things Go
 2,React JS       , ReactJS                  , ReactJS_assistance.atx    , defaut.png , For Working with ReactJS Coding 
 2,Bash           , Bash Assistance          , bashexpert.atx            , defaut.png , For all your Bash Scripting Needs 
-2,SVnCL          , SVnCL Assistance         , sc_programmer.atx         , defaut.png , For your Server Client Programming
+2,ServerNClient  , SVnCL Assistance         , sc_programmer.atx         , defaut.png , For your Server Client Programming
 2,firefoxdev     , firefox Dev Assistance   , firefoxplugindev.atx      , defaut.png , For developing Firefox Plugins
 2,WebDev         , WebDev Assistance        , webprogrammer.atx         , defaut.png , For all your Web Development Coding Needs
 2,Powershell Expt , Powershell Assistance   , pswinexpert.atx           , defaut.png , For powershell scripting and windows powerusers
@@ -67,7 +68,7 @@
 @@ Commented Agents 
 @@ 3,BusniessLawyer   , BL Assistance          , BN_Lawer.atx             , defaut.png  , Your Busniess Lawyer support 
 
-@@ Language Supported Agents 
+@@ natual Language Supported Agents 
 1, Chinese Translator , Chinese Trans_Interpt     , ChineseInterpiter.atx , defaut.png , For Chinese Translation and Interpretation
 
 @@ Agents that are for Testing
