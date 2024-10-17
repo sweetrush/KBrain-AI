@@ -32,8 +32,9 @@
 @@ Programming Prompts 
 @@ #################################################################################################################################
 
-2,Python         , Python Assistance        , Python_assistance.atx     , defaut.png , For Assisting with Python Coding 
+2,Python         , Python Assistance        , Python_assistance.atx     , defaut.png , For Assisting with Python Coding
 2,Python Mobile  , PyMobile Assistance      , kivy.atx                  , defaut.png , For Assisting with Python Mobile Developments
+2,Rust           , Rust Assistance          , RustExpert.atx            , defaut.png , For Assisting with Rust Coding
 2,JavaSwing      , JavaSwing Assistance     , JSwingExpert.atx          , defaut.png , For Assisting with Java Swing Developments
 2,Php Coder      , Php Code Assistance      , PhpAssistance.atx         , defaut.png , Your Php Code assistance for all things Php
 2,Prolog coder   , Prolog Assistance        , prolog.atx                , defaut.png , Your Prolog Code Assistance for Prolog 
