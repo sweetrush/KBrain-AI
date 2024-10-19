@@ -18,6 +18,7 @@ from gtts import gTTS
 from streamlit_extras.bottom_container import bottom
 
 import smtplib
+import markdown
 from email.message import EmailMessage
 from email.mime.text import MIMEText
 from st_audiorec import st_audiorec
@@ -905,18 +906,20 @@ def authenticate_user2(access_code, file_path):
 
     return False  # Access code not found in the file
 
+
 # #####################################################
 # #  30         Email Notifcation FX 30              ##
 # #####################################################
 def email_notification(SubjectString, MessageString):
     sender_email = "miahaisupport@bytewatchers.com"
     sender_password = ekks
+    converthtml = markdown.markdown(MessageString)
 
     # Recipient's Email
     receiver_email = "suetena.loia@gmail.com"
 
     # Email Content
-    message = MIMEText(MessageString)
+    message = MIMEText(converthtml, "html")
     message["Subject"] = SubjectString
     message["From"] = sender_email
     message["To"] = receiver_email
