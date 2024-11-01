@@ -122,7 +122,7 @@ emj_tool = '🛠️'
 emj_help = ' 📗 '
 emj_help_ico = '📗'
 
-pmpteng_string="Provide output as MD format , also Layout the Output in details "
+pmpteng_string = "Provide output as MD format , also Layout the Output in details"
 
 # Function to read PDF files
 def read_pdf(file):
