@@ -1,9 +1,10 @@
 [theme]
-base="Dark"
+base="dark"
 primaryColor="#a5ecaa"
-#backgroundColor="white"
-#secondaryBackgroundColor="#5f6164"
+backgroundColor="black"
+secondaryBackgroundColor="#404041"
 textColor="white"
+font = "monospace"
 
 [connection.gsheets]
 spreadsheet = "https://docs.google.com/spreadsheets/d/1Ibu8-3aMZD9Zp5DXhyXV7udu-8-SMsu6TEiYvGFCXXs"

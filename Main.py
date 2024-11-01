@@ -327,7 +327,7 @@ def get_assistant_details(selection, listofAssistance, assistant):
     Args:
         selection: The selected assistant identifier.
         listofAssistance: A list of tuples containing assistant information.
-        assistant: A list of assistant objects.
+        assistant: A list of assistant objects.hdddddddddddddfrrjm  
 
     Returns:
     A tuple containing loadassistantcontext, assistantcontext, and fileloaded.
@@ -1299,7 +1299,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         #     "pages/agentdev.py", label="Edit Agents", icon=emj_help_ico, disabled=False
         # )
         horizontal_line()
+        with st.expander(emj_lightbulb + "Other Tools", expanded=False):
+            st.page_link(
+            "pages/Mathapp.py", label="Math Helper", icon=emj_help_ico, disabled=False
+            )
+
         about_the_developer()
+
 
     if "exbclor" not in st.session_state:
         st.session_state.exbclor = ""
@@ -1351,6 +1357,17 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         "php",
                         "CSS",
                         "XML",
+                        "HTML",
+                        "JSON",
+                        "YAML",
+                        "SQL",
+                        "ruby",
+                        "swift",
+                        "typescript",
+                        "lua",
+                        "rust",
+                        "matlab",
+                        "julia",
                         "perl",
                         "Java",
                         "javascript",
@@ -1416,7 +1433,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 with ytb3:
                     uploaded_img = st.file_uploader(
-                        "Choose an image...", type=["jpg", "png", "jpeg"]
+                        "Choose an image...", type=["jpg", "png", "jpeg", "webm"]
                     )
             # Other related Buttons
             #
@@ -1603,6 +1620,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # This Combinds all prompt strings ready for loading to the chat.
             finalpromptstring = cxt_n_usermsg + grpcontext + ", " + cache_history_now 
 
+#############################################################################################################
+#############################################################################################################
             # ######## AREA FOR SEND PROMPT INFOR TO AI
             #
 
