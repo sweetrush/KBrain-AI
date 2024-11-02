@@ -77,9 +77,9 @@ st.markdown(
 
 # Assuming the necessary imports and prior initializations are done
 
-def send_GeminiMessage_NoImage(user_message):
+def send_GeminiMessage_NoImage(user_message, model):
     genai.configure(api_key=apivalue00)
-    modeltouse = "gemini-1.5-flash"
+    modeltouse = model
     model = genai.GenerativeModel(modeltouse)
 
     chat = model.start_chat(
@@ -95,9 +95,9 @@ def send_GeminiMessage_NoImage(user_message):
         st.write(response.text)
 
 
-def send_GeminiMessage_WImage(user_message, image):
+def send_GeminiMessage_WImage(user_message, image, model):
     genai.configure(api_key=apivalue00)
-    modeltouse = "gemini-1.5-flash"
+    modeltouse = model
     model = genai.GenerativeModel(modeltouse)
 
     chat = model.start_chat(
@@ -132,11 +132,22 @@ def read_pdf(file):
         text += page.extract_text() + "\n"
     return text
 
+# List of available models
 
+
+models = [
+    "gemini-1.5-pro-latest",
+    "gemini-1.5-pro-002",
+    "gemini-1.5-pro-exp-0827",
+    "gemini-1.5-flash-latest",
+]
+
+# Sidebar
 with st.sidebar:
     st.page_link("Main.py", label="Back toMain", icon=emj_help_ico, disabled=False)
     st.title("Math App")
     st.subheader("A simple math app")
+    modelselect = st.selectbox("Select a Model", models)
 
 
 with bottom():
@@ -192,12 +203,12 @@ if run_button and user_input:
     if pdf_file:
         st.write("Running context with PDF text...")
         # Process the PDF text and the input prompt here
-        send_GeminiMessage_NoImage(pmpteng_string+user_input+pdf_text)       
+        send_GeminiMessage_NoImage(pmpteng_string+user_input+pdf_text, modelselect)       
     if image_file:
         st.write("Running context with uploaded image...")
         # Process the uploaded image
-        send_GeminiMessage_WImage(pmpteng_string+user_input, image)
+        send_GeminiMessage_WImage(pmpteng_string+user_input, image, modelselect)
     if camera_photo:
         st.write("Running context with captured photo...")
         # Process the captured photo
-        send_GeminiMessage_WImage(pmpteng_string+user_input, image)
+        send_GeminiMessage_WImage(pmpteng_string+user_input, image, modelselect)

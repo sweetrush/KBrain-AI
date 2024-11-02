@@ -50,8 +50,8 @@ import streamlit.components.v1 as components
 # of the Miah AI assistance
 # #################################################
 
-version = "3.0.4"
-develper = "Bytewatchers Samoa with (SRCoder)"
+version = "3.0.6"
+developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
 
@@ -564,7 +564,7 @@ def about_the_developer():
     colorful_print("[FX-R] about_the_developer (F16)", "yellow")
 
     st.write("##### Version:   :orange[" + version + "]")
-    st.write("##### Developer:   :green[" + develper + "]")
+    st.write("##### Developer:   :green[" + developer + "]")
 
 
 # #####################################################
