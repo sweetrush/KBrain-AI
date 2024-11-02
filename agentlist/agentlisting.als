@@ -45,6 +45,7 @@
 2,firefoxdev     , firefox Dev Assistance   , firefoxplugindev.atx      , defaut.png , For developing Firefox Plugins
 2,WebDev         , WebDev Assistance        , webprogrammer.atx         , defaut.png , For all your Web Development Coding Needs
 2,Powershell Expt , Powershell Assistance   , pswinexpert.atx           , defaut.png , For powershell scripting and windows powerusers
+2,HTML_Tailwind   , TailWind Assistance     , htmlandTailwindexpert.atx , defaut.png , For Html and Tailwind CSS Assistance 
 
 @@ Cybersecurity Prompts 
 @@ ################################################################################################################################
