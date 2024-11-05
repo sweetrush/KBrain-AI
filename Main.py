@@ -971,8 +971,8 @@ def write_to_historyfile(filename, text, chatID, chatTag, UserID):
 # #####################################################
 def AIProcesss(TexttoProcess):
     genai.configure(api_key=apiAITextMod)
-    ModifyPrompt = "Cleaning this Text to be audio readable Ready , Remove any Markdown Formatting"
-    model2 = genai.GenerativeModel("gemini-1.5-flash")
+    ModifyPrompt = "Cleaning this Text to be readable and remove any formating symbols, Remove any Markdown Formatting"
+    model2 = genai.GenerativeModel("gemini-1.5-pro-latest")
     response = model2.generate_content(ModifyPrompt+TexttoProcess)
 
     return response.text
@@ -1740,6 +1740,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             if activate_audio_output:
                 acol1, acol2 = st.columns(2, gap="small")
+                with st.expander(emj_aaudio + emj_file + "Audio Text", expanded=False):
+                    st.write(modifyiedAudioText)
+
                 with st.status("Processing Audio request"):
                     audiofilename = datetag_string + "_" + filename
                     audiopath = get_audio(modifyiedAudioText, "el11_au", audiofilename)
