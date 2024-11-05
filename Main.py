@@ -1737,7 +1737,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 st.write_stream(stream_text(botmessage, float(writespeed)))
             else:
                 st.write(botmessage)
-
+            # Condition if Using Elaven Labs API for Text to Speech
             if activate_audio_output:
                 acol1, acol2 = st.columns(2, gap="small")
                 with st.expander(emj_aaudio + emj_file + "Audio Text", expanded=False):
@@ -1761,8 +1761,11 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     st.toast(":blue[Audio 01] :green[activated]")
                 st.write("Audio Generation Completed")
 
+            # Condition Using Google Text to Speech API for Text to Speech
             if activate_audio_output002:
                 acol1, acol2 = st.columns(2, gap="small")
+                with st.expander(emj_aaudio + emj_file + "Audio Text", expanded=False):
+                    st.write(modifyiedAudioText)
                 with st.status("Processing Audio request"):
                     audiofilename = datetag_string + "_" + filename
                     audiopath = text_to_speech(modifyiedAudioText)
