@@ -172,6 +172,7 @@ config = configparser.ConfigParser()
 config.read("config.mcf")
 apivalue = config.get("APIKEYS", "api")
 api11labs = config.get("APIKEYS", "api_11labs")
+apiAITextMod = config.get("APIKEYS", "api_audioTextModifier")   
 epcolor_val = config.get("THEMEING", "ep_color")
 ekks = config.get("EKS", "eeks")
 
@@ -964,6 +965,19 @@ def write_to_historyfile(filename, text, chatID, chatTag, UserID):
     except OSError as e:
         colorful_print(f"[Error] Error writing to file: {e}", "red")
 
+
+# #####################################################
+# #  33         Gemini AI Function Call             ##
+# #####################################################
+def AIProcesss(TexttoProcess):
+    genai.configure(api_key=apiAITextMod)
+    ModifyPrompt = "Cleaning this Text to be audio readable Ready , Remove any Markdown Formatting"
+    model2 = genai.GenerativeModel("gemini-1.5-flash")
+    response = model2.generate_content(ModifyPrompt+TexttoProcess)
+
+    return response.text
+
+
 #########################################################################
 #########################################################################
 #########################################################################
@@ -1709,6 +1723,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
         with st.chat_message("assistant"):
             botmessage = convo.last.text
+            modifyiedAudioText =  AIProcesss(botmessage)
 
             #
             # @@ Note to implement streaming of Returned information.
@@ -1727,7 +1742,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 acol1, acol2 = st.columns(2, gap="small")
                 with st.status("Processing Audio request"):
                     audiofilename = datetag_string + "_" + filename
-                    audiopath = get_audio(botmessage, "el11_au", audiofilename)
+                    audiopath = get_audio(modifyiedAudioText, "el11_au", audiofilename)
                     audiofile = open(audiopath, "rb")
                     audiobytes = audiofile.read()
 
@@ -1747,7 +1762,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 acol1, acol2 = st.columns(2, gap="small")
                 with st.status("Processing Audio request"):
                     audiofilename = datetag_string + "_" + filename
-                    audiopath = text_to_speech(botmessage)
+                    audiopath = text_to_speech(modifyiedAudioText)
                     audiofile = open(audiopath, "rb")
                     audiobytes = audiofile.read()
 
