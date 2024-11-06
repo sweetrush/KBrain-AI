@@ -1712,6 +1712,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         
         successtext = "Generated Response Completed"
 
+        modifyiedAudioText =  AIProcesss(convo.last.text)
+
         # Comment to Use the Toast as the Alert element
         st.success(successtext)
 
@@ -1733,10 +1735,12 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             "Activity Information \n\n Prompt Sent:"+ca+""
             "\n\n\n"+convo.last.text+"\n\n"
             )
+        
+        
 
         with st.chat_message("assistant"):
             botmessage = convo.last.text
-            modifyiedAudioText =  AIProcesss(botmessage)
+            
 
             #
             # @@ Note to implement streaming of Returned information.
