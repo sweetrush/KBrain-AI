@@ -362,6 +362,7 @@ def get_audio(texttomp3, prefix, auid, VoiceCharacter):
     ellskey = api11labs
     voiceid1 = "21m00Tcm4TlvDq8ikWAM"
     voiceid2 = "MF3mGyEYCl7XYWbV9V6O"
+    voiceid3 = "ErXwobaYiN019PkySvjV"
     CHUNK_SIZE = 1024
     
     if VoiceCharacter == "Rachel":
@@ -369,6 +370,9 @@ def get_audio(texttomp3, prefix, auid, VoiceCharacter):
 
     elif VoiceCharacter == "Emily":
         url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid2
+    
+    elif VoiceCharacter == "Antoni":
+        url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid3
 
     headers = {
         "Accept": "audio/mpeg",
@@ -1287,7 +1291,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     activate_audio_output = False
 
                 AudioCharacter = st.selectbox("Select Character", 
-                                                ("Rachel", "Emily"), index=0)
+                                                ("Rachel", "Emily", "Antoni"), index=0)
                 activate_audio_output002 = st.toggle(
                     emj_aaudio + "Audio(2):", value=False, help="Active Audio GTTs"
                 )
