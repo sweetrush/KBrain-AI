@@ -357,12 +357,18 @@ def text_to_speech(text):
 # #####################################################
 # #  08         GET AUDIO FUNCTION                   ##
 # #####################################################
-def get_audio(texttomp3, prefix, auid):
+def get_audio(texttomp3, prefix, auid, VoiceCharacter):
     colorful_print("[FX-R] get audio (F08)", "magenta")
     ellskey = api11labs
-    voiceid = "21m00Tcm4TlvDq8ikWAM"
+    voiceid1 = "21m00Tcm4TlvDq8ikWAM"
+    voiceid2 = "MF3mGyEYCl7XYWbV9V6O"
     CHUNK_SIZE = 1024
-    url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid
+    
+    if VoiceCharacter == "Rachel":
+        url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid1
+        
+    elif VoiceCharacter == "Emily":
+        url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid2
 
     headers = {
         "Accept": "audio/mpeg",
@@ -1272,6 +1278,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     activate_audio_output = st.toggle(
                         emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
                     )
+                    AudioCharacter = st.selectbox("Select Character", ["Rachel, Emily"])
+
                 elif devmode == 1:   # IF ONE this will show the audio in dev Enviroment
                     activate_audio_output = st.toggle(
                         emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
