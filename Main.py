@@ -1278,8 +1278,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     activate_audio_output = st.toggle(
                         emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
                     )
-
-                    AudioCharacter = st.selectbox("Select Character", ("Rachel, Emily"), index=0)
+                    AudioCharacter = st.selectbox("Select Character", ("Rachel", "Emily"), index=0)
 
                 elif devmode == 1:   # IF ONE this will show the audio in dev Enviroment
                     activate_audio_output = st.toggle(
