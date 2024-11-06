@@ -981,7 +981,21 @@ def write_to_historyfile(filename, text, chatID, chatTag, UserID):
 # #####################################################
 def AIProcesss(TexttoProcess):
     genai.configure(api_key=apiAITextMod)
-    ModifyPrompt = "Cleaning this Text to be readable and remove any formating symbols, Remove any Markdown Formatting"
+    ModifyPrompt = """
+                    Cleaning this Text to be readable and remove any 
+                    formating symbols, Remove any Markdown Formatting
+                    
+                    [How to Format Output]
+                    - Use Paragraphs to express each areas 
+                    - Use Proper grammar and spelling 
+                    - Make it easy to read and understand 
+                    - Use Capitalization and punctuation to make it stand out 
+                    - Avoid using exaggerated language 
+                    - Avoid using slang or colloquial language 
+                    - Avoid using inappropriate language 
+                    - Make it so that the flow of reading the text is natural
+                    
+                    """
     model2 = genai.GenerativeModel("gemini-1.5-pro-latest")
     response = model2.generate_content(ModifyPrompt+TexttoProcess)
 
