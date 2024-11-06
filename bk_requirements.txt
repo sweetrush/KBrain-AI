@@ -9,7 +9,7 @@ pandas==2.1.4
 configparser==7.0.0
 requests==2.31.0
 pyperclip==1.8.2
-colorama
-PyPDF2
+colorama==0.4.6
+PyPDF2==3.0.1
 markdown==3.3.6
-streamlit-audiorec
+streamlit_audiorec==0.1.3
