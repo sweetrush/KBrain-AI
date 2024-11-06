@@ -50,7 +50,7 @@ import streamlit.components.v1 as components
 # of the Miah AI assistance
 # #################################################
 
-version = "3.0.6"
+version = "3.0.7"
 developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
@@ -366,7 +366,7 @@ def get_audio(texttomp3, prefix, auid, VoiceCharacter):
     
     if VoiceCharacter == "Rachel":
         url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid1
-        
+
     elif VoiceCharacter == "Emily":
         url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid2
 
@@ -1753,7 +1753,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 with st.status("Processing Audio request"):
                     audiofilename = datetag_string + "_" + filename
-                    audiopath = get_audio(modifyiedAudioText, "el11_au", audiofilename)
+                    audiopath = get_audio(modifyiedAudioText, "el11_au", audiofilename, AudioCharacter)
                     audiofile = open(audiopath, "rb")
                     audiobytes = audiofile.read()
 
