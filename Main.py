@@ -230,10 +230,11 @@ def openpdf_exttext(pdffile):
     try:
         pdf_reader = PdfReader(pdffile)
         number_of_pages = len(pdf_reader.pages)
-        extracted_text = ""
+        extracted_text = []
         for page_num in range(number_of_pages):
-            extracted_text += pdf_reader.pages[page_num].extract_text(layout=True)
-        return extracted_text
+            extracted_text.append(pdf_reader.pages[page_num].extract_text(layout=True))
+        return ''.join(extracted_text)
+
     except Exception as e:
         logging.error(f"Error extracting text from PDF: {e}")
         return ""
@@ -581,6 +582,7 @@ def about_the_developer():
 # #####################################################
 # #  17         DYNAMIC CSS LOADER FUNCTION          ##
 # #####################################################
+@st.cache_data
 def dynamic_css(color):
     colorful_print("[FX-R] dynamic css (F17)", "yellow")
     ubuntu = """
