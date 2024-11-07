@@ -95,11 +95,11 @@ emj_rocket = " 🚀 "
 emj_notebook_with_decorative_cover = " 📔 "
 emj_spiral_notebook = " 📝 "
 emj_notebook = " 📒 "
-emj_code = " 💻 "              # Represents code/computers
-emj_video = " 📹 "            # Represents video recording
-emj_file = " 📄 "             # Represents a generic file
-emj_file_folder = " 📁 "      # Represents a folder containing files
-emj_clapper = " 🎬 "          # Represents video production
+emj_code = " 💻 "              
+emj_video = " 📹 "            
+emj_file = " 📄 "             
+emj_file_folder = " 📁 "      
+emj_clapper = " 🎬 "          
 
 
 devmode = 0
@@ -1726,7 +1726,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         
         successtext = "Generated Response Completed"
 
-        modifyiedAudioText =  AIProcesss(convo.last.text)
+        if activate_audio_output:
+            with st.status("Cooking some Text Modificatio ..."):
+                modifyiedAudioText =  AIProcesss(convo.last.text)
 
         # Comment to Use the Toast as the Alert element
         st.success(successtext)
