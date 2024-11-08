@@ -32,6 +32,7 @@
 @@ Programming Prompts 
 @@ #################################################################################################################################
 
+2,Github         , Github Assistance        , GithubAssistance.atx      , defaut.png , For Assisting with Github Activities
 2,Python         , Python Assistance        , Python_assistance.atx     , defaut.png , For Assisting with Python Coding
 2,Python Mobile  , PyMobile Assistance      , kivy.atx                  , defaut.png , For Assisting with Python Mobile Developments
 2,Rust           , Rust Assistance          , RustExpert.atx            , defaut.png , For Assisting with Rust Coding
