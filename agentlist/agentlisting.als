@@ -21,6 +21,7 @@
 1,Default        , Default Assistance       , Default.atx               , defaut.png , The Main Default Agent for most things
 1,General        , General Assisance        , General.atx               , defaut.png , For Simplied Formating Prompt very general
 1,SpellChecker   , Spelling and Grammer     , SpellCheck.atx            , defaut.png , For Spelling and grammer Checker
+1,ChartDesigner  , Chart Designer           , MermaidAssistant.atx      , defaut.png , For Designing Charts and Graphs
 
 @@ Technical Agents - This help with Technical System 
 @@ #################################################################################################################################

@@ -359,21 +359,23 @@ def text_to_speech(text):
 # #  08         GET AUDIO FUNCTION                   ##
 # #####################################################
 def get_audio(texttomp3, prefix, auid, VoiceCharacter):
+    ellLabsURL = "https://api.elevenlabs.io/v1/text-to-speech/"
     colorful_print("[FX-R] get audio (F08)", "magenta")
     ellskey = api11labs
     voiceid1 = "21m00Tcm4TlvDq8ikWAM"
     voiceid2 = "MF3mGyEYCl7XYWbV9V6O"
     voiceid3 = "ErXwobaYiN019PkySvjV"
+    
     CHUNK_SIZE = 1024
     
     if VoiceCharacter == "Rachel":
-        url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid1
+        url = ellLabsURL + voiceid1
 
     elif VoiceCharacter == "Emily":
-        url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid2
+        url = ellLabsURL + voiceid2
     
     elif VoiceCharacter == "Antoni":
-        url = "https://api.elevenlabs.io/v1/text-to-speech/" + voiceid3
+        url = ellLabsURL + voiceid3
 
     headers = {
         "Accept": "audio/mpeg",
