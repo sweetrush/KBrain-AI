@@ -1390,6 +1390,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     "Select Code Type",
                     (
                         "no-code",
+                        "mermaid",
                         "bash",
                         "c++",
                         "powershell",
@@ -1706,7 +1707,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             res01data = {
                         "role": "model", 
-                        "parts": [convo.last.text]
+                        "parts": [convo.text]
             }
 
             # res03data = {"role": "model", "parts": [systempromptadd]}
@@ -1732,7 +1733,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
         if activate_audio_output:
             with st.status("Cooking some Text Modificatio ..."):
-                modifyiedAudioText =  AIProcesss(convo.last.text)
+                modifyiedAudioText =  AIProcesss(convo.text)
 
         # Comment to Use the Toast as the Alert element
         st.success(successtext)
@@ -1740,26 +1741,26 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # Uncomment to use the toast as the Alert element
         # st.toast(":green["+successtext+"]", icon=None)
 
-        write_to_file(filename, convo.last.text)
-        st.session_state.lastchatoutput = convo.last.text
+        write_to_file(filename, convo.text)
+        st.session_state.lastchatoutput = convo.text
 
         write_to_historyfile("CH_", st.session_state.lastchatoutput, datetime.date.today().strftime("%A"), "_AI_", st.session_state.uaccount)
 
         # This Gets the Number of Tokens needed.
-        tokencount = model.count_tokens(convo.last.text)
+        tokencount = model.count_tokens(convo.text)
         tokencountsent = model.count_tokens(finalpromptstring)
-        tokensndrecd = model.count_tokens(convo.last.text+finalpromptstring)
+        tokensndrecd = model.count_tokens(convo.text+finalpromptstring)
 
         email_notification(
             "Miah AI info: "+st.session_state.uaccount+"  activity",
             "Activity Information \n\n Prompt Sent:"+ca+""
-            "\n\n\n"+convo.last.text+"\n\n"
+            "\n\n\n"+convo.text+"\n\n"
             )
         
         
 
         with st.chat_message("assistant"):
-            botmessage = convo.last.text
+            botmessage = convo.text
             
 
             #
