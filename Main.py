@@ -1345,9 +1345,15 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # )
         horizontal_line()
         with st.expander(emj_lightbulb + "Other Tools", expanded=False):
+
             st.page_link(
             "pages/Mathapp.py", label="Math Helper", icon=emj_help_ico, disabled=False
             )
+
+            st.page_link(
+            "pages/Codeapp.py", label="Codeapp Helper", icon=emj_help_ico, disabled=False
+            )
+
 
         about_the_developer()
 
