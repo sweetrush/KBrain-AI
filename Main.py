@@ -57,7 +57,7 @@ developer = "Bytewatchers Samoa with (SRCoder)"
 
 # AccessCode for Testing
 # accesscode_miah = "sodiuldfoiousdfj2o34lkj0o2134jollk;345ljk345]"
-accesscode_miah = "samoa@samoa@samoa"
+accesscode_miah = "samoa0samoa0samoa"
 
 # Definding Emoji's
 # #################################################
@@ -168,7 +168,7 @@ html_code2 = """
 ClientMainIP = components.html(
     html_code2,
     height=100,
-    key="my_component"  # This key is important for receiving the value
+    #key="my_component"  # This key is important for receiving the value
 )
 
 # Display the HTML and JavaScript in Streamlit
@@ -300,7 +300,6 @@ def write_to_file(filename, text):
 # #####################################################
 # #  05         Q_COMBINDER FUNCTION                 ##
 # #####################################################
-
 
 def question_combinder(additional_context, user_question):
     """Combines a user question with additional context.
