@@ -4,7 +4,7 @@ gTTS==2.5.1
 streamlit-extras==0.4.2
 google-generativeai==0.4.1
 SpeechRecognition==3.10.4
-streamlit==1.35.0
+streamlit==1.40.2
 pandas==2.1.4
 configparser==7.0.0
 requests==2.31.0
