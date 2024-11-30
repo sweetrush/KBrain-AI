@@ -50,7 +50,7 @@ import streamlit.components.v1 as components
 # of the Miah AI assistance
 # #################################################
 
-version = "3.0.7"
+version = "3.0.8"
 developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
@@ -137,15 +137,7 @@ async function getIP() {
 async function displayIP() {
     const ip = await getIP();
     document.getElementById('ip-address').textContent = ip;
-
-    window.parent.postMessage({
-            type: 'streamlit:setComponentValue',
-            value: ip
-        }, '*');
-
 }
-
-
 
 displayIP();
 </script>
@@ -163,13 +155,6 @@ html_code = """
 html_code2 = """
     <span id="ip-address"></span>
 """
-
-#Storing the IP:
-ClientMainIP = components.html(
-    html_code2,
-    height=100,
-    #key="my_component"  # This key is important for receiving the value
-)
 
 # Display the HTML and JavaScript in Streamlit
 
@@ -1775,7 +1760,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         email_notification(
             "Miah AI info: "+st.session_state.uaccount+"  activity",
             "Activity Information \n\n Prompt Sent:"+ca+""
-            "\n\n\n"+convo.last.text+"\n\n"+ClientMainIP+"\n\n"
+            "\n\n\n"+convo.last.text+"\n\n"
             )
         
         with st.chat_message("assistant"):
