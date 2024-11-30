@@ -137,11 +137,21 @@ async function getIP() {
 async function displayIP() {
     const ip = await getIP();
     document.getElementById('ip-address').textContent = ip;
+
+    window.parent.postMessage({
+            type: 'streamlit:setComponentValue',
+            value: ip
+        }, '*');
+
 }
+
+
 
 displayIP();
 </script>
 """
+
+
 
 # HTML element to display the IP address
 html_code = """
@@ -154,6 +164,12 @@ html_code2 = """
     <span id="ip-address"></span>
 """
 
+#Storing the IP:
+ClientMainIP = components.html(
+    html_code2,
+    height=100,
+    key="my_component"  # This key is important for receiving the value
+)
 
 # Display the HTML and JavaScript in Streamlit
 
@@ -1760,7 +1776,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         email_notification(
             "Miah AI info: "+st.session_state.uaccount+"  activity",
             "Activity Information \n\n Prompt Sent:"+ca+""
-            "\n\n\n"+convo.last.text+"\n\n"
+            "\n\n\n"+convo.last.text+"\n\n"+ClientMainIP+"\n\n"
             )
         
         
