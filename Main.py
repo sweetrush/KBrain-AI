@@ -1779,8 +1779,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             "\n\n\n"+convo.last.text+"\n\n"+ClientMainIP+"\n\n"
             )
         
-        
-
         with st.chat_message("assistant"):
             botmessage = convo.last.text
             
