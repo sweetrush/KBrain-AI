@@ -1,6 +1,7 @@
 [APIKEYS]
-#api = AIzaSyBDeE1KALtshDXH9lUcTKwY5wDrrTjQMKU
-api = AIzaSyCMJeKPAkDPuFc0e4ltj27Xhun1BkBREmw
+#api = AIzaSyBDeE1KALtshDXH9lUcTKwY5wDrrTjQMKU   //Old APIs
+#api = AIzaSyCMJeKPAkDPuFc0e4ltj27Xhun1BkBREmw   //Old APIs
+api = AIzaSyDUC1luPrPKNNcbWTu6N372-GqXeRYd2lA
 api_11labs = 996b7291764840fcaa1eace5d2361200
 api_mathGemini = AIzaSyBV7X7ctAKuanYnVIUdP6AGJOzY_d1P6JQ
 api_audioTextModifier = AIzaSyBjBZsTHv6H_IKxeOaHneDUXqEQ9szsLvw
