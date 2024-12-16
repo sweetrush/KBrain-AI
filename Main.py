@@ -329,7 +329,7 @@ def get_assistant_details(selection, listofAssistance, assistant):
     Args:
         selection: The selected assistant identifier.
         listofAssistance: A list of tuples containing assistant information.
-        assistant: A list of assistant objects.hdddddddddddddfrrjm  
+        assistant: A list of assistant objects 
 
     Returns:
     A tuple containing loadassistantcontext, assistantcontext, and fileloaded.
@@ -1040,6 +1040,7 @@ model_tokens = "8024"
 
 
 models = [
+    "gemini-2.0-flash-exp",
     "gemini-1.5-pro-latest",
     "gemini-1.5-pro-002",
     "gemini-1.5-pro-exp-0827",
@@ -1222,7 +1223,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     models[0],
                     models[1],
                     models[2],
-                    models[3]
+                    models[3],
+                    models[4]
                     ), index=0
 
             )
