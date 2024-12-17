@@ -50,7 +50,7 @@ import streamlit.components.v1 as components
 # of the Miah AI assistance
 # #################################################
 
-version = "3.0.8"
+version = "3.0.9"
 developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
@@ -1000,7 +1000,8 @@ def AIProcesss(TexttoProcess):
                     - Make it so that the flow of reading the text is natural
                     
                     """
-    model2 = genai.GenerativeModel("gemini-1.5-pro-latest")
+    ModeltoUse = "gemini-2.0-flash-exp"
+    model2 = genai.GenerativeModel(ModeltoUse)
     response = model2.generate_content(ModifyPrompt+TexttoProcess)
 
     return response.text
