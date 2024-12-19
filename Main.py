@@ -1045,6 +1045,7 @@ models = [
     "gemini-1.5-pro-latest",
     "gemini-1.5-pro-002",
     "gemini-1.5-pro-exp-0827",
+    "gemini-exp-1206",
     "gemini-1.5-flash-latest",
 ]
 
@@ -1225,7 +1226,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     models[1],
                     models[2],
                     models[3],
-                    models[4]
+                    models[4],
+                    models[5]
                     ), index=0
 
             )
