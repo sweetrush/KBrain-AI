@@ -1693,6 +1693,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     img = PIL.Image.open(uploaded_img)
                     colorful_print("[INCAL] Sending Prompt with Text and Image", "green")
                     convo.send_message([finalpromptstring, img])
+                elif inputmic:
+                    convo.send_message([finalpromptstring, inputmic])
                 else:
                     convo.send_message(finalpromptstring)
                     colorful_print("[INCAL] Sending Prompt with Text only", "green")
