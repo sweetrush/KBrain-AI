@@ -1382,7 +1382,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     with bottom():
         with st.expander(emj_pencil + "Extention Context", expanded=False):
 
-            tb1, tb2, tb3, tb4, tb5 = st.tabs([emj_notebook, emj_code, emj_clapper, emj_file, emj_down])
+            tb1, tb2, tb3, tb4, tb5, tb6 = st.tabs([emj_notebook, emj_code, emj_clapper, emj_file, emj_aaudio, emj_down])
 
             with tb1:
                 adcn = st.text_area(
@@ -1494,7 +1494,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     )
             # Other related Buttons
             #
+
             with tb5:
+                inputmic = st.audio_input("Record Audio for Context")
+                if inputmic:
+                    st.audio(inputmic)
+
+            with tb6:
                 (
                     col1,
                     col2,
