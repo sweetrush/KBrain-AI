@@ -1032,23 +1032,21 @@ def upload_to_gemini(uploaded_file, mime_type=None):
     # If mime_type wasn't provided, use the one from the uploaded file
     if mime_type is None:
         mime_type = uploaded_file.type
-        
-    # Read the file content
-    file_content = uploaded_file.read()
     
-    # Create a file-like object from the content
-    from io import BytesIO
-    file_obj = BytesIO(file_content)
+    # Read the file bytes
+    file_content = uploaded_file.getvalue()
     
-    # Set the name attribute to match the uploaded file
-    file_obj.name = uploaded_file.name
+    # For audio files, we need to create a dictionary with the required format
+    file_dict = {
+        "data": file_content,
+        "mime_type": mime_type
+    }
     
-    # Upload to Gemini
-    file = genai.upload_file(file_obj, mime_type=mime_type)
-    print(f"Uploaded file '{file.display_name}' as: {file.uri}")
+    # Upload to Gemini using the dictionary format
+    file = genai.upload_file(file_dict)
+    print(f"Uploaded file '{uploaded_file.name}' as: {file.uri}")
     st.write(file)
     return file
-
 
 #########################################################################
 #########################################################################
