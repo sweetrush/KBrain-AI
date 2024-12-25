@@ -1023,12 +1023,14 @@ def AIProcesss(TexttoProcess):
 #     st.write(file)
 #     return file
 
-def upload_to_gemini(audio_data, mime_type="audio/wav"):
-    if audio_data is None:
+def upload_to_gemini(uploaded_file, mime_type="audio/wav"):
+    if uploaded_file is None:
         return None
         
     with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file:
-        temp_file.write(audio_data)
+        # Read the bytes from the UploadedFile object
+        audio_bytes = uploaded_file.read()
+        temp_file.write(audio_bytes)
         temp_file.flush()
         
         try:
@@ -1037,7 +1039,7 @@ def upload_to_gemini(audio_data, mime_type="audio/wav"):
         except Exception as e:
             st.error(f"Error uploading file: {str(e)}")
             return None
-
+            
 #########################################################################
 #########################################################################
 #########################################################################
