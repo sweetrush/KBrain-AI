@@ -1751,9 +1751,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # systempromptadd = "Your name is Miah, You are named after my son"
 
 
-
-
-
             res00data = {
                         "role": "user", 
                         "parts": [ca]
