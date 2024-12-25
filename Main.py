@@ -20,6 +20,7 @@ from streamlit_extras.bottom_container import bottom
 import smtplib
 import markdown
 import random
+import tempfile
 import string
 from email.message import EmailMessage
 from email.mime.text import MIMEText
@@ -1022,31 +1023,20 @@ def AIProcesss(TexttoProcess):
 #     st.write(file)
 #     return file
 
-def upload_to_gemini(uploaded_file, mime_type=None):
-    """Uploads the given file to Gemini.
-    
-    Args:
-        uploaded_file: A Streamlit UploadedFile object
-        mime_type: Optional MIME type string
-    """
-    # If mime_type wasn't provided, use the one from the uploaded file
-    if mime_type is None:
-        mime_type = uploaded_file.type
-    
-    # Read the file bytes
-    file_content = uploaded_file.getvalue()
-    
-    # For audio files, we need to create a dictionary with the required format
-    file_dict = {
-        "data": file_content,
-        "mime_type": mime_type
-    }
-    
-    # Upload to Gemini using the dictionary format
-    file = genai.upload_file(file_dict)
-    print(f"Uploaded file '{uploaded_file.name}' as: {file.uri}")
-    st.write(file)
-    return file
+def upload_to_gemini(audio_data, mime_type="audio/wav"):
+    if audio_data is None:
+        return None
+        
+    with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file:
+        temp_file.write(audio_data)
+        temp_file.flush()
+        
+        try:
+            file = genai.upload_file(temp_file.name)
+            return file
+        except Exception as e:
+            st.error(f"Error uploading file: {str(e)}")
+            return None
 
 #########################################################################
 #########################################################################
