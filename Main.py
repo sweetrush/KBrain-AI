@@ -19,6 +19,8 @@ from streamlit_extras.bottom_container import bottom
 
 import smtplib
 import markdown
+import random
+import string
 from email.message import EmailMessage
 from email.mime.text import MIMEText
 from st_audiorec import st_audiorec
@@ -1007,6 +1009,18 @@ def AIProcesss(TexttoProcess):
     return response.text
 
 
+# #####################################################
+# #  33         Gemini AI Function Call              ##
+# #####################################################
+def upload_to_gemini(path, mime_type=None):
+    """Uploads the given file to Gemini.
+
+    See https://ai.google.dev/gemini-api/docs/prompting_with_media
+    """
+    file = genai.upload_file(path, mime_type=mime_type)
+    print(f"Uploaded file '{file.display_name}' as: {file.uri}")
+    return file
+
 #########################################################################
 #########################################################################
 #########################################################################
@@ -1384,6 +1398,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             tb1, tb2, tb3, tb4, tb5, tb6 = st.tabs([emj_notebook, emj_code, emj_clapper, emj_file, emj_aaudio, emj_down])
 
+            ## THIS IS THE ADDITIONAL CONTEXT SECTION
+            ##########################################
             with tb1:
                 adcn = st.text_area(
                     label="Additional Context", height=100, key="KK09923"
@@ -1396,6 +1412,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 # if audio_cx_context:
                 #     audioin_record()
 
+            ## THIS IS THE CODE CONTEXT SECTION 
+            ##########################################
             with tb2:
                 code = st.selectbox(
                     "Select Code Type",
@@ -1445,6 +1463,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 else:
                     codewrap = "```" + code + "\n " + codearea + " \n```"
 
+            ## THIS IS THE YOUTUBE CONTEXT SECTION
+            ##########################################
+
             with tb3:
                 yytab1, yytab2 = st.tabs(["URL", "WV"])
 
@@ -1464,6 +1485,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     if youtubesac:
                         st.video(youtubeURL)  # #
 
+            ## THIS IS THE FILE UPLOAD CONTEXT SECTION
+            ###########################################
             with tb4:
                 ytb1, ytb2, ytb3 = st.tabs(["PDF", "CSV", "IMG"])
 
@@ -1495,10 +1518,16 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # Other related Buttons
             #
 
+            ## THIS IS THE AUDIO INPUT CONTEXT SECTION 
+            ##############################################
             with tb5:
                 inputmic = st.audio_input("Record Audio for Context")
                 if inputmic:
                     st.audio(inputmic)
+                    rstringforFilename = random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+                    filesaudio = [
+                        upload_to_gemini(rstringforFilename+datetag_string+".wav", mime_type="audio/wav"),
+                        ]
 
             with tb6:
                 (
@@ -1547,6 +1576,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         "top_p": float(topp),
         "top_k": int(topk),
         "max_output_tokens": int(mot),
+        "response_mime_type": "text/plain",
     }
 
     safety_settings = [
@@ -1626,9 +1656,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 st.image(uploaded_img, caption=None, width=None)
 
             # Storing User Information to the Session Variable
-            st.session_state.chathistory.append(
-                {"role": "User", "content": usermessage}
-            )
+            if inputmic:
+                st.session_state.chathistory.append(
+                    {"role": "User", "parts": [fileaudio[0],"content": usermessage,]}
+                    )    
+            else: 
+                st.session_state.chathistory.append(
+                {"role": "User", "content": usermessage})
 
         chars_tobe_replaced = " ,."
         chars_swap = ""  # Noted that this will make the space as the char swap
