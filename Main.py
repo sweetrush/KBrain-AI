@@ -1658,11 +1658,12 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # Storing User Information to the Session Variable
             if inputmic:
                 st.session_state.chathistory.append(
-                    {"role": "User", "parts": [fileaudio[0],"content": usermessage,]}
-                    )    
-            else: 
+                    {"role": "User", "parts": [filesaudio[0], usermessage,]}
+                    )   
+            else:
                 st.session_state.chathistory.append(
-                {"role": "User", "content": usermessage})
+                    {"role": "User", "content": usermessage}
+                )
 
         chars_tobe_replaced = " ,."
         chars_swap = ""  # Noted that this will make the space as the char swap
