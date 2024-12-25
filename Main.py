@@ -1039,7 +1039,7 @@ def upload_to_gemini(uploaded_file, mime_type="audio/wav"):
         except Exception as e:
             st.error(f"Error uploading file: {str(e)}")
             return None
-            
+
 #########################################################################
 #########################################################################
 #########################################################################
@@ -1543,7 +1543,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 inputmic = st.audio_input("Record Audio for Context")
                 if inputmic:
                     # st.write("FileName: "+inputmic)
-                    st.audio(inputmic)
                     rstringforFilename = random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
                     filesaudio = [
                         upload_to_gemini(inputmic, mime_type="audio/wav"),
