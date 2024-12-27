@@ -1693,11 +1693,15 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 st.image(uploaded_img, caption=None, width=None)
 
             # Storing User Information to the Session Variable
-            if inputmic:
+            # if inputmic:
+            #     st.session_state.chathistory.append(
+            #         {"role": "User", "parts": [filesaudio[0], usermessage,]}
+            #         )   
+            else:
                 st.session_state.chathistory.append(
                     {"role": "User", "parts": [filesaudio[0], usermessage,]}
-                    )   
-            else:
+                    )
+
                 st.session_state.chathistory.append(
                     {"role": "User", "content": usermessage}
                 )
