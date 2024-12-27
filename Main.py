@@ -1558,6 +1558,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             ## THIS IS THE AUDIO INPUT CONTEXT SECTION 
             ##############################################
             with tb5:
+                global inputmic
+                
                 inputmic = st.audio_input("Record Audio for Context")
                 if inputmic:
                     # st.write("FileName: "+inputmic)
@@ -1693,15 +1695,11 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 st.image(uploaded_img, caption=None, width=None)
 
             # Storing User Information to the Session Variable
-            # if inputmic:
-            #     st.session_state.chathistory.append(
-            #         {"role": "User", "parts": [filesaudio[0], usermessage,]}
-            #         )   
-            else:
+            if inputmic:
                 st.session_state.chathistory.append(
                     {"role": "User", "parts": [filesaudio[0], usermessage,]}
-                    )
-
+                    )   
+            else:
                 st.session_state.chathistory.append(
                     {"role": "User", "content": usermessage}
                 )
