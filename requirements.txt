@@ -2,7 +2,7 @@ youtube-transcript-api==0.6.2
 pypdf==4.2.0
 gTTS==2.5.1
 numpy
-wave=0.0.2
+wave==0.0.2
 streamlit-extras==0.4.2
 google-generativeai==0.8.3
 SpeechRecognition==3.10.4
