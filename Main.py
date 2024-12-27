@@ -1747,6 +1747,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 if inputmic:
                     convo.send_message([finalpromptstring, inputmic])
+                else:
+                    convo.send_message(finalpromptstring)
+                    colorful_print("[INCAL] Sending Prompt with Text only", "green")
 
                 # Uncomment for Debugging for purpose.
                 #
