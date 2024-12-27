@@ -1060,6 +1060,54 @@ def upload_to_gemini(uploaded_file):
         st.error(f"Error uploading file: {str(e)}")
         return None
 
+# #####################################################
+# #  34FX       Gemini AI Function Call              ##
+# #####################################################
+
+def convert_audio_to_text(audio_file):
+    """
+    Convert audio file to text using speech recognition.
+    
+    Parameters:
+    -----------
+    audio_file : UploadedFile or str
+        The audio file to transcribe (can be file path or Streamlit UploadedFile)
+        
+    Returns:
+    --------
+    str
+        The transcribed text
+    """
+    # Initialize recognizer
+    recognizer = sr.Recognizer()
+    
+    try:
+        # If it's a Streamlit UploadedFile, we need to handle it differently
+        if hasattr(audio_file, 'read'):
+            # Read the audio data
+            audio_bytes = audio_file.read()
+            
+            # Convert to AudioFile that speech_recognition can use
+            with sr.AudioFile(io.BytesIO(audio_bytes)) as source:
+                # Record the audio data
+                audio_data = recognizer.record(source)
+        else:
+            # Handle regular file path
+            with sr.AudioFile(audio_file) as source:
+                # Record the audio data
+                audio_data = recognizer.record(source)
+        
+        # Perform the transcription
+        text = recognizer.recognize_google(audio_data)
+        return text
+        
+    except sr.UnknownValueError:
+        raise Exception("Speech recognition could not understand the audio")
+    except sr.RequestError as e:
+        raise Exception(f"Could not request results from speech recognition service; {str(e)}")
+    except Exception as e:
+        raise Exception(f"Error processing audio: {str(e)}")
+
 #########################################################################
 #########################################################################
 #########################################################################
@@ -1563,11 +1611,17 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 global inputmic, audiorecordToggle
 
                 audiorecordToggle = st.toggle("Userecording")
+                audiotoTextToggle = st.toggle("Audio-to-Text")
                 inputmic = st.audio_input("Record Audio for Context")
                 if inputmic:
                     filesaudio = [
                         upload_to_gemini(inputmic),
                         ]
+
+                if audiotoTextToggle:
+                    with st.expander("audio Transcript"):
+                        audioTextinput = convert_audio_to_text(filenameaudio)
+                        st.write(audioTextinput)
 
             with tb6:
                 (
