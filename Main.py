@@ -1023,14 +1023,12 @@ def AIProcesss(TexttoProcess):
 #     st.write(file)
 #     return file
 
-def upload_to_gemini(uploaded_file, mime_type="audio/wav"):
+def upload_to_gemini(uploaded_file, typemime):
     if uploaded_file is None:
         return None
-
-    upld_in = uploaded_file.read()
             
     try:
-        file = genai.upload_file(path=upld_in, mime_type="audio/wav")
+        file = genai.upload_file(path=uploaded_file, mime_type=typemime)
         st.write(file)
         return file
     except Exception as e:
