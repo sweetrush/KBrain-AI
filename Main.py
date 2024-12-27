@@ -1708,9 +1708,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
         chars_tobe_replaced = " ,."
         chars_swap = ""  # Noted that this will make the space as the char swap
-
         filename = replace_chars(str(inputquestion), chars_tobe_replaced, chars_swap)
-
         filename = filename[:20]
         colorful_print("[info] FileName is: " + filename + "", "white")
 
@@ -1944,10 +1942,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 {"role": "assistant", "content": botmessage}
             )
 
-    # if activate_audio_output:
-    #     st.toast(":blue[Audio] :green[activated]")
-    # else:
-    #     st.toast(":blue[Audio] :red[deactivated]")
+
 if logout:
     colorful_print("[Info] User is loging out", "blue")
     st.session_state.accesscode = ""
@@ -1988,7 +1983,7 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
 
     ltnewsapp = (
                 """
-                ### Lastest Update: New Models Now available
+                ### Lastest Update: New Experimental Models Now available for Testing
                 - ###### :green[New Model from Google : Gemini 1.5 Pro Experiment 0827]
                 - ###### :green[New Model from Google : Gemini 1.5 Pro Experiment 0801]
                 """
