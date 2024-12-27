@@ -1560,8 +1560,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             ## THIS IS THE AUDIO INPUT CONTEXT SECTION 
             ##############################################
             with tb5:
-                global inputmic
+                global inputmic, audioin_record
 
+                audiorecordToggle = st.toggle("Userecording")
                 inputmic = st.audio_input("Record Audio for Context")
                 if inputmic:
                     # st.write("FileName: "+inputmic)
@@ -1697,7 +1698,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 st.image(uploaded_img, caption=None, width=None)
 
             # Storing User Information to the Session Variable
-            if inputmic:
+            if audiorecordToggle:
                 st.session_state.chathistory.append(
                     {"role": "User", "parts": [filenameaudio, usermessage,]}
                     )   
@@ -1767,7 +1768,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     img = PIL.Image.open(uploaded_img)
                     colorful_print("[INCAL] Sending Prompt with Text and Image", "green")
                     convo.send_message([finalpromptstring, img])
-                elif inputmic:
+                elif audiorecordToggle:
                     convo.send_message([finalpromptstring, filesaudio[0]])
                 else:
                     convo.send_message(finalpromptstring)
