@@ -1564,12 +1564,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 audiorecordToggle = st.toggle("Userecording")
                 inputmic = st.audio_input("Record Audio for Context")
-                # if inputmic:
-                #     # st.write("FileName: "+inputmic)
-                #     # rstringforFilename = random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-                #     filesaudio = [
-                #         upload_to_gemini(inputmic),
-                #         ]
+                if inputmic:
+                    filesaudio = [
+                        upload_to_gemini(inputmic),
+                        ]
 
             with tb6:
                 (
@@ -1697,11 +1695,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             if uploaded_img:
                 st.image(uploaded_img, caption=None, width=None)
 
-            # Storing User Information to the Session Variable
-            if audiorecordToggle:
-                st.session_state.chathistory.append(
-                    {"role": "User", "parts": [filenameaudio, usermessage,]}
-                    )   
+            # Storing User Information to the Session Variable 
             else:
                 st.session_state.chathistory.append(
                     {"role": "User", "content": usermessage}
