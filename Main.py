@@ -1028,7 +1028,7 @@ def upload_to_gemini(uploaded_file, typemime):
         return None
             
     try:
-        file = genai.upload_file(path=uploaded_file, mime_type=typemime)
+        file = genai.upload_file(path=uploaded_file, mime_type="audio/wav")
         st.write(file)
         return file
     except Exception as e:
