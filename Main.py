@@ -1560,7 +1560,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             ## THIS IS THE AUDIO INPUT CONTEXT SECTION 
             ##############################################
             with tb5:
-                global inputmic, audioin_record
+                global inputmic, audiorecordToggle
 
                 audiorecordToggle = st.toggle("Userecording")
                 inputmic = st.audio_input("Record Audio for Context")
