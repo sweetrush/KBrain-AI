@@ -1023,7 +1023,7 @@ def AIProcesss(TexttoProcess):
 #     st.write(file)
 #     return file
 
-def upload_to_gemini(uploaded_file, typemime):
+def upload_to_gemini(uploaded_file):
     if uploaded_file is None:
         return None
             
@@ -1960,7 +1960,7 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
 
     ltnewsapp = (
                 """
-                ### :white[Lastest Update: New Models Now available]
+                ### Lastest Update: New Models Now available
                 - ###### :green[New Model from Google : Gemini 1.5 Pro Experiment 0827]
                 - ###### :green[New Model from Google : Gemini 1.5 Pro Experiment 0801]
                 """
