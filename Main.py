@@ -1014,7 +1014,7 @@ def AIProcesss(TexttoProcess):
 
 
 # #####################################################
-# #  33         Gemini AI Function Call              ##
+# #  34FX       Gemini AI Function Call              ##
 # #####################################################
 # def upload_to_gemini(path, mime_type=None):
 #     """Uploads the given file to Gemini.
@@ -1050,7 +1050,7 @@ def upload_to_gemini(uploaded_file):
         wav_file.writeframes(audio_array_int.tobytes())
 
     try:
-        file = genai.upload_file(path=filenameaudio, mime_type="audio/wav")
+        file = genai.upload_file(path=filenameaudio)
         st.write()
         st.write(file)
         return file
