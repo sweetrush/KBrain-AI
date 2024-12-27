@@ -40,6 +40,9 @@ import re
 import hashlib
 import time
 import streamlit.components.v1 as components
+import numpy as np
+import wave
+import io
 
 
 
@@ -53,14 +56,14 @@ import streamlit.components.v1 as components
 # of the Miah AI assistance
 # #################################################
 
-version = "3.0.9"
+version = "3.1.0"
 developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
 
 # AccessCode for Testing
 # accesscode_miah = "sodiuldfoiousdfj2o34lkj0o2134jollk;345ljk345]"
-accesscode_miah = "samoa0samoa0samoa"
+accesscode_miah = "samoa00123"
 
 # Definding Emoji's
 # #################################################
@@ -1026,9 +1029,29 @@ def AIProcesss(TexttoProcess):
 def upload_to_gemini(uploaded_file):
     if uploaded_file is None:
         return None
-            
+
+    filenameaudio = "ai_audio/GenAudio.wav"
+    sample_rate = 44100
+
+        # Convert audio bytes to numpy array
+    audio_array = np.frombuffer(audio_bytes, dtype=np.float32)
+    
+    # Scale the float32 values to int16 range
+    audio_array_int = (audio_array * 32767).astype(np.int16)
+    
+    # Create WAV file
+    with wave.open(filenameaudio, 'wb') as wav_file:
+        # Set parameters
+        wav_file.setnchannels(1)  # Mono audio
+        wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
+        wav_file.setframerate(sample_rate)
+        
+        # Write audio data
+        wav_file.writeframes(audio_array_int.tobytes())
+
     try:
-        file = genai.upload_file(path=uploaded_file, mime_type="audio/wav")
+        file = genai.upload_file(path=filenameaudio, mime_type="audio/wav")
+        st.write()
         st.write(file)
         return file
     except Exception as e:
