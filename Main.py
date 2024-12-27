@@ -1026,9 +1026,11 @@ def AIProcesss(TexttoProcess):
 def upload_to_gemini(uploaded_file, mime_type="audio/wav"):
     if uploaded_file is None:
         return None
+
+    upld_in = uploaded_file.read()
             
     try:
-        file = genai.upload_file(path=uploaded_file, mime_type="audio/wav")
+        file = genai.upload_file(path=upld_in, mime_type="audio/wav")
         return file
     except Exception as e:
         st.error(f"Error uploading file: {str(e)}")
@@ -1539,7 +1541,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     # st.write("FileName: "+inputmic)
                     # rstringforFilename = random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
                     filesaudio = [
-                        upload_to_gemini(inputmic.read(), mime_type="audio/wav"),
+                        upload_to_gemini(inputmic, mime_type="audio/wav"),
                         ]
 
             with tb6:
