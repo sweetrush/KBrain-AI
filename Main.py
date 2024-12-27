@@ -1033,8 +1033,8 @@ def upload_to_gemini(uploaded_file):
     filenameaudio = "ai_audio/GenAudio.wav"
     sample_rate = 44100
 
-        # Convert audio bytes to numpy array
-    audio_array = np.frombuffer(audio_bytes, dtype=np.float32)
+    # Convert audio bytes to numpy array
+    audio_array = np.frombuffer(uploaded_file, dtype=np.float32)
     
     # Scale the float32 values to int16 range
     audio_array_int = (audio_array * 32767).astype(np.int16)
