@@ -1030,6 +1030,8 @@ def upload_to_gemini(uploaded_file):
     if uploaded_file is None:
         return None
 
+    global filenameaudio
+
     filenameaudio = "ai_audio/GenAudio.wav"
     sample_rate = 44100
 
@@ -1559,7 +1561,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             ##############################################
             with tb5:
                 global inputmic
-                
+
                 inputmic = st.audio_input("Record Audio for Context")
                 if inputmic:
                     # st.write("FileName: "+inputmic)
@@ -1697,7 +1699,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # Storing User Information to the Session Variable
             if inputmic:
                 st.session_state.chathistory.append(
-                    {"role": "User", "parts": [filesaudio[0], usermessage,]}
+                    {"role": "User", "parts": [filenameaudio, usermessage,]}
                     )   
             else:
                 st.session_state.chathistory.append(
@@ -1767,12 +1769,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     img = PIL.Image.open(uploaded_img)
                     colorful_print("[INCAL] Sending Prompt with Text and Image", "green")
                     convo.send_message([finalpromptstring, img])
+                elif inputmic:
+                    convo.send_message([finalpromptstring, filesaudio[0]])
                 else:
                     convo.send_message(finalpromptstring)
                     colorful_print("[INCAL] Sending Prompt with Text only", "green")
 
-                # if inputmic:
-                #     convo.send_message([finalpromptstring, ])
+                
                 # else:
                 #     convo.send_message(finalpromptstring)
                 #     colorful_print("[INCAL] Sending Prompt with Text only", "green")
