@@ -1537,9 +1537,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 inputmic = st.audio_input("Record Audio for Context")
                 if inputmic:
                     # st.write("FileName: "+inputmic)
-                    rstringforFilename = random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+                    # rstringforFilename = random_string = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
                     filesaudio = [
-                        upload_to_gemini(inputmic, mime_type="audio/wav"),
+                        upload_to_gemini(inputmic.read(), mime_type="audio/wav"),
                         ]
 
             with tb6:
