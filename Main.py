@@ -1061,7 +1061,7 @@ def upload_to_gemini(uploaded_file):
         return None
 
 # #####################################################
-# #  34FX       Gemini AI Function Call              ##
+# #  35FX      Converting Audio Text                 ##
 # #####################################################
 
 def convert_audio_to_text(audio_file):
@@ -1619,7 +1619,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         ]
 
                 if audiotoTextToggle:
-                    audioTextinput = convert_audio_to_text(filenameaudio)
+                    audioTextinput = convert_audio_to_text(inputmic)
                     st.write(audioTextinput)
 
             with tb6:
