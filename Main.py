@@ -1619,9 +1619,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         ]
 
                 if audiotoTextToggle:
-                    with st.expander("audio Transcript"):
-                        audioTextinput = convert_audio_to_text(filenameaudio)
-                        st.write(audioTextinput)
+                    audioTextinput = convert_audio_to_text(filenameaudio)
+                    st.write(audioTextinput)
 
             with tb6:
                 (
