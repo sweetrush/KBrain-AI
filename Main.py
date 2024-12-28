@@ -1142,6 +1142,8 @@ model_tokens = "8024"
 
 
 models = [
+    "gemini-2.0-flash-thinking-exp"
+    "gemini-2.0-flash-thinking-exp-1219"
     "gemini-2.0-flash-exp",
     "gemini-1.5-pro-latest",
     "gemini-1.5-pro-002",
@@ -1328,7 +1330,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     models[2],
                     models[3],
                     models[4],
-                    models[5]
+                    models[5],
+                    models[6],
+                    models[7]
                     ), index=0
 
             )
