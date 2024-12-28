@@ -1443,7 +1443,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         #             PAGE MENU ON THE SIDE BAR FOR OTHER FEATURES
         # 
         # #####################################################################
-        horizontal_line()
+        # horizontal_line()
         st.page_link(
             "pages/help.py", label="Help Guide", icon=emj_help_ico, disabled=False
         )
@@ -1623,7 +1623,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         ]
 
                 if audiotoTextToggle:
-                    audioTextinput = convert_audio_to_text(inputmic)
+                    audioTextinput = convert_audio_to_text(filenameaudio)
                     st.write(audioTextinput)
 
             with tb6:
