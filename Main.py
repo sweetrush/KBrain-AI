@@ -2037,8 +2037,10 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
     ltnewsapp = (
                 """
                 ### Lastest Update: New Experimental Models Now available for Testing
-                - ###### :green[New Model from Google : Gemini 1.5 Pro Experiment 0827]
-                - ###### :green[New Model from Google : Gemini 1.5 Pro Experiment 0801]
+                - ###### :green[New Model] from Google : gemini-2.0-flash-thinking-exp-1219
+                - ###### :green[New Model] from Google : gemini-2.0-flash-thinking-exp
+                - ###### :green[New Model] from Google : Gemini 1.5 Pro Experiment 0827
+                - ###### :green[New Model] from Google : Gemini 1.5 Pro Experiment 0801
                 """
             )
 
