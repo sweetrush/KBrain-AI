@@ -1052,7 +1052,7 @@ def upload_to_gemini(uploaded_file):
         wav_file.writeframes(audio_array_int.tobytes())
 
     try:
-        file = genai.upload_file(path=filenameaudio)
+        file = genai.upload_file(filenameaudio)
         st.write()
         st.write(file)
         return file
@@ -1821,6 +1821,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     convo.send_message([finalpromptstring, img])
                 elif audiorecordToggle:
                     convo.send_message([finalpromptstring, filesaudio[0]])
+                    colorful_print("[INCAL] File to been uploaded"+filesaudio[0], "blue")
                 else:
                     convo.send_message(finalpromptstring)
                     colorful_print("[INCAL] Sending Prompt with Text only", "green")
