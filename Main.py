@@ -1630,7 +1630,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         ]
 
                 if audiotoTextToggle:
-                    audioTextinput = wisper_audio_to_text(filenameaudio)
+                    audioTextinput = convert_audio_to_text(filenameaudio)
                     st.write(audioTextinput)
 
             with tb6:
