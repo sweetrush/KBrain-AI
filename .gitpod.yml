@@ -7,6 +7,7 @@
 tasks:
   - init: | 
       pip install -r requirements.txt
+      apt-get install ffmpeg
       mkdir -p ~/.streamlit/
       mkdir -p output/
       mkdir -p output/gemini_out

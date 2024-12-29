@@ -42,6 +42,7 @@ import time
 import streamlit.components.v1 as components
 import numpy as np
 import wave
+import whisper
 import io
 
 
@@ -1107,6 +1108,12 @@ def convert_audio_to_text(audio_file):
         raise Exception(f"Could not request results from speech recognition service; {str(e)}")
     except Exception as e:
         raise Exception(f"Error processing audio: {str(e)}")
+
+
+def wisper_audio_to_text(audio_file):
+    model = whisper.load_model('base')
+    result = model.transcribe(audio_file, fp16=False)
+    return result
 
 #########################################################################
 #########################################################################
