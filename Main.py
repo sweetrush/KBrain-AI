@@ -109,7 +109,7 @@ emj_file_folder = " 📁 "
 emj_clapper = " 🎬 "          
 
 
-devmode = 0
+devmode = 1
 apptile = ""
 debprint = 0
 
