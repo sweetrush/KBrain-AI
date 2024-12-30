@@ -127,7 +127,7 @@ if devmode == 1:
 else:
     st.set_page_config(
         page_title="Miah AI ",
-        page_icon=":tada:",
+        page_icon=emj_clamper,
         layout="wide"
         )
 
