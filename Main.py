@@ -22,6 +22,9 @@ import markdown
 import random
 import tempfile
 import string
+import pypandoc
+import os
+from pathlib import Path
 # from email.message import EmailMessage
 from email.mime.text import MIMEText
 from st_audiorec import st_audiorec
@@ -35,7 +38,6 @@ import PIL.Image
 import requests
 import logging
 import datetime
-import os
 import re
 import hashlib
 import time
@@ -109,7 +111,7 @@ emj_file_folder = " 📁 "
 emj_clapper = " 🎬 "          
 
 
-devmode = 0
+devmode = 1
 apptile = ""
 debprint = 0
 
@@ -127,7 +129,7 @@ if devmode == 1:
 else:
     st.set_page_config(
         page_title="Miah AI ",
-        page_icon=":tada:",
+        page_icon=emj_clamper,
         layout="wide"
         )
 
@@ -1114,6 +1116,50 @@ def wisper_audio_to_text(audio_file):
     model = whisper.load_model('base')
     result = model.transcribe(audio_file, fp16=False)
     return result
+
+
+# #####################################################
+# #  36FX      Converting Audio Text                 ##
+# #####################################################
+
+
+def convert_md_to_docx(md_file):
+    """
+    Convert a Markdown file to DOCX format using pypandoc.
+    
+    Args:
+        md_file: Uploaded file object from Streamlit
+    Returns:
+        Path to the generated DOCX file
+    """
+    try:
+        # Create a temporary directory to store our files
+        with tempfile.TemporaryDirectory() as temp_dir:
+            # Save the uploaded markdown file
+            temp_md_path = Path(temp_dir) / "input.md"
+            temp_docx_path = Path(temp_dir) / "output.docx"
+            
+            # Write the content of the uploaded file
+            with open(temp_md_path, "wb") as f:
+                f.write(md_file.getvalue())
+            
+            # Convert markdown to docx using pypandoc
+            output = pypandoc.convert_file(
+                str(temp_md_path),
+                'docx',
+                outputfile=str(temp_docx_path),
+                format='markdown'
+            )
+            
+            # Read the generated file
+            with open(temp_docx_path, "rb") as f:
+                docx_data = f.read()
+                
+            return docx_data
+            
+    except Exception as e:
+        st.error(f"An error occurred during conversion: {str(e)}")
+        return None
 
 #########################################################################
 #########################################################################
