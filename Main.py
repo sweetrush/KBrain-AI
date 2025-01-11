@@ -7,6 +7,10 @@
 #
 # Definding Imported Libaries for the Program
 # #################################################
+
+# The Folling Line below Disables the Long text Warning in Flake 8
+# flake8: noqa: E501
+
 from youtube_transcript_api import YouTubeTranscriptApi
 from colorama import Fore, Style
 # from streamlit_gsheets import GSheetsConnection 
@@ -153,8 +157,6 @@ displayIP();
 </script>
 """
 
-
-
 # HTML element to display the IP address
 html_code = """
 <div>
@@ -289,7 +291,6 @@ def write_to_file(filename, text):
             file.write(text + "\n")  # Add a newline at the end
     except OSError as e:
         colorful_print(f"[Error] Error writing to file: {e}", "red")
-
 
 
 # #####################################################
@@ -857,9 +858,9 @@ def colorful_print(text: str, color: str) -> None:
 # #####################################################
 # Check this function for removal 
 # 
-def tokencounter(text):
-    nltk.download('punkt')
-    return len(word_tokenize(text))
+# def tokencounter(text):
+#     nltk.download('punkt')
+#     return len(word_tokenize(text))
 
 
 # #####################################################
@@ -1159,12 +1160,14 @@ def convert_md_to_docx(md_file):
                 outputfile=str(temp_docx_path),
                 format='markdown'
             )
-            
+
+            print(output)
+
             # Read the generated file
             with open(temp_docx_path, "rb") as f:
                 docx_data = f.read()
                 
-            return docx_data
+            return docx_data 
             
     except Exception as e:
         st.error(f"An error occurred during conversion: {str(e)}")
