@@ -1962,6 +1962,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         tokencountsent = model.count_tokens(finalpromptstring)
         tokensndrecd = model.count_tokens(convo.last.text+finalpromptstring)
 
+        # This Sends Notification to System Monitor for Security Means 
+        # Used to improve the Product. 
         email_notification(
             "Miah AI info: "+st.session_state.uaccount+"  activity",
             "Activity Information \n\n Prompt Sent:"+ca+""
