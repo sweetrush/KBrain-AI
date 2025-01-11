@@ -373,6 +373,7 @@ def get_audio(texttomp3, prefix, auid, VoiceCharacter):
     ellLabsURL = "https://api.elevenlabs.io/v1/text-to-speech/"
     colorful_print("[FX-R] get audio (F08)", "magenta")
     ellskey = api11labs
+    CHUNK_SIZE = 1024
 
     try:
         # Open and read the JSON file
@@ -1526,7 +1527,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             st.page_link(
             "pages/Codeapp.py", label="Codeapp Helper", icon=emj_help_ico, disabled=False
             )
-
 
         about_the_developer()
 
