@@ -1485,7 +1485,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 formatted_names = ','.join(f'"{name}"' for name in voice_names)
                 
                 AudioCharacter = st.selectbox("Select Character",
-                                               (formatted_names), index=0)
+                                            (voice_names),
+                                            index=0
+                                            )
                 activate_audio_output002 = st.toggle(
                     emj_aaudio + "Audio(2):", value=False, help="Active Audio GTTs"
                 )
