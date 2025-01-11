@@ -24,8 +24,23 @@ header   {visibility: hidden;}
   border-style: solid;
   border-width: 4px;
   border-color: ST_CSS_CODE001;
-  border-radius: 2rem;
+  border-radius: 3rem;
 }
+
+/* For the Sidebar Background Color */
+.st-emotion-cache-6qob1r {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(21, 19, 18);
+  overflow: auto;
+}
+
+/* For the Text Box Color */
+.st-by {
+  background-color: #131312;
+}
+
 
 /*These are the Page Menu Inserted by Streamlit*/
 .st-emotion-cache-1ekxtbt{
