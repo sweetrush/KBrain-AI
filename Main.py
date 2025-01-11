@@ -115,7 +115,6 @@ emj_clapper = " 🎬 "
 devmode = 1
 apptile = ""
 debprint = 0
-voiceid = [][]
 
 # This Defines how many Agents can be loaded from the
 # Agent list
@@ -1479,15 +1478,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     )
                 else:
                     activate_audio_output = False
-
-                # Get all the voice names (keys) from the dictionary
-                voice_names = list(voiceid.keys())
-
-                # Format them into the string with quotes and commas
-                formatted_names = ','.join(f'"{name}"' for name in voice_names)
                 
                 AudioCharacter = st.selectbox("Select Character",
-                                            (voice_names),
+                                    ({"Rachel", "Emily", "Antoni", "Brian"}),
                                             index=0
                                             )
                 activate_audio_output002 = st.toggle(
