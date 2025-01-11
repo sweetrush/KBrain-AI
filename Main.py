@@ -24,6 +24,7 @@ import tempfile
 import string
 import pypandoc
 import os
+import json
 from pathlib import Path
 # from email.message import EmailMessage
 from email.mime.text import MIMEText
@@ -371,20 +372,24 @@ def get_audio(texttomp3, prefix, auid, VoiceCharacter):
     ellLabsURL = "https://api.elevenlabs.io/v1/text-to-speech/"
     colorful_print("[FX-R] get audio (F08)", "magenta")
     ellskey = api11labs
-    voiceid1 = "21m00Tcm4TlvDq8ikWAM"
-    voiceid2 = "MF3mGyEYCl7XYWbV9V6O"
-    voiceid3 = "ErXwobaYiN019PkySvjV"
-    
-    CHUNK_SIZE = 1024
-    
-    if VoiceCharacter == "Rachel":
-        url = ellLabsURL + voiceid1
 
-    elif VoiceCharacter == "Emily":
-        url = ellLabsURL + voiceid2
-    
-    elif VoiceCharacter == "Antoni":
-        url = ellLabsURL + voiceid3
+    try:
+        # Open and read the JSON file
+        with open('appuac/e11voicelist.json', 'r') as file:
+            voiceid = json.load(file)
+
+        # Check if the VoiceCharacter exists in the dictionary
+        if VoiceCharacter in voiceid:
+            url = ellLabsURL + voiceid[VoiceCharacter]
+            print(f"URL for {VoiceCharacter}: {url}")
+        else:
+            print(f"Voice character '{VoiceCharacter}' not found in the mappings.")
+    except FileNotFoundError:
+        print("The JSON file with voice mappings was not found.")
+    except json.JSONDecodeError:
+        print("JSON file is not correctly formatted.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
     headers = {
         "Accept": "audio/mpeg",
@@ -1007,6 +1012,7 @@ def AIProcesss(TexttoProcess):
                     - Avoid using slang or colloquial language 
                     - Avoid using inappropriate language 
                     - Make it so that the flow of reading the text is natural
+                    - make the speech free flowing
                     
                     """
     ModeltoUse = "gemini-2.0-flash-exp"
