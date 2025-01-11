@@ -111,8 +111,8 @@ emj_file_folder = " 📁 "
 emj_clapper = " 🎬 "          
 
 
-enableEmailNotification = True
-devmode = 0
+enableEmailNotification = False
+devmode = 1
 apptile = ""
 debprint = 0
 
@@ -1797,7 +1797,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # print("Video Id: "+video_idd)
         # print(transcriptdata)
 
-    inputquestion = st.chat_input("Provide your Question / Prompt / Reqest")
+    inputquestion = st.chat_input("Ask away ??")
     usermessage = question_combinder(f"{adcn}{codewrap}", inputquestion)
 
     if get_mictext:
