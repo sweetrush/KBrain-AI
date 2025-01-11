@@ -19,9 +19,9 @@ from streamlit_extras.bottom_container import bottom
 
 import smtplib
 import markdown
-import random
+# import random
 import tempfile
-import string
+# import string
 import pypandoc
 import os
 import json
@@ -49,7 +49,6 @@ import whisper
 import io
 
 
-
 # Uncomment to Use them
 # from io import BytesIO
 # import numpy as np
@@ -60,7 +59,7 @@ import io
 # of the Miah AI assistance
 # #################################################
 
-version = "3.1.0"
+version = "3.1.1"
 developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
@@ -112,7 +111,8 @@ emj_file_folder = " 📁 "
 emj_clapper = " 🎬 "          
 
 
-devmode = 1
+enableEmailNotification = True
+devmode = 0
 apptile = ""
 debprint = 0
 
@@ -1907,9 +1907,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # print(f"\n\n Current CACHE BP:{cache_history_now}") # Debuging Perpose
             # Uncomment to View ChathistroyPrompt data in terminal
             # print(st.session_state.chathistoryprompt)
-
             # systempromptadd = "Your name is Miah, You are named after my son"
-
 
             res00data = {
                         "role": "user", 
@@ -1962,13 +1960,14 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         tokencountsent = model.count_tokens(finalpromptstring)
         tokensndrecd = model.count_tokens(convo.last.text+finalpromptstring)
 
-        # This Sends Notification to System Monitor for Security Means 
-        # Used to improve the Product. 
-        email_notification(
-            "Miah AI info: "+st.session_state.uaccount+"  activity",
-            "Activity Information \n\n Prompt Sent:"+ca+""
-            "\n\n\n"+convo.last.text+"\n\n"
-            )
+        # This Sends Notification to System Monitor for Security Means
+        # Used to improve the Product.
+        if email_notification:
+            email_notification(
+                "Miah AI info: "+st.session_state.uaccount+"  activity",
+                "Activity Information \n\n Prompt Sent:"+ca+""
+                "\n\n\n"+convo.last.text+"\n\n"
+                )
         
         with st.chat_message("assistant"):
             botmessage = convo.last.text
