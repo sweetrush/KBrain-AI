@@ -24,6 +24,7 @@ import tempfile
 import string
 import pypandoc
 import os
+import json
 from pathlib import Path
 # from email.message import EmailMessage
 from email.mime.text import MIMEText
@@ -368,23 +369,28 @@ def text_to_speech(text):
 # #  08         GET AUDIO FUNCTION                   ##
 # #####################################################
 def get_audio(texttomp3, prefix, auid, VoiceCharacter):
+    global voiceid
     ellLabsURL = "https://api.elevenlabs.io/v1/text-to-speech/"
     colorful_print("[FX-R] get audio (F08)", "magenta")
     ellskey = api11labs
-    voiceid1 = "21m00Tcm4TlvDq8ikWAM"
-    voiceid2 = "MF3mGyEYCl7XYWbV9V6O"
-    voiceid3 = "ErXwobaYiN019PkySvjV"
-    
-    CHUNK_SIZE = 1024
-    
-    if VoiceCharacter == "Rachel":
-        url = ellLabsURL + voiceid1
 
-    elif VoiceCharacter == "Emily":
-        url = ellLabsURL + voiceid2
-    
-    elif VoiceCharacter == "Antoni":
-        url = ellLabsURL + voiceid3
+    try:
+        # Open and read the JSON file
+        with open('appuac/e11voicelist.json', 'r') as file:
+            voiceid = json.load(file)
+
+        # Check if the VoiceCharacter exists in the dictionary
+        if VoiceCharacter in voiceid:
+            url = ellLabsURL + voiceid[VoiceCharacter]
+            print(f"URL for {VoiceCharacter}: {url}")
+        else:
+            print(f"Voice character '{VoiceCharacter}' not found in the mappings.")
+    except FileNotFoundError:
+        print("The JSON file with voice mappings was not found.")
+    except json.JSONDecodeError:
+        print("JSON file is not correctly formatted.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
     headers = {
         "Accept": "audio/mpeg",
@@ -493,10 +499,11 @@ def loadagents():
         colorful_print(f"[ERROR] Error reading agent list: {e}", "red")
 
 
-
 # #####################################################
 # #  11         HORIZONTAL LINE FUNCTION             ##
 # #####################################################
+
+
 def horizontal_line():
     colorful_print("[FX-R] horizontal line (F011)", "yellow")
     st.markdown("---", unsafe_allow_html=True)
@@ -1007,6 +1014,7 @@ def AIProcesss(TexttoProcess):
                     - Avoid using slang or colloquial language 
                     - Avoid using inappropriate language 
                     - Make it so that the flow of reading the text is natural
+                    - make the speech free flowing
                     
                     """
     ModeltoUse = "gemini-2.0-flash-exp"
@@ -1471,8 +1479,16 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 else:
                     activate_audio_output = False
 
-                AudioCharacter = st.selectbox("Select Character", 
-                                                ("Rachel", "Emily", "Antoni"), index=0)
+                # Get all the voice names (keys) from the dictionary
+                voice_names = list(voiceid.keys())
+
+                # Format them into the string with quotes and commas
+                formatted_names = ','.join(f'"{name}"' for name in voice_names)
+                
+                AudioCharacter = st.selectbox("Select Character",
+                                            (voice_names),
+                                            index=0
+                                            )
                 activate_audio_output002 = st.toggle(
                     emj_aaudio + "Audio(2):", value=False, help="Active Audio GTTs"
                 )
