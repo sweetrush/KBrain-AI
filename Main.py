@@ -115,6 +115,7 @@ emj_clapper = " 🎬 "
 devmode = 1
 apptile = ""
 debprint = 0
+voiceid = ""
 
 # This Defines how many Agents can be loaded from the
 # Agent list
