@@ -499,10 +499,11 @@ def loadagents():
         colorful_print(f"[ERROR] Error reading agent list: {e}", "red")
 
 
-
 # #####################################################
 # #  11         HORIZONTAL LINE FUNCTION             ##
 # #####################################################
+
+
 def horizontal_line():
     colorful_print("[FX-R] horizontal line (F011)", "yellow")
     st.markdown("---", unsafe_allow_html=True)
