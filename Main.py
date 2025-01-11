@@ -369,6 +369,7 @@ def text_to_speech(text):
 # #  08         GET AUDIO FUNCTION                   ##
 # #####################################################
 def get_audio(texttomp3, prefix, auid, VoiceCharacter):
+    global voiceid
     ellLabsURL = "https://api.elevenlabs.io/v1/text-to-speech/"
     colorful_print("[FX-R] get audio (F08)", "magenta")
     ellskey = api11labs
@@ -1477,8 +1478,14 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 else:
                     activate_audio_output = False
 
-                AudioCharacter = st.selectbox("Select Character", 
-                                                ("Rachel", "Emily", "Antoni"), index=0)
+                # Get all the voice names (keys) from the dictionary
+                voice_names = list(voiceid.keys())
+
+                # Format them into the string with quotes and commas
+                formatted_names = ','.join(f'"{name}"' for name in voice_names)
+                
+                AudioCharacter = st.selectbox("Select Character",
+                                               (formatted_names), index=0)
                 activate_audio_output002 = st.toggle(
                     emj_aaudio + "Audio(2):", value=False, help="Active Audio GTTs"
                 )
