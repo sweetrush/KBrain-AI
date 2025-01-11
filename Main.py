@@ -19,9 +19,9 @@ from streamlit_extras.bottom_container import bottom
 
 import smtplib
 import markdown
-import random
+# import random
 import tempfile
-import string
+# import string
 import pypandoc
 import os
 import json
@@ -49,7 +49,6 @@ import whisper
 import io
 
 
-
 # Uncomment to Use them
 # from io import BytesIO
 # import numpy as np
@@ -60,7 +59,7 @@ import io
 # of the Miah AI assistance
 # #################################################
 
-version = "3.1.0"
+version = "3.1.1"
 developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
@@ -112,10 +111,10 @@ emj_file_folder = " 📁 "
 emj_clapper = " 🎬 "          
 
 
-devmode = 1
+enableEmailNotification = True
+devmode = 0
 apptile = ""
 debprint = 0
-voiceid = ""
 
 # This Defines how many Agents can be loaded from the
 # Agent list
@@ -374,6 +373,7 @@ def get_audio(texttomp3, prefix, auid, VoiceCharacter):
     ellLabsURL = "https://api.elevenlabs.io/v1/text-to-speech/"
     colorful_print("[FX-R] get audio (F08)", "magenta")
     ellskey = api11labs
+    CHUNK_SIZE = 1024
 
     try:
         # Open and read the JSON file
@@ -1479,15 +1479,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     )
                 else:
                     activate_audio_output = False
-
-                # Get all the voice names (keys) from the dictionary
-                voice_names = list(voiceid.keys())
-
-                # Format them into the string with quotes and commas
-                formatted_names = ','.join(f'"{name}"' for name in voice_names)
                 
                 AudioCharacter = st.selectbox("Select Character",
-                                            (voice_names),
+                                    ({"Rachel", "Emily", "Antoni", "Brian"}),
                                             index=0
                                             )
                 activate_audio_output002 = st.toggle(
@@ -1533,7 +1527,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             st.page_link(
             "pages/Codeapp.py", label="Codeapp Helper", icon=emj_help_ico, disabled=False
             )
-
 
         about_the_developer()
 
@@ -1914,9 +1907,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # print(f"\n\n Current CACHE BP:{cache_history_now}") # Debuging Perpose
             # Uncomment to View ChathistroyPrompt data in terminal
             # print(st.session_state.chathistoryprompt)
-
             # systempromptadd = "Your name is Miah, You are named after my son"
-
 
             res00data = {
                         "role": "user", 
@@ -1969,11 +1960,14 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         tokencountsent = model.count_tokens(finalpromptstring)
         tokensndrecd = model.count_tokens(convo.last.text+finalpromptstring)
 
-        email_notification(
-            "Miah AI info: "+st.session_state.uaccount+"  activity",
-            "Activity Information \n\n Prompt Sent:"+ca+""
-            "\n\n\n"+convo.last.text+"\n\n"
-            )
+        # This Sends Notification to System Monitor for Security Means
+        # Used to improve the Product.
+        if email_notification:
+            email_notification(
+                "Miah AI info: "+st.session_state.uaccount+"  activity",
+                "Activity Information \n\n Prompt Sent:"+ca+""
+                "\n\n\n"+convo.last.text+"\n\n"
+                )
         
         with st.chat_message("assistant"):
             botmessage = convo.last.text
