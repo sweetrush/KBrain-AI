@@ -1698,13 +1698,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     col2,
                 ) = st.columns(2, gap="small")
                 # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
-                get_mictext = col1.button("GM", help="Listain to Microphone")
+                # get_mictext = col1.button("GM", help="Listain to Microphone")
 
-                GAM = col1.button("Get-Models", help="this will print the google models")
-                if GAM:
-                    # modelarry = []
-                    for m in genai.list_models():
-                        col2.markdown(" - "+m.name)
+                # GAM = col1.button("Get-Models", help="this will print the google models")
+                # if GAM:
+                #     # modelarry = []
+                #     for m in genai.list_models():
+                #         col2.markdown(" - "+m.name)
                         # modelarry.append(m.name)
                     # col1.text_area("Models", value=modelarry)
 
