@@ -1803,8 +1803,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     inputquestion = st.chat_input("Ask away ??")
     usermessage = question_combinder(f"{adcn}{codewrap}", inputquestion)
 
-    if get_mictext:
-        listain_to_Microphone()
+    # if get_mictext:
+    #     listain_to_Microphone()
 
     # if dialogpop:
     #     display_about_dev()
