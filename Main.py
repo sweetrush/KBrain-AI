@@ -1872,7 +1872,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     convo.send_message([finalpromptstring, img])
                 
                 elif audiorecordToggle:
-                    convo.send_message([finalpromptstring, filesaudio])
+                    convo.send_message([filesaudio, finalpromptstring])
                     colorful_print("[INCAL] File to been uploaded:"+filesaudio, "blue")
                 
                 else:
