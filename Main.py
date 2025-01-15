@@ -64,7 +64,7 @@ import io
 # of the Miah AI assistance
 # #################################################
 
-version = "3.1.1"
+version = "3.1.2"
 developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
@@ -116,8 +116,8 @@ emj_file_folder = " 📁 "
 emj_clapper = " 🎬 "          
 
 
-enableEmailNotification = False
-devmode = 1
+enableEmailNotification = True
+devmode = 0
 apptile = ""
 debprint = 0
 
