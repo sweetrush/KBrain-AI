@@ -121,6 +121,8 @@ devmode = 1
 apptile = ""
 debprint = 0
 
+# For Gemini Recording Upload
+audioFileout = "temp_audio.mp3"
 # This Defines how many Agents can be loaded from the
 # Agent list
 numagentload = 100
@@ -1044,7 +1046,7 @@ def upload_to_gemini(audio_bytes):
     if audio_bytes is None:
         return None
 
-    audioFileout = "temp_audio.mp3"
+    
     audio_segment = AudioSegment.from_file(io.BytesIO(audio_bytes.read()), format="wav")
     audio_segment.export(audioFileout, format="mp3")
     
@@ -1671,7 +1673,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         
 
                 if audiotoTextToggle:
-                    audioTextinput = convert_audio_to_text(filesaudio)
+                    audioTextinput = convert_audio_to_text(audioFileout)
                     st.write(audioTextinput)
 
             with tb6:
