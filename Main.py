@@ -1685,7 +1685,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
                 # get_mictext = col1.button("GM", help="Listain to Microphone")
 
-                GAM = col1.button("Get-Models", help="this will print the google models")
+                GAM = col1.button("Get-Models.", help="this will print the google models")
                 if GAM:
                     modelarry = []
                     for m in genai.list_models():
