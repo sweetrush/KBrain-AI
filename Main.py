@@ -1670,6 +1670,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 if inputmic:
                     filesaudio = upload_to_gemini(inputmic)
+                    st.dialog("Upload_info",filesaudio)
                         
 
                 if audiotoTextToggle:
