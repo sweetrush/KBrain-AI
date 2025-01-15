@@ -1044,12 +1044,10 @@ def upload_to_gemini(audio_bytes):
     if audio_bytes is None:
         return None
 
-    audioFileout = "ai_audio/temp_audio.mp3"
-    audio_segment = AudioSegment.from_file(io.BytesIO(audio_bytes), format="wav")
+    audioFileout = "temp_audio.mp3"
+    audio_segment = AudioSegment.from_file(io.BytesIO(audio_bytes.read()), format="wav")
     audio_segment.export(audioFileout, format="mp3")
     
-
-
     try:
         file = genai.upload_file(audioFileout)
         return file
