@@ -1440,15 +1440,17 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # 
         # #####################################################################
         # horizontal_line()
-        st.page_link(
-            "pages/help.py", label="Help Guide", icon=emj_help_ico, disabled=False
-        )
-        st.page_link(
-            "pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False
-        )
-        # st.page_link(
+        with st.expander(emj_help+"About",expanded=False):
+            st.page_link(
+                "pages/help.py", label="Help Guide", icon=emj_help_ico, disabled=False
+            )
+            st.page_link(
+                "pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False
+            )
+            # st.page_link(
         #     "pages/agentdev.py", label="Edit Agents", icon=emj_help_ico, disabled=False
         # )
+
         horizontal_line()
         with st.expander(emj_lightbulb + "Other Tools", expanded=False):
 
