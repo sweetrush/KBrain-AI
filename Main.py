@@ -1213,11 +1213,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         global opt3_safe, opt4_safe, pdftext, getResponsetext
         global loadassistantcontext, assistantcontext, adcn
         global agentimagelement, agdiscription
-
-        # horizontal_line() # Uncomment to show the Line
-        btt1, btt2 = st.columns(2, gap="small")
-
+        
         with st.expander("Logout & Data Reset"):
+            btt1, btt2 = st.columns([4.6], gap="small")
             logout = btt1.button(" 🕡 "+"Logout")
             restdata = btt2.button(" ♻ "+"Datarest")
         # Uncomment this to reflect the file Upload Feature on the Side Bar
