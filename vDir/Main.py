@@ -33,7 +33,6 @@ from pathlib import Path
 # from email.message import EmailMessage
 from email.mime.text import MIMEText
 from st_audiorec import st_audiorec
-from pydub import AudioSegment
 
 import google.generativeai as genai
 import speech_recognition as sr
@@ -48,8 +47,8 @@ import re
 import hashlib
 import time
 import streamlit.components.v1 as components
-# import numpy as np
-# import wave 
+import numpy as np
+import wave
 import whisper
 import io
 
@@ -121,8 +120,6 @@ devmode = 1
 apptile = ""
 debprint = 0
 
-# For Gemini Recording Upload
-audioFileout = "temp_audio.mp3"
 # This Defines how many Agents can be loaded from the
 # Agent list
 numagentload = 100
@@ -1042,16 +1039,35 @@ def AIProcesss(TexttoProcess):
 #     st.write(file)
 #     return file
 
-def upload_to_gemini(audio_bytes):
-    if audio_bytes is None:
+def upload_to_gemini(uploaded_file):
+    if uploaded_file is None:
         return None
 
+    global filenameaudio
+
+    filenameaudio = "ai_audio/GenAudio.wav"
+    sample_rate = 44100
+
+    # Convert audio bytes to numpy array
+    audio_array = np.frombuffer(uploaded_file.read(), dtype=np.float32)
     
-    audio_segment = AudioSegment.from_file(io.BytesIO(audio_bytes.read()), format="wav")
-    audio_segment.export(audioFileout, format="mp3")
+    # Scale the float32 values to int16 range
+    audio_array_int = (audio_array * 32767).astype(np.int16)
     
+    # Create WAV file
+    with wave.open(filenameaudio, 'wb') as wav_file:
+        # Set parameters
+        wav_file.setnchannels(1)  # Mono audio
+        wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
+        wav_file.setframerate(sample_rate)
+        
+        # Write audio data
+        wav_file.writeframes(audio_array_int.tobytes())
+
     try:
-        file = genai.upload_file(audioFileout)
+        file = genai.upload_file(filenameaudio)
+        st.write()
+        st.write(file)
         return file
     except Exception as e:
         st.error(f"Error uploading file: {str(e)}")
@@ -1667,14 +1683,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 audiorecordToggle = st.toggle("Userecording")
                 audiotoTextToggle = st.toggle("Audio-to-Text")
                 inputmic = st.audio_input("Record Audio for Context")
-
                 if inputmic:
-                    filesaudio = upload_to_gemini(inputmic)
-                    st.write(filesaudio.display_name)
-                        
+                    filesaudio = [
+                        upload_to_gemini(inputmic),
+                        ]
 
                 if audiotoTextToggle:
-                    audioTextinput = convert_audio_to_text(audioFileout)
+                    audioTextinput = convert_audio_to_text(filenameaudio)
                     st.write(audioTextinput)
 
             with tb6:
@@ -1683,15 +1698,15 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     col2,
                 ) = st.columns(2, gap="small")
                 # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
-                # get_mictext = col1.button("GM", help="Listain to Microphone")
+                get_mictext = col1.button("GM", help="Listain to Microphone")
 
-                GAM = col1.button("Get-Models.", help="this will print the google models")
+                GAM = col1.button("Get-Models", help="this will print the google models")
                 if GAM:
-                    modelarry = []
+                    # modelarry = []
                     for m in genai.list_models():
                         col2.markdown(" - "+m.name)
-                        modelarry.append(m.name)
-                    col1.text_area("Models", value=modelarry)
+                        # modelarry.append(m.name)
+                    # col1.text_area("Models", value=modelarry)
 
                 # dialogpop = col2.button(
                 #                    "AD",
@@ -1785,13 +1800,17 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # print("Video Id: "+video_idd)
         # print(transcriptdata)
 
-    inputquestion = st.chat_input("Ask away / Provide your Question / what is your prompt ??")
+    inputquestion = st.chat_input("Ask away ??")
     usermessage = question_combinder(f"{adcn}{codewrap}", inputquestion)
 
+    if get_mictext:
+        listain_to_Microphone()
+
+    # if dialogpop:
+    #     display_about_dev()
     
     # Runs What the User has input
     if usermessage:
-
         with st.chat_message("User"):
             st.write(usermessage)
             write_to_historyfile("CH_", usermessage, datetime.date.today().strftime("%A"), "_Human_", st.session_state.uaccount)
@@ -1805,7 +1824,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     {"role": "User", "content": usermessage}
                 )
 
-        # Checking and Removing Unessary Characters 
         chars_tobe_replaced = " ,."
         chars_swap = ""  # Noted that this will make the space as the char swap
         filename = replace_chars(str(inputquestion), chars_tobe_replaced, chars_swap)
@@ -1815,10 +1833,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         convo = model.start_chat(history=chatdata)
 
         with st.status("Processing Request ...."):
-
-            # Changing the Borader Colors to show activeness
-            # This is a Yellow Color Code 
-            dynamic_css("#D0A112")  
+            dynamic_css("#D0A112")
             # Combinding the Context Information
             # ############################################################################
 
@@ -1866,16 +1881,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             #
 
             try:
-
                 if uploaded_img:
                     img = PIL.Image.open(uploaded_img)
                     colorful_print("[INCAL] Sending Prompt with Text and Image", "green")
                     convo.send_message([finalpromptstring, img])
-                
                 elif audiorecordToggle:
-                    convo.send_message([finalpromptstring, filesaudio])
-                    colorful_print("[INCAL] File to been uploaded", "blue")
-                
+                    convo.send_message([finalpromptstring, filesaudio[0]])
+                    colorful_print("[INCAL] File to been uploaded"+filesaudio[0], "blue")
                 else:
                     convo.send_message(finalpromptstring)
                     colorful_print("[INCAL] Sending Prompt with Text only", "green")
