@@ -1670,7 +1670,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 if inputmic:
                     filesaudio = upload_to_gemini(inputmic)
-                    st.write(filesaudio)
+                    st.write(filesaudio.display_name)
                         
 
                 if audiotoTextToggle:
@@ -1866,14 +1866,15 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             #
 
             try:
+
                 if uploaded_img:
                     img = PIL.Image.open(uploaded_img)
                     colorful_print("[INCAL] Sending Prompt with Text and Image", "green")
                     convo.send_message([finalpromptstring, img])
                 
                 elif audiorecordToggle:
-                    convo.send_message([filesaudio, finalpromptstring])
-                    colorful_print("[INCAL] File to been uploaded:"+filesaudio, "blue")
+                    convo.send_message([finalpromptstring, filesaudio])
+                    colorful_print("[INCAL] File to been uploaded", "blue")
                 
                 else:
                     convo.send_message(finalpromptstring)
