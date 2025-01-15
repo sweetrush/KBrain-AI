@@ -64,7 +64,7 @@ import io
 # of the Miah AI assistance
 # #################################################
 
-version = "3.1.1"
+version = "3.1.2"
 developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
@@ -116,8 +116,8 @@ emj_file_folder = " 📁 "
 emj_clapper = " 🎬 "          
 
 
-enableEmailNotification = False
-devmode = 1
+enableEmailNotification = True
+devmode = 0
 apptile = ""
 debprint = 0
 
@@ -773,62 +773,9 @@ def calculate_string_hash(input_string, algorithm='sha256'):
 
     return hash_value
 
-
 # #####################################################
-# #  23         WRITE TO GOOGLE SHEET FOR REG        ##
+# #  25         TOKENIZER COUNTER                    ##
 # #####################################################
-# def write_registration_to_sheet():
-#     colorful_print("[FX-R] write registration to sheet (F23)", "magenta")
-
-#     with st.form(key="regForm01", clear_on_submit=False):
-#         fullname = st.text_input("Full Name", value="", max_chars=None)
-#         country = st.text_input("Country")
-#         email = st.text_input("Email")
-#         password1 = st.text_input("Password one", key="33", type="password")
-#         password2 = st.text_input("Password two (retype)", key="34", type="password")
-#         specialCode = st.text_input("SpecialCode", type="password")
-
-#         st.markdown("##### :red[Required *]")
-            
-#         submit = st.form_submit_button(label="Apply Registration")
-
-#         keyhash = calculate_string_hash(email+fullname+specialCode)
-
-#         registaDataFrame = pd.DataFrame(
-#                 [
-#                     {
-#                         "fullname": fullname, 
-#                         "country": country,
-#                         "email": email,
-#                         "password": password1,
-#                         "specialcode": specialCode,
-#                         "keyhash": keyhash,
-#                     }
-#                 ]
-#                 )
-
-#         if submit:
-#             chkName = checkinput(fullname, "Full Name Field")
-#             chkCountry = checkinput(country, "Country Field")
-#             chkEmail = checkinput(email, "Email")
-#             chkPwd1 = checkinput(password1, "Password one")
-#             chkPwd2 = checkinput(password2, "Password two (retype)")
-#             chkSCode = checkinput(specialCode, "password")
-#             chkpwdeq = compare_is_same(password1, password2)
-
-#             # THIS CODE NEEDS TO BE CHECHED FOR CONTINUIED USE.
-#             #
-#             if chkpwdeq:
-#                 if chkName and chkCountry and chkEmail and chkPwd1 and chkPwd2 and chkSCode:
-#                     conn = st.connection("gsheets", type=GSheetsConnection)
-#                     conn.update(data=registaDataFrame)
-#                     # data = conn.read(spreadsheet=url, usecols=list(range(2)), ttl=5, worksheet=SheetID)
-#                     # st.dataframe(data)
-#                     st.success("Thank you for Registering")
-#             else:
-#                 st.error("Please the passwords are not the Same")
-
-
 def colorful_print(text: str, color: str) -> None:
     """
     Print text in the specified color with a prefix.
@@ -1266,11 +1213,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         global opt3_safe, opt4_safe, pdftext, getResponsetext
         global loadassistantcontext, assistantcontext, adcn
         global agentimagelement, agdiscription
-
-        # horizontal_line() # Uncomment to show the Line
-        btt1, btt2 = st.columns(2, gap="small")
-
+        
         with st.expander("Logout & Data Reset"):
+            btt1, btt2 = st.columns(2, gap="small")
             logout = btt1.button(" 🕡 "+"Logout")
             restdata = btt2.button(" ♻ "+"Datarest")
         # Uncomment this to reflect the file Upload Feature on the Side Bar
@@ -1495,15 +1440,17 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # 
         # #####################################################################
         # horizontal_line()
-        st.page_link(
-            "pages/help.py", label="Help Guide", icon=emj_help_ico, disabled=False
-        )
-        st.page_link(
-            "pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False
-        )
-        # st.page_link(
+        with st.expander(emj_help+"About",expanded=False):
+            st.page_link(
+                "pages/help.py", label="Help Guide", icon=emj_help_ico, disabled=False
+            )
+            st.page_link(
+                "pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False
+            )
+            # st.page_link(
         #     "pages/agentdev.py", label="Edit Agents", icon=emj_help_ico, disabled=False
         # )
+
         horizontal_line()
         with st.expander(emj_lightbulb + "Other Tools", expanded=False):
 
