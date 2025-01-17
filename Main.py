@@ -830,11 +830,12 @@ def stream_text(text, delay=0.003):
     
     for char in text:
         accumulated_text += char
-        # Create HTML with CSS animation
+        # Apply animation only to the latest character
         html = f"""
-        <div style="display: inline-block;">
+        <div style="display: inline;">
+            {accumulated_text[:-1]}
             <span style="animation: fadein {fade_duration}s;">
-                {char}
+                {accumulated_text[-1]}
             </span>
         </div>
         <style>
@@ -844,9 +845,9 @@ def stream_text(text, delay=0.003):
             }}
         </style>
         """
-        placeholder.markdown(accumulated_text + html, unsafe_allow_html=True)
+        placeholder.markdown(html, unsafe_allow_html=True)
         time.sleep(delay)
-        yield char    
+        yield char
 
 
 # #####################################################
