@@ -33,6 +33,7 @@ from pathlib import Path
 # from email.message import EmailMessage
 from email.mime.text import MIMEText
 from st_audiorec import st_audiorec
+from pydub import AudioSegment
 
 import google.generativeai as genai
 import speech_recognition as sr
@@ -47,8 +48,8 @@ import re
 import hashlib
 import time
 import streamlit.components.v1 as components
-import numpy as np
-import wave
+# import numpy as np
+# import wave 
 import whisper
 import io
 
@@ -63,7 +64,7 @@ import io
 # of the Miah AI assistance
 # #################################################
 
-version = "3.1.1"
+version = "3.1.2"
 developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
@@ -115,11 +116,13 @@ emj_file_folder = " 📁 "
 emj_clapper = " 🎬 "          
 
 
-enableEmailNotification = False
-devmode = 1
+enableEmailNotification = True
+devmode = 0
 apptile = ""
 debprint = 0
 
+# For Gemini Recording Upload
+audioFileout = "temp_audio.mp3"
 # This Defines how many Agents can be loaded from the
 # Agent list
 numagentload = 100
@@ -770,62 +773,9 @@ def calculate_string_hash(input_string, algorithm='sha256'):
 
     return hash_value
 
-
 # #####################################################
-# #  23         WRITE TO GOOGLE SHEET FOR REG        ##
+# #  25         TOKENIZER COUNTER                    ##
 # #####################################################
-# def write_registration_to_sheet():
-#     colorful_print("[FX-R] write registration to sheet (F23)", "magenta")
-
-#     with st.form(key="regForm01", clear_on_submit=False):
-#         fullname = st.text_input("Full Name", value="", max_chars=None)
-#         country = st.text_input("Country")
-#         email = st.text_input("Email")
-#         password1 = st.text_input("Password one", key="33", type="password")
-#         password2 = st.text_input("Password two (retype)", key="34", type="password")
-#         specialCode = st.text_input("SpecialCode", type="password")
-
-#         st.markdown("##### :red[Required *]")
-            
-#         submit = st.form_submit_button(label="Apply Registration")
-
-#         keyhash = calculate_string_hash(email+fullname+specialCode)
-
-#         registaDataFrame = pd.DataFrame(
-#                 [
-#                     {
-#                         "fullname": fullname, 
-#                         "country": country,
-#                         "email": email,
-#                         "password": password1,
-#                         "specialcode": specialCode,
-#                         "keyhash": keyhash,
-#                     }
-#                 ]
-#                 )
-
-#         if submit:
-#             chkName = checkinput(fullname, "Full Name Field")
-#             chkCountry = checkinput(country, "Country Field")
-#             chkEmail = checkinput(email, "Email")
-#             chkPwd1 = checkinput(password1, "Password one")
-#             chkPwd2 = checkinput(password2, "Password two (retype)")
-#             chkSCode = checkinput(specialCode, "password")
-#             chkpwdeq = compare_is_same(password1, password2)
-
-#             # THIS CODE NEEDS TO BE CHECHED FOR CONTINUIED USE.
-#             #
-#             if chkpwdeq:
-#                 if chkName and chkCountry and chkEmail and chkPwd1 and chkPwd2 and chkSCode:
-#                     conn = st.connection("gsheets", type=GSheetsConnection)
-#                     conn.update(data=registaDataFrame)
-#                     # data = conn.read(spreadsheet=url, usecols=list(range(2)), ttl=5, worksheet=SheetID)
-#                     # st.dataframe(data)
-#                     st.success("Thank you for Registering")
-#             else:
-#                 st.error("Please the passwords are not the Same")
-
-
 def colorful_print(text: str, color: str) -> None:
     """
     Print text in the specified color with a prefix.
@@ -866,11 +816,38 @@ def colorful_print(text: str, color: str) -> None:
 # #####################################################
 # #  26         STREAM TEXT FX                       ##
 # #####################################################
-def stream_text(text, delay=0.003):
+def stream_text_0(text, delay=0.003):
     """Streams text with a specified delay between characters."""
     for char in text:
         yield char
-        time.sleep(delay)    
+        time.sleep(delay)
+
+def stream_text(text, delay=0.003):
+    """Streams text with CSS-based fading effect."""
+    fade_duration=0.5
+    placeholder = st.empty()
+    accumulated_text = ""
+    
+    for char in text:
+        accumulated_text += char
+        # Apply animation only to the latest character
+        html = f"""
+        <div style="display: inline;">
+            {accumulated_text[:-1]}
+            <span style="animation: fadein {fade_duration}s;">
+                {accumulated_text[-1]}
+            </span>
+        </div>
+        <style>
+            @keyframes fadein {{
+                from {{ opacity: 0; }}
+                to {{ opacity: 1; }}
+            }}
+        </style>
+        """
+        placeholder.markdown(html, unsafe_allow_html=True)
+        time.sleep(delay)
+        yield char
 
 
 # #####################################################
@@ -1039,35 +1016,16 @@ def AIProcesss(TexttoProcess):
 #     st.write(file)
 #     return file
 
-def upload_to_gemini(uploaded_file):
-    if uploaded_file is None:
+def upload_to_gemini(audio_bytes):
+    if audio_bytes is None:
         return None
 
-    global filenameaudio
-
-    filenameaudio = "ai_audio/GenAudio.wav"
-    sample_rate = 44100
-
-    # Convert audio bytes to numpy array
-    audio_array = np.frombuffer(uploaded_file.read(), dtype=np.float32)
     
-    # Scale the float32 values to int16 range
-    audio_array_int = (audio_array * 32767).astype(np.int16)
+    audio_segment = AudioSegment.from_file(io.BytesIO(audio_bytes.read()), format="wav")
+    audio_segment.export(audioFileout, format="mp3")
     
-    # Create WAV file
-    with wave.open(filenameaudio, 'wb') as wav_file:
-        # Set parameters
-        wav_file.setnchannels(1)  # Mono audio
-        wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
-        wav_file.setframerate(sample_rate)
-        
-        # Write audio data
-        wav_file.writeframes(audio_array_int.tobytes())
-
     try:
-        file = genai.upload_file(filenameaudio)
-        st.write()
-        st.write(file)
+        file = genai.upload_file(audioFileout)
         return file
     except Exception as e:
         st.error(f"Error uploading file: {str(e)}")
@@ -1200,12 +1158,6 @@ audioInStore = count_files(audioOD)
 
 model_tokens = "8024"
 
-
-# Older Models 
-# gemini-1.5-pro-002
-# gemini-1.5-pro-exp-0801
-
-
 models = [
     "gemini-2.0-flash-thinking-exp",
     "gemini-2.0-flash-thinking-exp-1219",
@@ -1217,15 +1169,6 @@ models = [
     "gemini-1.5-flash-latest"
 ]
 
-# OLD Definition
-# safety_options = [
-#                   "BLOCK_NONE",
-#                   "BLOCK_FEW",
-#                   "BLOCK_SOME",
-#                   "BLOCK_MOST"
-#                  ]
-
-# NEW Option Selector
 safety_options = [
     "BLOCK_NONE",
     "BLOCK_LOW_AND_ABOVE",
@@ -1245,8 +1188,6 @@ for i in range(len(listofAssistance)):
 #    - This is the start of the Side bar and with all elements
 # ############################################################################
 ##############################################################################
-
-
 ##############################################################################
 ##############################################################################
 # #                                                                         ##
@@ -1282,15 +1223,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         global opt3_safe, opt4_safe, pdftext, getResponsetext
         global loadassistantcontext, assistantcontext, adcn
         global agentimagelement, agdiscription
-
-        # horizontal_line() # Uncomment to show the Line
-        btt1, btt2 = st.columns(2, gap="small")
-
+        
+        # SECTION FOR THE LOGOUT AND DATA RESET BUTTONS
+        # ##############
         with st.expander("Logout & Data Reset"):
+            btt1, btt2 = st.columns(2, gap="small")
             logout = btt1.button(" 🕡 "+"Logout")
             restdata = btt2.button(" ♻ "+"Datarest")
-        # Uncomment this to reflect the file Upload Feature on the Side Bar
-        # mapFileUploadOnSideBar()
 
         # ########################################################################
         # Gemini Configurations Area 
@@ -1511,15 +1450,14 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # 
         # #####################################################################
         # horizontal_line()
-        st.page_link(
-            "pages/help.py", label="Help Guide", icon=emj_help_ico, disabled=False
-        )
-        st.page_link(
-            "pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False
-        )
-        # st.page_link(
-        #     "pages/agentdev.py", label="Edit Agents", icon=emj_help_ico, disabled=False
-        # )
+        with st.expander(emj_help+"About",expanded=False):
+            st.page_link(
+                "pages/help.py", label="Help Guide", icon=emj_help_ico, disabled=False
+            )
+            st.page_link(
+                "pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False
+            )
+   
         horizontal_line()
         with st.expander(emj_lightbulb + "Other Tools", expanded=False):
 
@@ -1542,7 +1480,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     #
     # #########################################################################
     # #########################################################################
-
     # ####################################################################
     # ####################################################################
     #   Content Just Above the Chatline input field
@@ -1680,16 +1617,19 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             with tb5:
                 global inputmic, audiorecordToggle
 
-                audiorecordToggle = st.toggle("Userecording")
-                audiotoTextToggle = st.toggle("Audio-to-Text")
-                inputmic = st.audio_input("Record Audio for Context")
+                colo1, colo2 = st.columns(2, gap="small")
+                inputmic = colo1.audio_input("Record Audio for Context")
+                audiorecordToggle = colo1.toggle("Userecording")
+                audiotoTextToggle = colo1.toggle("Audio-to-Text")               
+
+
                 if inputmic:
-                    filesaudio = [
-                        upload_to_gemini(inputmic),
-                        ]
+                    filesaudio = upload_to_gemini(inputmic)
+                    colo2.write(filesaudio)
+                        
 
                 if audiotoTextToggle:
-                    audioTextinput = convert_audio_to_text(filenameaudio)
+                    audioTextinput = convert_audio_to_text(audioFileout)
                     st.write(audioTextinput)
 
             with tb6:
@@ -1698,28 +1638,22 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     col2,
                 ) = st.columns(2, gap="small")
                 # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
-                get_mictext = col1.button("GM", help="Listain to Microphone")
+                # get_mictext = col1.button("GM", help="Listain to Microphone")
 
-                GAM = col1.button("Get-Models", help="this will print the google models")
+                GAM = col1.button("Get-Models.", help="this will print the google models")
                 if GAM:
-                    # modelarry = []
+                    modelarry = []
                     for m in genai.list_models():
                         col2.markdown(" - "+m.name)
-                        # modelarry.append(m.name)
-                    # col1.text_area("Models", value=modelarry)
+                        modelarry.append(m.name)
+                    col1.text_area("Models", value=modelarry)
 
-                # dialogpop = col2.button(
-                #                    "AD",
-                #                    on_click=display_about_dev(),
-                #                    help="pops a dialog box")
 
     # ####################################################################
     # ####################################################################
     # ###################### END OF ABOVE CHAT AREA   ####################
     # ####################################################################
     # ####################################################################
-
-
     # ####################################################################
     # ####################################################################
     # ########### IMPLEMENTING SETTINGS FOR THE MODEL  ###################
@@ -1797,20 +1731,15 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         video_idd = str(get_video_id(youtubeURL)[1])
         videoTranscript = get_video_transcript(video_idd)
         transcriptdata = f'[Video Transcript]: "{videoTranscript}'
-        # print("Video Id: "+video_idd)
-        # print(transcriptdata)
 
-    inputquestion = st.chat_input("Ask away ??")
+
+    inputquestion = st.chat_input("Ask away / Provide your Question / what is your prompt ??")
     usermessage = question_combinder(f"{adcn}{codewrap}", inputquestion)
 
-    if get_mictext:
-        listain_to_Microphone()
-
-    # if dialogpop:
-    #     display_about_dev()
     
     # Runs What the User has input
     if usermessage:
+
         with st.chat_message("User"):
             st.write(usermessage)
             write_to_historyfile("CH_", usermessage, datetime.date.today().strftime("%A"), "_Human_", st.session_state.uaccount)
@@ -1824,6 +1753,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     {"role": "User", "content": usermessage}
                 )
 
+        # Checking and Removing Unessary Characters 
         chars_tobe_replaced = " ,."
         chars_swap = ""  # Noted that this will make the space as the char swap
         filename = replace_chars(str(inputquestion), chars_tobe_replaced, chars_swap)
@@ -1833,7 +1763,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         convo = model.start_chat(history=chatdata)
 
         with st.status("Processing Request ...."):
-            dynamic_css("#D0A112")
+
+            # Changing the Borader Colors to show activeness
+            # This is a Yellow Color Code 
+            dynamic_css("#D0A112")  
             # Combinding the Context Information
             # ############################################################################
 
@@ -1881,13 +1814,16 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             #
 
             try:
+
                 if uploaded_img:
                     img = PIL.Image.open(uploaded_img)
                     colorful_print("[INCAL] Sending Prompt with Text and Image", "green")
                     convo.send_message([finalpromptstring, img])
+                
                 elif audiorecordToggle:
-                    convo.send_message([finalpromptstring, filesaudio[0]])
-                    colorful_print("[INCAL] File to been uploaded"+filesaudio[0], "blue")
+                    convo.send_message([finalpromptstring, filesaudio])
+                    colorful_print("[INCAL] File to been uploaded", "blue")
+                
                 else:
                     convo.send_message(finalpromptstring)
                     colorful_print("[INCAL] Sending Prompt with Text only", "green")
@@ -1973,6 +1909,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 )
         
         with st.chat_message("assistant"):
+
             botmessage = convo.last.text
             
 
@@ -1988,6 +1925,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 st.write_stream(stream_text(botmessage, float(writespeed)))
             else:
                 st.write(botmessage)
+
             # Condition if Using Elaven Labs API for Text to Speech
             if activate_audio_output:
                 acol1, acol2 = st.columns(2, gap="small")
@@ -2081,6 +2019,11 @@ if restdata:
     st.session_state.chathistory = []
     st.session_state.lastchatoutput = ""
     st.warning("Prompt Memory has been reset", icon='⚠')
+
+
+# THIS AREA IS LOADED ON STARTUP WHEN THE APP LOADS IN THE WEB
+# IT CHECKS IF THE USER IS LOGGED IN OR NOT AND IF NOT THEN IT 
+# DISPLAYS THE WELCOME PAGE AND THE LOGIN PAGE
 
 if not st.session_state.authstatus or st.session_state.authstatus == "":
     colorful_print("[Info] User waiting to login", "blue")
@@ -2192,7 +2135,6 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
     )
     
     st.header("Welcome to Miah's AI Assistance")
-    # st.write("Number of test token:"+str(tokencounter(bodyc1)))
 
     st.markdown(bodyc1, unsafe_allow_html=True)
 
