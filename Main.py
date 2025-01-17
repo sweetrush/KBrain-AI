@@ -816,11 +816,37 @@ def colorful_print(text: str, color: str) -> None:
 # #####################################################
 # #  26         STREAM TEXT FX                       ##
 # #####################################################
-def stream_text(text, delay=0.003):
+def stream_text_0(text, delay=0.003):
     """Streams text with a specified delay between characters."""
     for char in text:
         yield char
-        time.sleep(delay)    
+        time.sleep(delay)
+
+def stream_text(text, delay=0.003):
+    """Streams text with CSS-based fading effect."""
+    fade_duration=0.5
+    placeholder = st.empty()
+    accumulated_text = ""
+    
+    for char in text:
+        accumulated_text += char
+        # Create HTML with CSS animation
+        html = f"""
+        <div style="display: inline-block;">
+            <span style="animation: fadein {fade_duration}s;">
+                {char}
+            </span>
+        </div>
+        <style>
+            @keyframes fadein {{
+                from {{ opacity: 0; }}
+                to {{ opacity: 1; }}
+            }}
+        </style>
+        """
+        placeholder.markdown(accumulated_text + html, unsafe_allow_html=True)
+        time.sleep(delay)
+        yield char    
 
 
 # #####################################################
