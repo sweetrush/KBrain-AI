@@ -1620,14 +1620,15 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             with tb5:
                 global inputmic, audiorecordToggle
 
-                audiorecordToggle = st.toggle("Userecording")
-                audiotoTextToggle = st.toggle("Audio-to-Text")
-                inputmic = st.audio_input("Record Audio for Context")
+                colo1, colo2 = st.columns(2, gap="small")
+                inputmic = colo1.audio_input("Record Audio for Context")
+                audiorecordToggle = colo1.toggle("Userecording")
+                audiotoTextToggle = colo1.toggle("Audio-to-Text")               
+
 
                 if inputmic:
                     filesaudio = upload_to_gemini(inputmic)
-                    with st.status("Uploading Audio to LLM.."):
-                        st.write(filesaudio)
+                    colo2.write(filesaudio)
                         
 
                 if audiotoTextToggle:
