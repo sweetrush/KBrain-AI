@@ -1456,10 +1456,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             st.page_link(
                 "pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False
             )
-            # st.page_link(
-        #     "pages/agentdev.py", label="Edit Agents", icon=emj_help_ico, disabled=False
-        # )
-
+   
         horizontal_line()
         with st.expander(emj_lightbulb + "Other Tools", expanded=False):
 
@@ -1482,7 +1479,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
     #
     # #########################################################################
     # #########################################################################
-
     # ####################################################################
     # ####################################################################
     #   Content Just Above the Chatline input field
