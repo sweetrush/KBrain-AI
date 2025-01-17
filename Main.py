@@ -1131,12 +1131,6 @@ audioInStore = count_files(audioOD)
 
 model_tokens = "8024"
 
-
-# Older Models 
-# gemini-1.5-pro-002
-# gemini-1.5-pro-exp-0801
-
-
 models = [
     "gemini-2.0-flash-thinking-exp",
     "gemini-2.0-flash-thinking-exp-1219",
@@ -1148,15 +1142,6 @@ models = [
     "gemini-1.5-flash-latest"
 ]
 
-# OLD Definition
-# safety_options = [
-#                   "BLOCK_NONE",
-#                   "BLOCK_FEW",
-#                   "BLOCK_SOME",
-#                   "BLOCK_MOST"
-#                  ]
-
-# NEW Option Selector
 safety_options = [
     "BLOCK_NONE",
     "BLOCK_LOW_AND_ABOVE",
@@ -1176,8 +1161,6 @@ for i in range(len(listofAssistance)):
 #    - This is the start of the Side bar and with all elements
 # ############################################################################
 ##############################################################################
-
-
 ##############################################################################
 ##############################################################################
 # #                                                                         ##
@@ -1214,12 +1197,12 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         global loadassistantcontext, assistantcontext, adcn
         global agentimagelement, agdiscription
         
+        # SECTION FOR THE LOGOUT AND DATA RESET BUTTONS
+        # ##############
         with st.expander("Logout & Data Reset"):
             btt1, btt2 = st.columns(2, gap="small")
             logout = btt1.button(" 🕡 "+"Logout")
             restdata = btt2.button(" ♻ "+"Datarest")
-        # Uncomment this to reflect the file Upload Feature on the Side Bar
-        # mapFileUploadOnSideBar()
 
         # ########################################################################
         # Gemini Configurations Area 
@@ -1617,7 +1600,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 if inputmic:
                     filesaudio = upload_to_gemini(inputmic)
-                    st.write(filesaudio.display_name)
+                    with st.status("Uploading Audio to LLM.."):
+                        st.write(filesaudio)
                         
 
                 if audiotoTextToggle:
@@ -1640,18 +1624,12 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         modelarry.append(m.name)
                     col1.text_area("Models", value=modelarry)
 
-                # dialogpop = col2.button(
-                #                    "AD",
-                #                    on_click=display_about_dev(),
-                #                    help="pops a dialog box")
 
     # ####################################################################
     # ####################################################################
     # ###################### END OF ABOVE CHAT AREA   ####################
     # ####################################################################
     # ####################################################################
-
-
     # ####################################################################
     # ####################################################################
     # ########### IMPLEMENTING SETTINGS FOR THE MODEL  ###################
@@ -1729,8 +1707,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         video_idd = str(get_video_id(youtubeURL)[1])
         videoTranscript = get_video_transcript(video_idd)
         transcriptdata = f'[Video Transcript]: "{videoTranscript}'
-        # print("Video Id: "+video_idd)
-        # print(transcriptdata)
+
 
     inputquestion = st.chat_input("Ask away / Provide your Question / what is your prompt ??")
     usermessage = question_combinder(f"{adcn}{codewrap}", inputquestion)
@@ -1908,6 +1885,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 )
         
         with st.chat_message("assistant"):
+
             botmessage = convo.last.text
             
 
@@ -1923,6 +1901,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 st.write_stream(stream_text(botmessage, float(writespeed)))
             else:
                 st.write(botmessage)
+
             # Condition if Using Elaven Labs API for Text to Speech
             if activate_audio_output:
                 acol1, acol2 = st.columns(2, gap="small")
@@ -2016,6 +1995,11 @@ if restdata:
     st.session_state.chathistory = []
     st.session_state.lastchatoutput = ""
     st.warning("Prompt Memory has been reset", icon='⚠')
+
+
+# THIS AREA IS LOADED ON STARTUP WHEN THE APP LOADS IN THE WEB
+# IT CHECKS IF THE USER IS LOGGED IN OR NOT AND IF NOT THEN IT 
+# DISPLAYS THE WELCOME PAGE AND THE LOGIN PAGE
 
 if not st.session_state.authstatus or st.session_state.authstatus == "":
     colorful_print("[Info] User waiting to login", "blue")
@@ -2127,7 +2111,6 @@ if not st.session_state.authstatus or st.session_state.authstatus == "":
     )
     
     st.header("Welcome to Miah's AI Assistance")
-    # st.write("Number of test token:"+str(tokencounter(bodyc1)))
 
     st.markdown(bodyc1, unsafe_allow_html=True)
 
