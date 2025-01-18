@@ -1434,7 +1434,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     emj_aaudio + "Audio(2):", value=False, help="Active Audio GTTs"
                 )
         
-        
+
         with st.expander(emj_stats + "Status", expanded=False):
             st.write("##### Number of SAR: " + str(fileInStore))
             st.write("##### Number of SAF: " + str(audioInStore))
@@ -1450,21 +1450,35 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # horizontal_line()
         with st.expander(emj_help+"About",expanded=False):
             st.page_link(
-                "pages/help.py", label="Help Guide", icon=emj_help_ico, disabled=False
+                "pages/help.py", 
+                label="Help Guide", 
+                icon=emj_help_ico, 
+                disabled=False
             )
+
             st.page_link(
-                "pages/aboutdev.py", label="About Dev", icon=emj_help_ico, disabled=False
+                "pages/aboutdev.py", 
+                label="About Dev", 
+                icon=emj_help_ico, 
+                disabled=False
             )
    
         horizontal_line()
         with st.expander(emj_lightbulb + "Other Tools", expanded=False):
 
             st.page_link(
-            "pages/Mathapp.py", label="Math Helper", icon=emj_help_ico, disabled=False
+            "pages/Mathapp.py", 
+            label="Math Helper", 
+            icon=emj_help_ico, 
+            disabled=False
+            
             )
 
             st.page_link(
-            "pages/Codeapp.py", label="Codeapp Helper", icon=emj_help_ico, disabled=False
+            "pages/Codeapp.py", 
+            label="Codeapp Helper", 
+            icon=emj_help_ico, 
+            disabled=False
             )
 
         about_the_developer()
@@ -1555,9 +1569,9 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 else:
                     codewrap = "```" + code + "\n " + codearea + " \n```"
 
+
             ## THIS IS THE YOUTUBE CONTEXT SECTION
             ##########################################
-
             with tb3:
                 yytab1, yytab2 = st.tabs(["URL", "WV"])
 
@@ -1567,10 +1581,10 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     )
 
                     ac_youtubesc = st.toggle(
-                        "AYS", value=False, help="Activate Transcript"
+                        "Activate Transcript", value=False, help="Activate Transcript"
                     )
                     youtubesac = st.toggle(
-                        "LV", value=False, help="LoadVideo Transcript"
+                        "LoadVideo Transcript", value=False, help="LoadVideo Transcript"
                     )
 
                 with yytab2:
@@ -1626,17 +1640,16 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     colo2.write(filesaudio)
                         
 
-                if audiotoTextToggle:
-                    audioTextinput = convert_audio_to_text(audioFileout)
-                    st.write(audioTextinput)
+                # if audiotoTextToggle:
+                #     audioTextinput = convert_audio_to_text(audioFileout)
+                #     st.write(audioTextinput)
 
             with tb6:
                 (
                     col1,
                     col2,
                 ) = st.columns(2, gap="small")
-                # copyresponsetoClip = col1.button("cc", help="Copy Clipboard")
-                # get_mictext = col1.button("GM", help="Listain to Microphone")
+
 
                 GAM = col1.button("Get-Models.", help="this will print the google models")
                 if GAM:
@@ -1731,7 +1744,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         transcriptdata = f'[Video Transcript]: "{videoTranscript}'
 
 
-    inputquestion = st.chat_input("Ask away / Provide your Question / what is your prompt ??")
+    inputquestion = st.chat_input("Ask away / Provide your Question ?")
     usermessage = question_combinder(f"{adcn}{codewrap}", inputquestion)
 
     
@@ -1789,7 +1802,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # End of Context Commincation Checks and Binding
             # #############################################################################
             # #############################################################################
-            # print("[Debuging]:[0] "+groupcontext+usermessage)  #Debugging Perpose
 
             cache_history_now = st.session_state.chathistoryprompt
             cxt_n_usermsg = loadassistantcontext + usermessage + ai_dont_lie
@@ -1797,11 +1809,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             # Writting to History for Human Content
             write_to_historyfile("CH_", cxt_n_usermsg, datetime.date.today().strftime("%A"), "_Human_", st.session_state.uaccount)
 
-
-            # Debugging calls 
-            # Comment to use for Debugging
-            # 
-            # colorful_print(loadassistantcontext, "red")
 
             # This Combinds all prompt strings ready for loading to the chat.
             finalpromptstring = cxt_n_usermsg + grpcontext + ", " + cache_history_now 
@@ -1812,7 +1819,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             #
 
             try:
-
                 if uploaded_img:
                     img = PIL.Image.open(uploaded_img)
                     colorful_print("[INCAL] Sending Prompt with Text and Image", "green")
@@ -1826,14 +1832,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     convo.send_message(finalpromptstring)
                     colorful_print("[INCAL] Sending Prompt with Text only", "green")
 
-                
-                # else:
-                #     convo.send_message(finalpromptstring)
-                #     colorful_print("[INCAL] Sending Prompt with Text only", "green")
-
-                # Uncomment for Debugging for purpose.
-                #
-                # print("[Debuging]:[1] "+groupcontext+usermessage)
 
             except Exception as e:
                 st.toast(":red[Error:] Problem sending Prompt on call", icon=None)
@@ -1841,10 +1839,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             ca = usermessage + cache_history_now
             st.session_state.chathistoryprompt = ca
-            # print(f"\n\n Current CACHE BP:{cache_history_now}") # Debuging Perpose
-            # Uncomment to View ChathistroyPrompt data in terminal
-            # print(st.session_state.chathistoryprompt)
-            # systempromptadd = "Your name is Miah, You are named after my son"
 
             res00data = {
                         "role": "user", 
@@ -1856,7 +1850,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                         "parts": [convo.last.text]
             }
 
-            # res03data = {"role": "model", "parts": [systempromptadd]}
             res02data = {
                 "role": "user",
                 "parts": [loadassistantcontext],
@@ -1868,7 +1861,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             
             st.write(chatdata)
-            # print(f'\n\n Chatdata: {chatdata}\n\n') # Uncomment for Deginfo
         
         if atsec:
             dynamic_css("#e0391f")    # Activate the Red Broaders000000000000..
@@ -1877,6 +1869,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         
         successtext = "Generated Response Completed"
 
+        # LOAD THE AUDIO PROCESSING IF ACTIVATED OR TOGGLE
+        # ###################################################
         if activate_audio_output:
             with st.status("Cooking some Text Modificatio ..."):
                 modifyiedAudioText =  AIProcesss(convo.last.text)
@@ -1884,9 +1878,8 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
         # Comment to Use the Toast as the Alert element
         st.success(successtext)
 
-        # Uncomment to use the toast as the Alert element
-        # st.toast(":green["+successtext+"]", icon=None)
-
+        # Reponse is written to File
+        # ##################################################       
         write_to_file(filename, convo.last.text)
         st.session_state.lastchatoutput = convo.last.text
 
@@ -1907,19 +1900,15 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 )
         
         with st.chat_message("assistant"):
-
             botmessage = convo.last.text
             
-
             #
             # @@ Note to implement streaming of Returned information.
             #
-
             #  checks if the special feature for text Stream is active
             #  if yes then it will output the responses in a text Stream way 
             #  else it will just show all the text at Once. 
             if attsm:
-                # st.status("Assistance Typing ..")
                 st.write_stream(stream_text(botmessage, float(writespeed)))
             else:
                 st.write(botmessage)
