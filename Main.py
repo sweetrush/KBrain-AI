@@ -64,7 +64,7 @@ import io
 # of the Miah AI assistance
 # #################################################
 
-version = "3.1.2"
+version = "3.1.3"
 developer = "Bytewatchers Samoa with (SRCoder)"
 
 ###################################################
