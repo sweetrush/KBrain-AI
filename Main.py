@@ -793,7 +793,7 @@ def colorful_print(text: str, color: str) -> None:
         "white": Fore.WHITE,
         "blue": Fore.BLUE,
         "magenta": Fore.MAGENTA,
-        "cyan": Fore.CYAN,
+        "cyan": Fore.CYAN,       
     }
 
     # Get the color or default to white if the color is unsupported
@@ -804,16 +804,6 @@ def colorful_print(text: str, color: str) -> None:
 
 
 # #####################################################
-# #  25         TOKENIZER COUNTER                    ##
-# #####################################################
-# Check this function for removal 
-# 
-# def tokencounter(text):
-#     nltk.download('punkt')
-#     return len(word_tokenize(text))
-
-
-# #####################################################
 # #  26         STREAM TEXT FX                       ##
 # #####################################################
 def stream_text_0(text, delay=0.003):
@@ -821,6 +811,7 @@ def stream_text_0(text, delay=0.003):
     for char in text:
         yield char
         time.sleep(delay)
+
 
 def stream_text(text, delay=0.003):
     """Streams text with CSS-based fading effect."""
@@ -1131,6 +1122,8 @@ def convert_md_to_docx(md_file):
         st.error(f"An error occurred during conversion: {str(e)}")
         return None
 
+
+#########################################################################
 #########################################################################
 #########################################################################
 #########################################################################
@@ -1179,6 +1172,8 @@ safety_options = [
 # Loading in the Agents from File 
 loadagents()
 assistant = []
+
+# Adding Agents to the List of Assistants
 for i in range(len(listofAssistance)):
     assistant.append(read_from_file(listofAssistance[i][2]))
 
@@ -1201,7 +1196,9 @@ if devmode == 1:
 else:
     st.sidebar.title(emj_clamper + "Miah's AI")
 
+#Load the the CSS file for the color scheme
 dynamic_css(epcolor_val)
+
 
 # Getting the Condition of the Access
 with st.sidebar:
@@ -1241,9 +1238,11 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             with l1_tl1:
                 # st.write(emj_gear + "Settings Config")
                 popup_notifications = st.toggle("Popup Notification", value=False)
+                
                 GeminiAPIkey = st.text_input(
                     "Gemini-key:", type="password", value="", max_chars=None
                 )
+
                 tempture_val = st.slider(
                     "Prompt temperature",  # Label for the slider
                     min_value=0.0,  # Minimum value
@@ -1252,7 +1251,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     step=0.01,  # Increment step
                 )
 
-                # topp = st.text_input("Set Top P", value="1", max_chars=None)
                 topp = st.slider(
                     "Set Top-P",    # Label for the slider
                     min_value=0.0,  # Minimum value
@@ -1261,6 +1259,7 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     step=0.05,      # Increment step
                 )
 
+                
                 topk = st.number_input(
                     "Set Top-K",
                     min_value=None,
@@ -1271,14 +1270,13 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
                 if not isinstance(topk, int) or topk < 1 or topk > 100:
                     st.error("Invalid Top-K value. Please enter an integer between 1 and 100.")
-
+                
                 mot = st.text_input("Max Output Tokens", value=model_tokens, max_chars=None)
-
                 convert_tpv = float(tempture_val)
 
-        # with st.expander(emj_safety + "Safety Config", expanded=False):
+            # LLM Satety Settings initializations 
+            # ######################################
             with l1_tl2:
-                # st.write(emj_safety + "Safety Config")
                 opt1_safe = st.selectbox(
                     "Harassment",
                     (
@@ -1343,8 +1341,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
             # Setting the selected Active Assistance
             # ################################################
-        
-        # with st.expander(emj_assistance + "Assistances", expanded=True):
             selection = st.selectbox(
                 emj_assistance + "Active Assistance:",
                 [
@@ -1358,7 +1354,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
 
         # Checking and setting the Selected Assistance
         # ##############################################
-
         loadassistantcontext, assistantcontext, fileloaded, agentimagelement, agdiscription = get_assistant_details(
             selection, listofAssistance, assistant
         )
@@ -1374,16 +1369,16 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
             st.toast(":green[Image:]" + agentimagelement)
             st.toast(":green[Discription:]" + agdiscription)
 
-        with st.expander(emj_safety + "Special Features", expanded=False):
 
+        with st.expander(emj_safety + "Special Features", expanded=False):
             spclm1, spclm2 = st.tabs([emj_safety + "UI", emj_aaudio + "Audio"])
             with spclm1:
                 st.write(emj_safety + "UI Config")
-                attsm = st.toggle("TSM", value=False, help="Activate Text Stream Reponses")
-                atpts = st.toggle("PTS", value=False, help="Activate Prompt Token Status")
+                attsm = st.toggle("Text Stream", value=False, help="Activate Text Stream Reponses")
+                atpts = st.toggle("Token Count", value=False, help="Activate Prompt Token Status")
                 if attsm:
                     writespeed = st.text_input("Text-Speed:", value="0.007", max_chars=None)
-                atsec = st.toggle("ALT", value=False, help="Activate Lab Testing")
+                atsec = st.toggle("Lab Test", value=False, help="Activate Lab Testing")
                 bexpanderColor = st.color_picker("Theme:", epcolor_val)
 
                 # save new color to Config
@@ -1395,7 +1390,6 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                 st.session_state.exbclor = bexpanderColor
                 dynamic_css(bexpanderColor)
 
-        # with st.expander(emj_aaudio + "Audio Config", expanded=False):
             with spclm2:
                 st.write(emj_aaudio + "Audio Config")
                 e11labkey = st.text_input(
@@ -1410,33 +1404,37 @@ if st.session_state.authstatus and st.session_state.accesscode != "":
                     activate_audio_output = st.toggle(
                         emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
                     )
+                    enableCharacter = True
                 # Access Code for "SCH"
                 elif e11labkey == "audioaccess":
                     activate_audio_output = st.toggle(
                         emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
                     )
+                    enableCharacter = True
                 elif devmode == 1:   # IF ONE this will show the audio in dev Enviroment
                     activate_audio_output = st.toggle(
                         emj_aaudio + "Audio(1):", value=False, help="Active Audio E11L"
                     )
+                    enableCharacter = True
                 else:
                     activate_audio_output = False
+                    enableCharacter = False
                 
-                AudioCharacter = st.selectbox("Select Character",
-                                    ({"Rachel", "Emily", "Antoni", "Brian"}),
-                                            index=0
-                                            )
+                if enableCharacter:
+                    AudioCharacter = st.selectbox("Select Character",
+                                        ({
+                                            "Rachel", 
+                                            "Emily", 
+                                            "Antoni", 
+                                            "Brian"
+                                            }),index=0
+                                                )
+
                 activate_audio_output002 = st.toggle(
                     emj_aaudio + "Audio(2):", value=False, help="Active Audio GTTs"
                 )
         
-        # DISABLED FOR LATER DEVELOPMENT
-        #  - THis is the History Feature that needs to be fix. 
-    
-        # with st.expander(emj_filebox + "History", expanded=False):
-        #     st.button("Session 1", type="primary")
-        #     st.button("Session 2", type="primary")
-
+        
         with st.expander(emj_stats + "Status", expanded=False):
             st.write("##### Number of SAR: " + str(fileInStore))
             st.write("##### Number of SAF: " + str(audioInStore))
