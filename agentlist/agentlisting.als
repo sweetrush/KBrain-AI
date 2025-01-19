@@ -71,6 +71,7 @@
 @@ 3,2Ddotplan        , 2D Plot Assistance        , dotplanner.atx        , defaut.png  , For Drawing 2D Drawings 
 3,Emailhelper         , EmailHelper Assistance    , emailhelper.atx       , defaut.png  , For all your email support needs 
 3,BusniessExpert      , BE Assistance             , BusniessExpert.atx    , defaut.png  , A Busniess Expert Assistance 
+3,BB_Marketing        , BWS Marketing Assistant   , bytewatchersMarking.atx      , defaut.png  , For BWS Marketing Needs 
 
 @@ Commented Agents 
 @@ 3,BusniessLawyer   , BL Assistance          , BN_Lawer.atx             , defaut.png  , Your Busniess Lawyer support 
