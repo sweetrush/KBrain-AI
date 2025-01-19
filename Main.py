@@ -798,11 +798,10 @@ def colorful_print(text: str, color: str) -> None:
         "reset": Style.RESET_ALL,
         "bold": Style.BRIGHT,
         "dim": Style.DIM,
-        "underline": Style.UNDERLINE,
         "blink": Style.BLINK,
         "reverse": Style.REVERSE,
         "hidden": Style.HIDDEN,
-        
+
     }
 
     # Get the color or default to white if the color is unsupported
